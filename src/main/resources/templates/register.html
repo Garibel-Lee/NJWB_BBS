@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>注册</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="fly,layui,前端社区">
+  <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/global.css">
+<script src="/layui/layui.js"></script>
+</head>
+<body>
+
+<div th:insert="~{navigation :: nav}"></div>
+
+<div class="main layui-clear">
+  <div class="fly-panel fly-panel-user" pad20>
+    <div class="layui-tab layui-tab-brief">
+      <ul class="layui-tab-title">
+        <li><a href="login.html">登入</a></li>
+        <li class="layui-this">注册</li>
+      </ul>
+      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+        <div class="layui-tab-item layui-show">
+          <div class="layui-form layui-form-pane">
+            <form action=""   >
+              <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                  <input type="text" lay-verify="email" autocomplete="off" class="layui-input">
+                </div>
+                <div id="msg" class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_username" class="layui-form-label">昵称</label>
+                <div class="layui-input-inline">
+                  <input type="text" required lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_pass" class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                  <input type="password" lay-verify="pass"    autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_sex" class="layui-form-label">性别</label>
+                <div class="layui-input-inline">
+                  <input type="radio"  title="男" checked="checked">
+     			  <input type="radio" title="女">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label for="L_vercode" class="layui-form-label">人类验证</label>
+                <div class="layui-input-inline">
+                  <input type="text"  lay-verify="required" placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
+                
+                </div>
+                <div class="layui-form-mid">
+                  <span style="color: #c00;">5*8=?</span>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <input class="layui-btn" type="button"    value="立即提交"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+	<div class="footer">
+  <p><a href="#">网博社区</a> 2017 &copy; <a href="#/">njwangbo.com</a></p>
+  <p>
+    <a href="#" target="_blank">产品授权</a>
+    <a href="#" target="_blank">网博社区</a>
+    <a href="#" target="_blank">微信公众号</a>
+  </p>
+</div>
+
+<script>
+		layui.use('element', function() {
+			var element = layui.element();
+		});
+	</script>
+<script>
+
+layui.cache.page = '';
+layui.cache.user = {
+  username: '游客'
+  ,uid: -1
+  ,avatar: '/images/avatar/00.jpg'
+  ,experience: 83
+  ,sex: '男'
+};
+layui.config({
+  version: "2.0.0"
+  ,base: '/mods/'
+}).extend({
+  fly: 'index'
+}).use('fly');
+</script>
+</body>
+</html>

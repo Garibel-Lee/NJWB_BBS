@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="njwb.lcqjoyce.bbs.mapper.QuestionMapper">
+  <resultMap id="BaseResultMap" type="njwb.lcqjoyce.bbs.entity.Question">
+    <!--@mbg.generated-->
+    <!--@Table question-->
+    <id column="question_id" jdbcType="BIGINT" property="questionId" />
+    <result column="question_title" jdbcType="VARCHAR" property="questionTitle" />
+    <result column="question_description" jdbcType="LONGVARCHAR" property="questionDescription" />
+    <result column="question_gmtCreate" jdbcType="BIGINT" property="questionGmtcreate" />
+    <result column="question_gmtModified" jdbcType="BIGINT" property="questionGmtmodified" />
+    <result column="question_creator" jdbcType="BIGINT" property="questionCreator" />
+    <result column="question_commentCount" jdbcType="INTEGER" property="questionCommentcount" />
+    <result column="question_viewCount" jdbcType="INTEGER" property="questionViewcount" />
+    <result column="question_likeCount" jdbcType="INTEGER" property="questionLikecount" />
+    <result column="question_tag" jdbcType="VARCHAR" property="questionTag" />
+    <result column="question_expend" jdbcType="INTEGER" property="questionExpend" />
+    <result column="question_status" jdbcType="INTEGER" property="questionStatus" />
+    <result column="question_top" jdbcType="INTEGER" property="questionTop" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    question_id, question_title, question_description, question_gmtCreate, question_gmtModified, 
+    question_creator, question_commentCount, question_viewCount, question_likeCount, 
+    question_tag, question_expend, question_status, question_top
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from question
+    where question_id = #{questionId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from question
+    where question_id = #{questionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="question_id" keyProperty="questionId" parameterType="njwb.lcqjoyce.bbs.entity.Question" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into question (question_title, question_description, 
+      question_gmtCreate, question_gmtModified, question_creator, 
+      question_commentCount, question_viewCount, 
+      question_likeCount, question_tag, question_expend, 
+      question_status, question_top)
+    values (#{questionTitle,jdbcType=VARCHAR}, #{questionDescription,jdbcType=LONGVARCHAR}, 
+      #{questionGmtcreate,jdbcType=BIGINT}, #{questionGmtmodified,jdbcType=BIGINT}, #{questionCreator,jdbcType=BIGINT}, 
+      #{questionCommentcount,jdbcType=INTEGER}, #{questionViewcount,jdbcType=INTEGER}, 
+      #{questionLikecount,jdbcType=INTEGER}, #{questionTag,jdbcType=VARCHAR}, #{questionExpend,jdbcType=INTEGER}, 
+      #{questionStatus,jdbcType=INTEGER}, #{questionTop,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="question_id" keyProperty="questionId" parameterType="njwb.lcqjoyce.bbs.entity.Question" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="questionTitle != null">
+        question_title,
+      </if>
+      <if test="questionDescription != null">
+        question_description,
+      </if>
+      <if test="questionGmtcreate != null">
+        question_gmtCreate,
+      </if>
+      <if test="questionGmtmodified != null">
+        question_gmtModified,
+      </if>
+      <if test="questionCreator != null">
+        question_creator,
+      </if>
+      <if test="questionCommentcount != null">
+        question_commentCount,
+      </if>
+      <if test="questionViewcount != null">
+        question_viewCount,
+      </if>
+      <if test="questionLikecount != null">
+        question_likeCount,
+      </if>
+      <if test="questionTag != null">
+        question_tag,
+      </if>
+      <if test="questionExpend != null">
+        question_expend,
+      </if>
+      <if test="questionStatus != null">
+        question_status,
+      </if>
+      <if test="questionTop != null">
+        question_top,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="questionTitle != null">
+        #{questionTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questionDescription != null">
+        #{questionDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="questionGmtcreate != null">
+        #{questionGmtcreate,jdbcType=BIGINT},
+      </if>
+      <if test="questionGmtmodified != null">
+        #{questionGmtmodified,jdbcType=BIGINT},
+      </if>
+      <if test="questionCreator != null">
+        #{questionCreator,jdbcType=BIGINT},
+      </if>
+      <if test="questionCommentcount != null">
+        #{questionCommentcount,jdbcType=INTEGER},
+      </if>
+      <if test="questionViewcount != null">
+        #{questionViewcount,jdbcType=INTEGER},
+      </if>
+      <if test="questionLikecount != null">
+        #{questionLikecount,jdbcType=INTEGER},
+      </if>
+      <if test="questionTag != null">
+        #{questionTag,jdbcType=VARCHAR},
+      </if>
+      <if test="questionExpend != null">
+        #{questionExpend,jdbcType=INTEGER},
+      </if>
+      <if test="questionStatus != null">
+        #{questionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="questionTop != null">
+        #{questionTop,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="njwb.lcqjoyce.bbs.entity.Question">
+    <!--@mbg.generated-->
+    update question
+    <set>
+      <if test="questionTitle != null">
+        question_title = #{questionTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="questionDescription != null">
+        question_description = #{questionDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="questionGmtcreate != null">
+        question_gmtCreate = #{questionGmtcreate,jdbcType=BIGINT},
+      </if>
+      <if test="questionGmtmodified != null">
+        question_gmtModified = #{questionGmtmodified,jdbcType=BIGINT},
+      </if>
+      <if test="questionCreator != null">
+        question_creator = #{questionCreator,jdbcType=BIGINT},
+      </if>
+      <if test="questionCommentcount != null">
+        question_commentCount = #{questionCommentcount,jdbcType=INTEGER},
+      </if>
+      <if test="questionViewcount != null">
+        question_viewCount = #{questionViewcount,jdbcType=INTEGER},
+      </if>
+      <if test="questionLikecount != null">
+        question_likeCount = #{questionLikecount,jdbcType=INTEGER},
+      </if>
+      <if test="questionTag != null">
+        question_tag = #{questionTag,jdbcType=VARCHAR},
+      </if>
+      <if test="questionExpend != null">
+        question_expend = #{questionExpend,jdbcType=INTEGER},
+      </if>
+      <if test="questionStatus != null">
+        question_status = #{questionStatus,jdbcType=INTEGER},
+      </if>
+      <if test="questionTop != null">
+        question_top = #{questionTop,jdbcType=INTEGER},
+      </if>
+    </set>
+    where question_id = #{questionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="njwb.lcqjoyce.bbs.entity.Question">
+    <!--@mbg.generated-->
+    update question
+    set question_title = #{questionTitle,jdbcType=VARCHAR},
+      question_description = #{questionDescription,jdbcType=LONGVARCHAR},
+      question_gmtCreate = #{questionGmtcreate,jdbcType=BIGINT},
+      question_gmtModified = #{questionGmtmodified,jdbcType=BIGINT},
+      question_creator = #{questionCreator,jdbcType=BIGINT},
+      question_commentCount = #{questionCommentcount,jdbcType=INTEGER},
+      question_viewCount = #{questionViewcount,jdbcType=INTEGER},
+      question_likeCount = #{questionLikecount,jdbcType=INTEGER},
+      question_tag = #{questionTag,jdbcType=VARCHAR},
+      question_expend = #{questionExpend,jdbcType=INTEGER},
+      question_status = #{questionStatus,jdbcType=INTEGER},
+      question_top = #{questionTop,jdbcType=INTEGER}
+    where question_id = #{questionId,jdbcType=BIGINT}
+  </update>
+</mapper>

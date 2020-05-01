@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="njwb.lcqjoyce.bbs.mapper.LikeMapper">
+  <resultMap id="BaseResultMap" type="njwb.lcqjoyce.bbs.entity.Like">
+    <!--@mbg.generated-->
+    <!--@Table `like`-->
+    <id column="like_id" jdbcType="BIGINT" property="likeId" />
+    <result column="like_postId" jdbcType="BIGINT" property="likePostid" />
+    <result column="like_replyId" jdbcType="BIGINT" property="likeReplyid" />
+    <result column="like_status" jdbcType="INTEGER" property="likeStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    like_id, like_postId, like_replyId, like_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from `like`
+    where like_id = #{likeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from `like`
+    where like_id = #{likeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="like_id" keyProperty="likeId" parameterType="njwb.lcqjoyce.bbs.entity.Like" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `like` (like_postId, like_replyId, like_status
+      )
+    values (#{likePostid,jdbcType=BIGINT}, #{likeReplyid,jdbcType=BIGINT}, #{likeStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="like_id" keyProperty="likeId" parameterType="njwb.lcqjoyce.bbs.entity.Like" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `like`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="likePostid != null">
+        like_postId,
+      </if>
+      <if test="likeReplyid != null">
+        like_replyId,
+      </if>
+      <if test="likeStatus != null">
+        like_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="likePostid != null">
+        #{likePostid,jdbcType=BIGINT},
+      </if>
+      <if test="likeReplyid != null">
+        #{likeReplyid,jdbcType=BIGINT},
+      </if>
+      <if test="likeStatus != null">
+        #{likeStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="njwb.lcqjoyce.bbs.entity.Like">
+    <!--@mbg.generated-->
+    update `like`
+    <set>
+      <if test="likePostid != null">
+        like_postId = #{likePostid,jdbcType=BIGINT},
+      </if>
+      <if test="likeReplyid != null">
+        like_replyId = #{likeReplyid,jdbcType=BIGINT},
+      </if>
+      <if test="likeStatus != null">
+        like_status = #{likeStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where like_id = #{likeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="njwb.lcqjoyce.bbs.entity.Like">
+    <!--@mbg.generated-->
+    update `like`
+    set like_postId = #{likePostid,jdbcType=BIGINT},
+      like_replyId = #{likeReplyid,jdbcType=BIGINT},
+      like_status = #{likeStatus,jdbcType=INTEGER}
+    where like_id = #{likeId,jdbcType=BIGINT}
+  </update>
+</mapper>

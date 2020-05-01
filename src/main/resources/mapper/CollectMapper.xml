@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="njwb.lcqjoyce.bbs.mapper.CollectMapper">
+  <resultMap id="BaseResultMap" type="njwb.lcqjoyce.bbs.entity.Collect">
+    <!--@mbg.generated-->
+    <!--@Table `collect`-->
+    <id column="collect_id" jdbcType="BIGINT" property="collectId" />
+    <result column="collect_postid" jdbcType="BIGINT" property="collectPostid" />
+    <result column="collect_postUserId" jdbcType="BIGINT" property="collectPostuserid" />
+    <result column="collect_userid" jdbcType="BIGINT" property="collectUserid" />
+    <result column="collect_gmtCreatetime" jdbcType="BIGINT" property="collectGmtcreatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    collect_id, collect_postid, collect_postUserId, collect_userid, collect_gmtCreatetime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from `collect`
+    where collect_id = #{collectId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from `collect`
+    where collect_id = #{collectId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="collect_id" keyProperty="collectId" parameterType="njwb.lcqjoyce.bbs.entity.Collect" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `collect` (collect_postid, collect_postUserId, collect_userid, 
+      collect_gmtCreatetime)
+    values (#{collectPostid,jdbcType=BIGINT}, #{collectPostuserid,jdbcType=BIGINT}, #{collectUserid,jdbcType=BIGINT}, 
+      #{collectGmtcreatetime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="collect_id" keyProperty="collectId" parameterType="njwb.lcqjoyce.bbs.entity.Collect" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `collect`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="collectPostid != null">
+        collect_postid,
+      </if>
+      <if test="collectPostuserid != null">
+        collect_postUserId,
+      </if>
+      <if test="collectUserid != null">
+        collect_userid,
+      </if>
+      <if test="collectGmtcreatetime != null">
+        collect_gmtCreatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="collectPostid != null">
+        #{collectPostid,jdbcType=BIGINT},
+      </if>
+      <if test="collectPostuserid != null">
+        #{collectPostuserid,jdbcType=BIGINT},
+      </if>
+      <if test="collectUserid != null">
+        #{collectUserid,jdbcType=BIGINT},
+      </if>
+      <if test="collectGmtcreatetime != null">
+        #{collectGmtcreatetime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="njwb.lcqjoyce.bbs.entity.Collect">
+    <!--@mbg.generated-->
+    update `collect`
+    <set>
+      <if test="collectPostid != null">
+        collect_postid = #{collectPostid,jdbcType=BIGINT},
+      </if>
+      <if test="collectPostuserid != null">
+        collect_postUserId = #{collectPostuserid,jdbcType=BIGINT},
+      </if>
+      <if test="collectUserid != null">
+        collect_userid = #{collectUserid,jdbcType=BIGINT},
+      </if>
+      <if test="collectGmtcreatetime != null">
+        collect_gmtCreatetime = #{collectGmtcreatetime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where collect_id = #{collectId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="njwb.lcqjoyce.bbs.entity.Collect">
+    <!--@mbg.generated-->
+    update `collect`
+    set collect_postid = #{collectPostid,jdbcType=BIGINT},
+      collect_postUserId = #{collectPostuserid,jdbcType=BIGINT},
+      collect_userid = #{collectUserid,jdbcType=BIGINT},
+      collect_gmtCreatetime = #{collectGmtcreatetime,jdbcType=BIGINT}
+    where collect_id = #{collectId,jdbcType=BIGINT}
+  </update>
+</mapper>

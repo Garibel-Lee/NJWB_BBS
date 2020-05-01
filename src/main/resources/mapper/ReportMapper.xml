@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="njwb.lcqjoyce.bbs.mapper.ReportMapper">
+  <resultMap id="BaseResultMap" type="njwb.lcqjoyce.bbs.entity.Report">
+    <!--@mbg.generated-->
+    <!--@Table report-->
+    <id column="report_id" jdbcType="BIGINT" property="reportId" />
+    <result column="report_postId" jdbcType="BIGINT" property="reportPostid" />
+    <result column="report_postUserId" jdbcType="BIGINT" property="reportPostuserid" />
+    <result column="report_reportUserId" jdbcType="BIGINT" property="reportReportuserid" />
+    <result column="report_title" jdbcType="VARCHAR" property="reportTitle" />
+    <result column="report_account" jdbcType="LONGVARCHAR" property="reportAccount" />
+    <result column="report_status" jdbcType="INTEGER" property="reportStatus" />
+    <result column="report_gmtCreatetime" jdbcType="BIGINT" property="reportGmtcreatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    report_id, report_postId, report_postUserId, report_reportUserId, report_title, report_account, 
+    report_status, report_gmtCreatetime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from report
+    where report_id = #{reportId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from report
+    where report_id = #{reportId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="report_id" keyProperty="reportId" parameterType="njwb.lcqjoyce.bbs.entity.Report" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into report (report_postId, report_postUserId, report_reportUserId, 
+      report_title, report_account, report_status, 
+      report_gmtCreatetime)
+    values (#{reportPostid,jdbcType=BIGINT}, #{reportPostuserid,jdbcType=BIGINT}, #{reportReportuserid,jdbcType=BIGINT}, 
+      #{reportTitle,jdbcType=VARCHAR}, #{reportAccount,jdbcType=LONGVARCHAR}, #{reportStatus,jdbcType=INTEGER}, 
+      #{reportGmtcreatetime,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="report_id" keyProperty="reportId" parameterType="njwb.lcqjoyce.bbs.entity.Report" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into report
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="reportPostid != null">
+        report_postId,
+      </if>
+      <if test="reportPostuserid != null">
+        report_postUserId,
+      </if>
+      <if test="reportReportuserid != null">
+        report_reportUserId,
+      </if>
+      <if test="reportTitle != null">
+        report_title,
+      </if>
+      <if test="reportAccount != null">
+        report_account,
+      </if>
+      <if test="reportStatus != null">
+        report_status,
+      </if>
+      <if test="reportGmtcreatetime != null">
+        report_gmtCreatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="reportPostid != null">
+        #{reportPostid,jdbcType=BIGINT},
+      </if>
+      <if test="reportPostuserid != null">
+        #{reportPostuserid,jdbcType=BIGINT},
+      </if>
+      <if test="reportReportuserid != null">
+        #{reportReportuserid,jdbcType=BIGINT},
+      </if>
+      <if test="reportTitle != null">
+        #{reportTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="reportAccount != null">
+        #{reportAccount,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reportStatus != null">
+        #{reportStatus,jdbcType=INTEGER},
+      </if>
+      <if test="reportGmtcreatetime != null">
+        #{reportGmtcreatetime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="njwb.lcqjoyce.bbs.entity.Report">
+    <!--@mbg.generated-->
+    update report
+    <set>
+      <if test="reportPostid != null">
+        report_postId = #{reportPostid,jdbcType=BIGINT},
+      </if>
+      <if test="reportPostuserid != null">
+        report_postUserId = #{reportPostuserid,jdbcType=BIGINT},
+      </if>
+      <if test="reportReportuserid != null">
+        report_reportUserId = #{reportReportuserid,jdbcType=BIGINT},
+      </if>
+      <if test="reportTitle != null">
+        report_title = #{reportTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="reportAccount != null">
+        report_account = #{reportAccount,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reportStatus != null">
+        report_status = #{reportStatus,jdbcType=INTEGER},
+      </if>
+      <if test="reportGmtcreatetime != null">
+        report_gmtCreatetime = #{reportGmtcreatetime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where report_id = #{reportId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="njwb.lcqjoyce.bbs.entity.Report">
+    <!--@mbg.generated-->
+    update report
+    set report_postId = #{reportPostid,jdbcType=BIGINT},
+      report_postUserId = #{reportPostuserid,jdbcType=BIGINT},
+      report_reportUserId = #{reportReportuserid,jdbcType=BIGINT},
+      report_title = #{reportTitle,jdbcType=VARCHAR},
+      report_account = #{reportAccount,jdbcType=LONGVARCHAR},
+      report_status = #{reportStatus,jdbcType=INTEGER},
+      report_gmtCreatetime = #{reportGmtcreatetime,jdbcType=BIGINT}
+    where report_id = #{reportId,jdbcType=BIGINT}
+  </update>
+</mapper>
