@@ -4,6 +4,8 @@ import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
 import njwb.lcqjoyce.bbs.dto.QuestionDTO;
 import njwb.lcqjoyce.bbs.entity.Question;
 import njwb.lcqjoyce.bbs.entity.User;
+import njwb.lcqjoyce.bbs.exception.CustomizeErrorCode;
+import njwb.lcqjoyce.bbs.exception.CustomizeException;
 import njwb.lcqjoyce.bbs.mapper.QuestionMapper;
 import njwb.lcqjoyce.bbs.mapper.UserMapper;
 import njwb.lcqjoyce.bbs.service.impl.QuestionService;
@@ -37,8 +39,16 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public Question selectByPrimaryKey(Long questionId) {
-        return questionMapper.selectByPrimaryKey(questionId);
+    public QuestionDTO selectByPrimaryKey(Long questionId) {
+        Question question = questionMapper.selectByPrimaryKey(questionId);
+        if (question == null || question.equals(null)) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
+        User user = userMapper.selectByPrimaryKey(question.getQuestionCreator());
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 
     @Override
@@ -52,7 +62,7 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public PageinfoDTO<QuestionDTO>  getAll(int page, int size) {
+    public PageinfoDTO<QuestionDTO>  getAll(String section,int page, int size) {
         PageinfoDTO<QuestionDTO> pageinfoDTO = new PageinfoDTO<>();
         Integer totalCount = questionMapper.count();
         Integer totalPage;
@@ -72,7 +82,17 @@ public class QuestionServiceImpl implements QuestionService{
 
         Integer offset = size * (page - 1);
         //偏移量
-        List<Question> questions = questionMapper.selectAllByQuestionCreator(null, offset, size);
+        List<Question> questions = new ArrayList<>();
+        if(section.equals("index")){
+            questions= questionMapper.selectAllByQuestionCreator(null, null,null,offset, size);
+        }else if(section.equals("top")){
+            questions= questionMapper.selectAllByQuestionCreator(null, null,1,offset, size);
+        }else if(section.equals("unsolve")) {
+            questions = questionMapper.selectAllByQuestionCreator(null, 0, null, offset, size);
+        }else if(section.equals("solved")) {
+            questions = questionMapper.selectAllByQuestionCreator(null, 1, null, offset, size);
+        }
+
         List<QuestionDTO> questionDTOS = new ArrayList<>();
 
         for (Question question : questions) {
@@ -109,7 +129,7 @@ public class QuestionServiceImpl implements QuestionService{
 
         Integer offset = size * (page - 1);
         //偏移量
-        List<Question> questions = questionMapper.selectAllByQuestionCreator(userId, offset, size);
+        List<Question> questions = questionMapper.selectAllByQuestionCreator(userId,null,null, offset, size);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
 
         for (Question question : questions) {
@@ -121,6 +141,12 @@ public class QuestionServiceImpl implements QuestionService{
         }
         pageinfoDTO.setData(questionDTOS);
         return pageinfoDTO;
+    }
+
+    @Override
+    public void inView(Long questionId) {
+        Question question = questionMapper.selectByPrimaryKey(questionId);
+        questionMapper.updateViewByPrimaryKey(question);
     }
 
 

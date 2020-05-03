@@ -13,13 +13,15 @@ public interface QuestionService{
 
     int insertSelective(Question record);
 
-    Question selectByPrimaryKey(Long questionId);
+    QuestionDTO selectByPrimaryKey(Long questionId);
 
     int updateByPrimaryKeySelective(Question record);
 
     int updateByPrimaryKey(Question record);
 
-    PageinfoDTO<QuestionDTO> getAll(int page, int size);
+    PageinfoDTO<QuestionDTO> getAll(String section,int page, int size);
 
     PageinfoDTO listMyQuestion(Long userId, Integer page, Integer size);
+
+    void inView(Long questionId);
 }

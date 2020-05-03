@@ -1,5 +1,6 @@
 package njwb.lcqjoyce.bbs.provider;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -7,13 +8,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
+@Component
 public class FileUpload {
 
     public static String saveFile(MultipartFile file, String saveUrl){
         //获得文件保存目录
-        String fileName =/* DateUtil.parseDateToStr(new Date(),"yyyyMMddHHmmss")+
-                UserContext.getCurrentUser().getId()+"_"+*/file.getOriginalFilename();
+        String originName=file.getOriginalFilename();
+        String fileName = UUID.randomUUID()+originName.substring(originName.lastIndexOf("."));;
         String dir = PathUtil.getProjectPath() + saveUrl;
         Path path = Paths.get(dir,fileName);
         try {

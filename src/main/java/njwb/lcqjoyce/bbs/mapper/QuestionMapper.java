@@ -18,7 +18,7 @@ public interface QuestionMapper {
 
     int updateByPrimaryKeySelective(Question record);
 
-    List<Question> selectAllByQuestionCreator(@Param("questionCreator") Long questionCreator, @Param("offset")Integer offset,@Param("size") Integer size);
+    List<Question> selectAllByQuestionCreator(@Param("questionCreator") Long questionCreator,@Param("questionStatus") Integer questionStatus, @Param("questionTop") Integer questionTop,@Param("offset")Integer offset,@Param("size") Integer size);
 
     int updateByPrimaryKey(Question record);
 
@@ -27,5 +27,5 @@ public interface QuestionMapper {
     Integer countByQuestionCreator(@Param("questionCreator")Long questionCreator);
 
 
-
+    int updateViewByPrimaryKey(Question question);
 }

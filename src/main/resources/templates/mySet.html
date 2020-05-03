@@ -12,6 +12,38 @@
     <script src="/layui/layui.js"></script>
 </head>
 <body>
+<script>
+
+    $(function () {
+        $("#btn_uploadimg").click(function () {
+            var fileObj = document.getElementById("FileUpload").files[0]; // js 获取文件对象
+            if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+                alert("请选择图片");
+                return;
+            }
+            var formFile = new FormData();
+            //  formFile.append("action", "UploadVMKImagePath");
+            formFile.append("file", fileObj); //加入文件对象
+            var data = formFile;
+            $.ajax({
+                url: "/saveAvator",
+                data: data,
+                type: "post",
+                dataType: "json",
+                async: true,
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (res) {
+                    console.log(res);
+                    alert("上传完成!");
+                    $("#uploadimg").attr("src", res.message); //jq方式*/
+                    $("#nav_avator").attr("src", res.message); //jq方式*/
+                 }
+            });
+        });
+    });
+</script>
 
 <div th:insert="~{navigation :: nav}"></div>
 
@@ -94,14 +126,26 @@
                     <div class="layui-form-item">
                         <div class="avatar-add">
                             <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过30KB</p>
-                            <div class="upload-img">
-                                <input type="file" name="file" id="LAY-file" lay-title="上传头像">
-                            </div>
-                            <img src="/images/avatar/3.jpg">
+                            <!--  <div class="upload-img">
+
+                              </div>-->
+                            <img id="uploadimg" th:src="${session.user.userAvatarurl}">
                             <span class="loading"></span>
                         </div>
+                        <input type="file" name="FileUpload" id="FileUpload">
+                        <a style="width: 72px;height: 24px;" class="layui-btn layui-btn-mini"
+                           id="btn_uploadimg">上传头像</a>
                     </div>
                 </div>
+
+
+                <!-- <div class="layui-form layui-form-pane layui-tab-item">
+                     <ul class="layui-tab-title">
+                         <li class="layui-this"><input type="file" name="FileUpload" id="FileUpload">
+                             <a class="layui-btn layui-btn-mini" id="btn_uploadimg">上传</a>
+                         </li>
+                     </ul>
+                 </div>-->
 
                 <div class="layui-form layui-form-pane layui-tab-item">
                     <form action="/user/repass" method="post">

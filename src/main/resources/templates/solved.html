@@ -26,9 +26,9 @@
         <div class="content" style="margin-right:0">
             <div class="fly-tab">
                 <span>
-                  <a href="/" th:class="tab-this">全部</a>
+                  <a href="/">全部</a>
                   <a href="/unsolve">未结帖</a>
-                  <a href="/solved">已采纳</a>
+                  <a href="/solved" th:class="tab-this">已采纳</a>
                   <a href="/top">置顶帖</a>
                   <a href="/profile/questions"  th:if="${session.user != null}" >我的帖</a>
                 </span>

@@ -46,7 +46,7 @@ public class ProfileController {
             model.addAttribute("sectionName", "我的提问");
             model.addAttribute("sectionName", "最新回复");
             model.addAttribute("pagination", pageinfoDTO);
-            return "index";
+            return "mine";
         }
         if ("questions".equals(action)) {
             PageinfoDTO<QuestionDTO> pageinfoDTO = questionService.listMyQuestion(user.getUserId(), page, size);

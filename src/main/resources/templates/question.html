@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/css/global.css">
     <script src="/layui/layui.js"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <script src="/js/moment.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js"></script>
+
+    <script src="/js/lib/prettify.min.js"></script>
     <style type="text/css" rel="stylesheet">
         form {
             margin: 0;
@@ -33,74 +38,129 @@
             <div class="fly-panel detail-box">
                 <h1>帖子标题</h1>
                 <div class="fly-tip fly-detail-hint" data-id="">
-                    <span class="fly-tip-stick">置顶帖</span> <span>未结贴</span> <span
-                        class="fly-tip-jie">已采纳</span> <span class="jie-admin"> <a
-                        href="">点击置顶</a> </span> <span
-                        class="layui-btn layui-btn-mini jie-admin"> <a href="">取消置顶</a>
-						</span> <span class="jie-admin" type="del" style="margin-left: 20px;">
-							<a>删除该帖</a> </span> <span class="fly-tip-jie">已举报</span> <span
-                        class="fly-tip-jie"><a href="#">举报</a>
-						</span>
+                    <span class="fly-tip-stick" th:if="${question.getQuestionTop()      eq 1}">置顶帖</span>
+                    <span                       th:if="${question.getQuestionStatus()   eq 0}">未结贴</span>
+                    <span class="fly-tip-jie"   th:if="${question.getQuestionStatus()   eq 1}">已采纳</span>
+
+                    <span class="jie-admin" >
+                        <a href="">点击置顶</a>
+                    </span>
+
+                    <span class="layui-btn layui-btn-mini jie-admin">
+                        <a href="">取消置顶</a>
+					</span>
+
+                    <span class="jie-admin" type="del" style="margin-left: 20px;">
+							<a>删除该帖</a>
+                    </span>
+
+                    <span class="fly-tip-jie">已举报</span>
+
+                    <span  class="fly-tip-jie">
+                        <a href="#">举报</a>
+					</span>
 
 
                     <div class="fly-list-hint">
-                        <i class="iconfont" title="回答">&#xe60c;</i> 2 <i class="iconfont"
-                                                                         title="人气">&#xe60b;</i> 243
+                        <i class="iconfont" title="回答">&#xe60c;</i> 2
+                        <i class="iconfont" title="人气">&#xe60b;</i> 243
                     </div>
-                </div>
-                <div class="detail-about">
-                    <a class="jie-user" href="../user/home.html"> <img
-                            src="/images/avatar/0.jpg" alt="头像"> <cite> 压缩
-                        <em>2017-05-01发布</em> </cite> </a>
-                    <div class="detail-hits" data-id="{{rows.id}}">
-                        <span style="color:#FF7200">悬赏：20飞吻</span> <span
-                            class="layui-btn layui-btn-mini jie-admin"><a href="#">编辑此贴</a>
-							</span> <span class="layui-btn layui-btn-mini jie-admin"><a
-                            href="#">已完帖，无法编辑</a> </span> <span
-                            class="layui-btn layui-btn-mini jie-admin" type="collect"
-                            data-type="add"> <a id="collectPost">收藏</a> </span> <span
-                            class="layui-btn layui-btn-mini jie-admin  layui-btn-danger"
-                            type="collect" data-type="add"> <a>取消收藏</a> </span>
 
-                        <span
-                                class="layui-btn layui-btn-mini jie-admin  layui-btn-normal"
-                                data-type="add"> <a>回复楼主</a> </span>
+                </div>
+
+                <div class="detail-about">
+                    <a class="jie-user"th:href="@{'/user/'+${question.user.getUserId()}}" >
+                        <img th:src="${question.user.userAvatarurl}" alt="头像">
+                        <cite th:text="${question.user.getUserName()}+'   '+${#dates.format(question.questionGmtcreate,'yyyy-MM-dd HH:mm:ss')}+'发布'">
+
+                            <em><span  th:text=""></span> </em>
+                        </cite>
+                    </a>
+
+                    <div class="detail-hits">
+
+                        <span style="color:#FF7200" th:text="${'悬赏：'+question.getQuestionExpend()+'飞吻'}" ></span>
+
+                        <span class="layui-btn layui-btn-mini jie-admin"  th:if="${question.getQuestionCreator() eq user.getUserId()}">
+                            <a th:href="@{'/publish/'+${question.getQuestionId()}}" >编辑此贴</a>
+						</span>
+
+                        <span class="layui-btn layui-btn-mini jie-admin" th:if="${question.getQuestionStatus() eq 1 }" >
+                            <a href="#">已完帖，无法编辑</a>
+                        </span>
+
+                        <span class="layui-btn layui-btn-mini jie-admin" type="collect" data-type="add" th:if="${question.user.getUserId() ne user.getUserId()}">
+                            <a id="collectPost" >收藏</a>
+                        </span>
+
+                        <span  class="layui-btn layui-btn-mini jie-admin layui-btn-danger" type="collect" data-type="add" th:if="${question.user.getUserId() ne user.getUserId()}">
+                            <a>取消收藏</a>
+                        </span>
+
+                        <span class="layui-btn layui-btn-mini jie-admin  layui-btn-normal" data-type="add" th:if="${question.getQuestionCreator() != user.getUserId()}">
+                            <a>回复楼主</a>
+                        </span>
 
                     </div>
 
                 </div>
 
                 <div class="detail-body photos" style="margin-bottom: 20px;">
-                    <p>帖子内容</p>
+
+                    <!--内容-->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
+                        <textarea style="display:none;" th:text="${question.getQuestionDescription()}"></textarea>
+                    </div>
+
+                    <script type="text/javascript">
+                        $(function () {
+                            editormd.markdownToHTML("question-view", {});
+                        });
+                    </script>
+
                 </div>
             </div>
 
             <div class="fly-panel detail-box" style="padding-top: 0;">
                 <a name="comment"></a>
+
                 <ul class="jieda photos" id="jieda">
-                    <li data-id="12" class="jieda-daan"><a
-                            name="item-121212121212"></a>
+                    <li data-id="12" class="jieda-daan">
+                        <a name="item-121212121212"></a>
                         <div class="detail-about detail-about-reply">
-                            <a class="jie-user" href="../user/home.html"> <img
-                                    src="/images/avatar/0.jpg" alt=""> <cite> <i>纸飞机</i>
+                            <a class="jie-user" href="../user/home.html">
+                                <img src="/images/avatar/0.jpg" alt="">
+                                <cite> <i>纸飞机</i>
                                 <!-- <em>(楼主)</em>
-          <em style="color:#5FB878">(管理员)</em> --> </cite> </a>
+          <em style="color:#5FB878">(管理员)</em> -->
+                                </cite>
+                            </a>
+
                             <div class="detail-hits">
                                 <span>3分钟前</span>
                             </div>
+
                             <i class="iconfont icon-caina" title="最佳答案"></i>
+
                         </div>
+
                         <div class="detail-body jieda-body">
                             <p>么么哒</p>
                         </div>
+
                         <div class="jieda-reply">
-								<span class="jieda-zan zanok" type="zan"><i
-                                        class="iconfont icon-zan"></i><em>12</em>
-								</span> <span type="reply"><i class="iconfont icon-svgmoban53"></i>回复</span>
-                            <!-- <div class="jieda-admin">
-            <span type="del">删除</span>
-            <span class="jieda-accept" type="accept">采纳</span>
-          </div> -->
+								<span class="jieda-zan zanok" type="zan">
+                                    <i class="iconfont icon-zan"></i>
+                                    <em>12</em>
+								</span>
+                            <span type="reply">
+                                <i class="iconfont icon-svgmoban53"></i>回复
+                            </span>
+
+                             <div class="jieda-admin">
+                                <span type="del">删除</span>
+                                <span class="jieda-accept" type="accept">采纳</span>
+                             </div>
                         </div>
                     </li>
 
@@ -113,6 +173,7 @@
                                 <span>刚刚</span>
                             </div>
                         </div>
+
                         <div class="detail-body jieda-body">
                             <p>@纸飞机 :蓝瘦</p>
                         </div>
@@ -131,8 +192,10 @@
 
                     <!-- <li class="fly-none">没有任何回答</li> -->
                 </ul>
-                <span
-                        id="toName">@ 压缩(楼主)</span>
+
+
+                <span id="toName">@ 压缩(楼主)</span>
+
                 <div class="layui-form layui-form-pane">
                     <form action="">
                         <div class="layui-form-item layui-form-text">
@@ -149,9 +212,14 @@
                         </div>
                     </form>
                 </div>
+
+
+
             </div>
         </div>
     </div>
+
+
 
     <div class="edge">
         <dl class="fly-panel fly-list-one">
