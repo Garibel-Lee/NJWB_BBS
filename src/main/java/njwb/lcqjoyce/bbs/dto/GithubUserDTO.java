@@ -9,4 +9,5 @@ public class GithubUserDTO {
     private Long id;
     private String  bio;
     private String  avatarUrl;
+    private String email;
 }

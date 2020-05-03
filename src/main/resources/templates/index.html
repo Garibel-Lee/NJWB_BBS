@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>问答系统首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="fly,layui,前端社区">
+    <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="/layui/layui.js"></script>
+</head>
+<body>
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+<div th:insert="~{navigation :: nav}"></div>
+
+<div class="main layui-clear">
+    <div class="wrap">
+        <div class="content" style="margin-right:0">
+            <div class="fly-tab">
+                <span>
+                  <a href="" th:class="tab-this">全部</a>
+                  <a href="">未结帖</a>
+                  <a href="">已采纳</a>
+                  <a href="">置顶帖</a>
+                  <a href="/profile/questions" >我的帖</a>
+                </span>
+                <form action="/" class="fly-search">
+                    <i class="iconfont icon-sousuo"></i>
+                    <input class="layui-input" autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q">
+                </form>
+                <a href="/publish" class="layui-btn jie-add">发布问题</a>
+            </div>
+
+            <ul class="fly-list">
+
+                <li class="fly-list-li" th:each="question: ${pagination.getData()}">
+                    <a class="fly-list-avatar">
+                        <img style="width: 45px;height: 45px;" th:src="${question.user.userAvatarurl}" alt="">
+                    </a>
+                    <h2 class="fly-tip">
+                        <a th:href="@{'/question/'+${question.questionId}}" th:text="${question.questionTitle}"></a>
+                        <span class="fly-tip-stick" th:if="${question.questionTop} eq 1">置顶</span>
+                    </h2>
+                    <p>
+                        <span><a  th:href="@{'/user/'+${question.user.getUserId()}}"  th:text="${question.user.userName}"></a></span>
+                        <span th:text="${#dates.format(question.questionGmtcreate,'yyyy-MM-dd HH:mm:ss')}"></span>
+                        <span th:text="${question.questionTag}"></span>
+                        <span class="fly-list-hint">
+                          <i class="iconfont" title="回答">&#xe60c;</i><span
+                                th:text="${question.questionCommentcount}"></span>
+                          <i class="iconfont" title="人气">&#xe60b;</i> <span
+                                th:text="${question.questionViewcount}"></span>
+                        </span>
+                    </p>
+                </li>
+            </ul>
+
+            <!-- <div class="fly-none">并无相关数据</div> -->
+
+            <div style="text-align: center;">
+
+                <div class="layui-box layui-laypage layui-laypage-default">
+                    <div >
+                       <div> <a th:href="@{/(page=${pagination.page -1})}"  th:hidden="${pagination.showPrevious}"
+                           class="layui-laypage-prev">上一页</a>
+                       </div>
+                        <div>    <a href="/?page=1" th:hidden="${pagination.showFirstPage}" class="laypage_first" title="首页">首页</a></div>
+
+
+                        <div th:each="page :${pagination.pages}" style="float: left">
+
+                            <a th:href="@{/(page=${page})}" th:if="${pagination.page!=page}" th:text="${page}"></a>
+
+                            <span th:if="${pagination.page==page}" class="layui-laypage-curr">
+                            <em class="layui-laypage-em" th:href="@{/(page=${page})}" th:text="${page}"></em>
+                          </span>
+
+                        </div>
+
+
+                        <div> <a th:href="@{/(page=${pagination.totalPage})}" th:hidden="${pagination.showEndPage}"
+                           class="layui-laypage-last" title="尾页">末页</a></div>
+                    <div>        <a th:hidden="${pagination.showNext}" th:href="@{/(page=${pagination.page +1})}"
+                           class="layui-laypage-next">下一页</a></div>
+                </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div th:insert="~{footer :: nav}"></div>
+
+</body>
+</html>

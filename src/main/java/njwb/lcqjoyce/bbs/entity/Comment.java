@@ -1,7 +1,8 @@
 package njwb.lcqjoyce.bbs.entity;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class Comment implements Serializable {
@@ -52,7 +53,10 @@ public class Comment implements Serializable {
     private Integer commentCommentcount;
 
     /**
-    * 评论状态（1:普通回帖2:最佳答案）
+    * 评论状态（
+     *
+     * 1:普通回帖
+     * 2:最佳答案）
     */
     private Integer commentStatus;
 

@@ -6,7 +6,7 @@ import njwb.lcqjoyce.bbs.exception.CustomizeErrorCode;
 import njwb.lcqjoyce.bbs.exception.CustomizeException;
 
 /**
- * Created by LCQJOYCE on 2020.
+ * Created by LCQJOYCE on 2020.5.1.
  */
 @Data
 public class ResultDTO<T> {
@@ -15,6 +15,12 @@ public class ResultDTO<T> {
     private T data;
 
     public static ResultDTO errorOf(Integer code, String message) {
+        ResultDTO resultDTO = new ResultDTO();
+        resultDTO.setCode(code);
+        resultDTO.setMessage(message);
+        return resultDTO;
+    }
+    public static ResultDTO okOf(Integer code, String message) {
         ResultDTO resultDTO = new ResultDTO();
         resultDTO.setCode(code);
         resultDTO.setMessage(message);

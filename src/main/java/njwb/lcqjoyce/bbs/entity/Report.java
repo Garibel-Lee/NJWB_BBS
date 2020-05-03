@@ -1,7 +1,8 @@
 package njwb.lcqjoyce.bbs.entity;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class Report implements Serializable {
@@ -36,7 +37,9 @@ public class Report implements Serializable {
     private String reportAccount;
 
     /**
-    * 举报状态  0：未审核     1：已审核
+    * 举报状态
+     * 0：未审核
+     * 1：已审核
     */
     private Integer reportStatus;
 

@@ -1,7 +1,10 @@
 package njwb.lcqjoyce.bbs.service.impl;
 
 import njwb.lcqjoyce.bbs.entity.User;
-public interface UserService{
+
+import java.util.List;
+
+public interface UserService {
 
 
     int deleteByPrimaryKey(Long userId);
@@ -16,4 +19,11 @@ public interface UserService{
 
     int updateByPrimaryKey(User record);
 
+    boolean checkExistEmail(String email);
+
+    List<User> selectByToken(String token);
+
+    User findUserLogin(User user);
 }
+
+

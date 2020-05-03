@@ -31,7 +31,7 @@ public class GithubProvider {
         }
         return null;
     }
-
+    //获取email 邮箱设置  登录信息插入
     public GithubUserDTO gerUser(String accessToken) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -39,7 +39,9 @@ public class GithubProvider {
                 .build();
         try (Response response = client.newCall(request).execute()) {
             //得到的是json字符串，因此需要转为GithubUser对象
-            return JSON.parseObject(response.body().string(), GithubUserDTO.class);
+            String string = response.body().string();
+            System.out.println(string);
+            return JSON.parseObject(string, GithubUserDTO.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

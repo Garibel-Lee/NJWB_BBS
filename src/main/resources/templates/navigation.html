@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<title>顶部导航栏</title>
 <link rel="stylesheet" href="/layui/css/layui.css">
 <link rel="stylesheet" href="/css/global.css">
+<script src="/js/jquery-3.4.1.min.js"></script>
 <script src="/layui/layui.js"></script>
-<script src="../js/jquery.js"></script>
 <body>
 <div th:fragment="nav">
-    <nav >
+    <nav>
         <div class="header">
             <div class="main">
-                <a class="logo" href="/" title="网博">网博社区</a>
+                <a class="logo" href="/" title="网博">新奇论坛</a>
                 <div class="nav">
                     <a class="nav-this" href="/"> <i
                             class="iconfont icon-wenda"></i>问答 </a>
@@ -17,15 +18,32 @@
 
                 <div class="nav-user">
                     <!-- 登入后的状态 -->
-
-                    <a class="avatar" href="../user/home.html"> <img
-                            src="/images/avatar/11.jpg"> <cite>贤心</cite>
-                        <i>VIP</i> </a>
-                    <div class="nav">
-                        <a href="../user/set.html"><i class="iconfont icon-shezhi"></i>设置</a>
-                        <a href="../user/login.html"><i class="iconfont icon-tuichu"
-                                                        style="top: 0; font-size: 22px;"></i>退了</a>
+                    <div th:if="${session.user!=null}">
+                        <a class="avatar" href="/profile/myIndex">
+                            <img
+                                    th:src="${session.user.getUserAvatarurl()}"> <cite
+                                th:text="${session.user.getUserName()}"></cite>
+                            <i th:if="${session.user.getUserStatus()!='1'?'正常':'封禁'}"></i></a>
+                        <div class="nav">
+                            <a href="/profile/myCenter"><i class="iconfont icon-shezhi"></i>设置</a>
+                            <a href="/loginout"><i class="iconfont icon-tuichu"
+                                                   style="top: 0; font-size: 22px;"></i>退了</a>
+                        </div>
                     </div>
+
+                </div>
+
+                <div class="nav-user">
+                    <!-- 未登录后的状态 -->
+                    <div th:if="${session.user==null}">
+
+                        <div class="nav">
+                            <a href="/login"><i class="iconfont icon-shezhi"></i>登录</a>
+                            <a href="/register"><i class="iconfont icon-tuichu"
+                                                   style="top: 0; font-size: 22px;"></i>注册</a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

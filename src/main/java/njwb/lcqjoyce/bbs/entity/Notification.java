@@ -1,7 +1,8 @@
 package njwb.lcqjoyce.bbs.entity;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class Notification implements Serializable {
@@ -32,13 +33,13 @@ public class Notification implements Serializable {
 
     /**
     * 消息类型
-0被回复问题
-1被回复评论
-2被收藏
-3被删帖
-4举报审核惩罚结果接收 
-5被惩罚审核结果接收
-6被点赞
+        0被回复问题
+        1被回复评论
+        2被收藏
+        3被删帖
+        4举报审核惩罚结果接收
+        5被惩罚审核结果接收
+        6被点赞
     */
     private Integer notificationType;
 
@@ -48,7 +49,7 @@ public class Notification implements Serializable {
     private Long notificationGmtcreate;
 
     /**
-    * 消息状态0未读1已阅读
+    * 消息状态  0未读  1已阅读
     */
     private Integer notificationStatus;
 

@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
 
 public class FileUpload {
+
     public static String saveFile(MultipartFile file, String saveUrl){
         //获得文件保存目录
         String fileName =/* DateUtil.parseDateToStr(new Date(),"yyyyMMddHHmmss")+

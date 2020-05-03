@@ -1,7 +1,8 @@
 package njwb.lcqjoyce.bbs.entity;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class Like implements Serializable {
@@ -21,7 +22,9 @@ public class Like implements Serializable {
     private Long likeReplyid;
 
     /**
-    * 赞状态，0取消，1点赞
+    * 赞状态，
+     * 0取消，
+     * 1点赞
     */
     private Integer likeStatus;
 

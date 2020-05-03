@@ -1,7 +1,8 @@
 package njwb.lcqjoyce.bbs.entity;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class Question implements Serializable {
@@ -62,12 +63,18 @@ public class Question implements Serializable {
     private Integer questionExpend;
 
     /**
-    * 状态(0:未结贴1已结贴)
+    * 状态(
+     * 0:未结贴
+     * 1已结贴
+     * )
     */
     private Integer questionStatus;
 
     /**
-    * 置顶0:未置顶1:已置顶）
+    * 置顶
+     * 0:未置顶
+     * 1:已置顶
+     * ）
     */
     private Integer questionTop;
 

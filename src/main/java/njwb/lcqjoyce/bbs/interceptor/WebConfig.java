@@ -1,7 +1,6 @@
 
 package njwb.lcqjoyce.bbs.interceptor;
 
-import njwb.lcqjoyce.bbs.provider.PathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
+
+
     @Autowired
     private SessionInterceptor sessionInterceptor;
 
@@ -28,6 +29,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + PathUtil.getProjectPath() + uploadFolder);
+      //  registry.addResourceHandler("/upload/**").addResourceLocations("file:" + PathUtil.getProjectPath() + uploadFolder);
     }
 }

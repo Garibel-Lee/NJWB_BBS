@@ -6,9 +6,10 @@ import java.io.File;
 
 public class PathUtil {
 
-    public static String getProjectPath(){
+    public static String getProjectPath() {
         ApplicationHome home = new ApplicationHome(PathUtil.class);
         File jarFile = home.getSource();
         return jarFile.getParentFile().toString();
     }
+
 }
