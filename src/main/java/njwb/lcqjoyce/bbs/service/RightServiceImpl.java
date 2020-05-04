@@ -1,10 +1,11 @@
 package njwb.lcqjoyce.bbs.service;
 
-import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
-import njwb.lcqjoyce.bbs.mapper.RightMapper;
 import njwb.lcqjoyce.bbs.entity.Right;
+import njwb.lcqjoyce.bbs.mapper.RightMapper;
 import njwb.lcqjoyce.bbs.service.impl.RightService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 @Service
 public class RightServiceImpl implements RightService{
 
@@ -39,6 +40,12 @@ public class RightServiceImpl implements RightService{
     @Override
     public int updateByPrimaryKey(Right record) {
         return rightMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Right selectByUserId(Long userId) {
+
+        return rightMapper.selectByRightUserid(userId).get(0);
     }
 
 }

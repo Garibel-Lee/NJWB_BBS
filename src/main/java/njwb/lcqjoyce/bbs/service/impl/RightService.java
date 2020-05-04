@@ -16,4 +16,5 @@ public interface RightService{
 
     int updateByPrimaryKey(Right record);
 
+    Right selectByUserId(Long userId);
 }

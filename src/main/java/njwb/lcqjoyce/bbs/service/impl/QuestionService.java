@@ -4,6 +4,8 @@ import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
 import njwb.lcqjoyce.bbs.dto.QuestionDTO;
 import njwb.lcqjoyce.bbs.entity.Question;
 
+import java.util.List;
+
 public interface QuestionService{
 
 
@@ -19,9 +21,11 @@ public interface QuestionService{
 
     int updateByPrimaryKey(Question record);
 
-    PageinfoDTO<QuestionDTO> getAll(String section,int page, int size);
+    PageinfoDTO<QuestionDTO> getAll(String section, Integer page, Integer size);
 
     PageinfoDTO listMyQuestion(Long userId, Integer page, Integer size);
 
     void inView(Long questionId);
+
+    List<Question> findAll();
 }

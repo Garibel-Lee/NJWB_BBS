@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
 @Controller
 public class LoginController {
     @Autowired
@@ -39,13 +38,29 @@ public class LoginController {
 
     @GetMapping("/login")
     public String goReg(HttpServletRequest request) {
-         User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         if (ObjectUtils.isEmpty(user)) {
             return "login";
-        }else {
+        } else {
             return "redirect:/";
         }
 
+    }
+
+    //校验登录
+    @RequestMapping(value = "/checkExistPassword", method = RequestMethod.POST)
+    @ResponseBody
+    public Object checkExistPassword(HttpServletRequest request, String oldPassword) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (ObjectUtils.isEmpty(user)) {
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        } else {
+            if (user.getUserPassword().equals(oldPassword)) {
+                return ResultDTO.okOf(200, "原密码正确");
+            } else {
+                return ResultDTO.okOf(200, "原密码不正确");
+            }
+        }
     }
 
 
@@ -63,7 +78,9 @@ public class LoginController {
             user.setUserPassword(password);
             User userLogin = userService.findUserLogin(user);
             if (!ObjectUtils.isEmpty(userLogin)) {
-                response.addCookie(new Cookie("token",userLogin.getUserToken()));
+                Cookie cookie = new Cookie("token", userLogin.getUserToken());
+                cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+                response.addCookie(cookie);
                 return ResultDTO.okOf();
             } else {
                 return ResultDTO.errorOf(CustomizeErrorCode.ERROR_PWD);
@@ -73,8 +90,6 @@ public class LoginController {
             return ResultDTO.errorOf(CustomizeErrorCode.ERROR_CODE);
         }
     }
-
-
 
 
 }

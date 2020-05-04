@@ -17,12 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class QuestionServiceImpl implements QuestionService{
+public class QuestionServiceImpl implements QuestionService {
 
     @Resource
     private QuestionMapper questionMapper;
     @Resource
     private UserMapper userMapper;
+
     @Override
     public int deleteByPrimaryKey(Long questionId) {
         return questionMapper.deleteByPrimaryKey(questionId);
@@ -62,10 +63,22 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public PageinfoDTO<QuestionDTO>  getAll(String section,int page, int size) {
+    public PageinfoDTO<QuestionDTO> getAll(String section, Integer page, Integer size) {
         PageinfoDTO<QuestionDTO> pageinfoDTO = new PageinfoDTO<>();
-        Integer totalCount = questionMapper.count();
+        Integer totalCount = 0;
+        if (section.equals("index")) {
+            totalCount = questionMapper.count(null, null, null);
+        } else if (section.equals("top")) {
+            totalCount = questionMapper.count(null, null, 1);
+        } else if (section.equals("unsolve")) {
+            totalCount = questionMapper.count(null, 0, null);
+        } else if (section.equals("solved")) {
+            totalCount = questionMapper.count(null, 1, null);
+        }
         Integer totalPage;
+        if (totalCount.equals(0)) {
+            return pageinfoDTO;
+        }
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
@@ -83,13 +96,13 @@ public class QuestionServiceImpl implements QuestionService{
         Integer offset = size * (page - 1);
         //偏移量
         List<Question> questions = new ArrayList<>();
-        if(section.equals("index")){
-            questions= questionMapper.selectAllByQuestionCreator(null, null,null,offset, size);
-        }else if(section.equals("top")){
-            questions= questionMapper.selectAllByQuestionCreator(null, null,1,offset, size);
-        }else if(section.equals("unsolve")) {
+        if (section.equals("index")) {
+            questions = questionMapper.selectAllByQuestionCreator(null, null, null, offset, size);
+        } else if (section.equals("top")) {
+            questions = questionMapper.selectAllByQuestionCreator(null, null, 1, offset, size);
+        } else if (section.equals("unsolve")) {
             questions = questionMapper.selectAllByQuestionCreator(null, 0, null, offset, size);
-        }else if(section.equals("solved")) {
+        } else if (section.equals("solved")) {
             questions = questionMapper.selectAllByQuestionCreator(null, 1, null, offset, size);
         }
 
@@ -111,7 +124,10 @@ public class QuestionServiceImpl implements QuestionService{
     public PageinfoDTO listMyQuestion(Long userId, Integer page, Integer size) {
 
         PageinfoDTO<QuestionDTO> pageinfoDTO = new PageinfoDTO();
-        Integer totalCount = questionMapper.countByQuestionCreator(userId);
+        Integer totalCount = questionMapper.count(userId, null, null);
+        if (totalCount.equals(0)) {
+            return pageinfoDTO;
+        }
         Integer totalPage;
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -129,7 +145,7 @@ public class QuestionServiceImpl implements QuestionService{
 
         Integer offset = size * (page - 1);
         //偏移量
-        List<Question> questions = questionMapper.selectAllByQuestionCreator(userId,null,null, offset, size);
+        List<Question> questions = questionMapper.selectAllByQuestionCreator(userId, null, null, offset, size);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
 
         for (Question question : questions) {
@@ -147,6 +163,11 @@ public class QuestionServiceImpl implements QuestionService{
     public void inView(Long questionId) {
         Question question = questionMapper.selectByPrimaryKey(questionId);
         questionMapper.updateViewByPrimaryKey(question);
+    }
+
+    @Override
+    public List<Question> findAll() {
+        return questionMapper.selectAll();
     }
 
 

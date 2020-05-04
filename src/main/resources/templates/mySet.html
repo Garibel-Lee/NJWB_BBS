@@ -39,9 +39,34 @@
                     alert("上传完成!");
                     $("#uploadimg").attr("src", res.message); //jq方式*/
                     $("#nav_avator").attr("src", res.message); //jq方式*/
-                 }
+                }
             });
         });
+
+
+        $("#oldPassword").blur(function () {
+            console.log($('input[name="oldPassword"]').val());
+            $.ajax({
+                url: '/checkExistPassword',
+                data: {
+                    //监听的内容有哪些,你的登陆界面上用户输入的有哪些，就监听那些
+                    oldPassword: $('input[name="oldPassword"]').val()
+                },
+                type: 'post',//服务器返回的数据类型
+                dataType: 'json',//提交的类型
+                async: true,//是否异步提交
+                success: function (res) {
+                    //res 技术服务端返回的内容
+                    if (res.code == 200) {
+                        $("#spMessage").html(res.message);
+                    } else {
+                        $("#spMessage").html(res.message);
+                    }
+                }//返回成功后处理函数
+            });//调用ajax的方法
+        });//失去焦点事件
+
+
     });
 </script>
 
@@ -81,43 +106,71 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">邮箱</label>
                             <div class="layui-input-inline">
-                                <input type="text" required lay-verify="email" class="layui-input">
+                                <input type="text" readonly="readonly" th:value="${userDTO.getUserEmail()}"
+                                       class="layui-input">
                             </div>
                         </div>
+
                         <div class="layui-form-item">
                             <label class="layui-form-label">昵称</label>
                             <div class="layui-input-inline">
-                                <input type="text" required lay-verify="required" class="layui-input">
+                                <input type="text" id="nickname" name="nickname" required lay-verify="required"
+                                       th:value="${userDTO.getUserName()}"
+                                       class="layui-input">
                             </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
                             <div class="layui-inline">
                                 <div class="layui-input-inline">
-                                    <input type="radio" value="1" name="sex" checked title="男">
-                                    <input type="radio" value="2" name="sex" title="女">
+                                    <input type="text" class="layui-input" readonly="readonly"
+                                           th:value="${userDTO.getUserSex() eq 0 ? '男娃' :'女娃'} ">
+                                    <!--   <input type="radio" value="0" name="sex" th:checked="${userDTO.getUserSex() eq 0}"
+                                           title="男">
+                                    <input type="radio" value="1" name="sex" th:checked="${userDTO.getUserSex() ne 0}"
+                                           title="女">-->
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">银行卡</label>
+                            <label class="layui-form-label">银行卡号</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input">
+                                <input type="text" class="layui-input" readonly="readonly"
+                                       th:value="${userDTO.getCard().getCardNumber()}">
                             </div>
+
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">银行卡余额</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" readonly="readonly"
+                                       th:value="${userDTO.getCard().getCardBalance()}">
+                            </div>
+
                         </div>
 
                         <div class="layui-form-item">
                             <label class="layui-form-label">城市</label>
                             <div class="layui-input-inline">
-                                <input type="text" value="" class="layui-input">
+                                <input type="text" id="city" name="city" required lay-verify="required"
+                                       class="layui-input" th:value="${userDTO.getUserCity()}">
                             </div>
                         </div>
+
+
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">签名</label>
                             <div class="layui-input-block">
-                                <textarea placeholder="随便写些什么刷下存在感" autocomplete="off" class="layui-textarea"
-                                          style="height: 80px;"></textarea>
+                                <textarea id="bio" name="bio" placeholder="随便写些什么刷下存在感" autocomplete="off"
+                                          th:text="${userDTO.getUserBio()}"
+                                          class="layui-textarea"
+                                          style="height: 80px;">
+
+                                </textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <input class="layui-btn" value="确认修改"/>
+                            <input class="layui-btn" id="reSet" name="reSet" lay-submit lay-filter="reSet" value="确认修改"/>
                         </div>
                     </form>
                 </div>
@@ -148,18 +201,23 @@
                  </div>-->
 
                 <div class="layui-form layui-form-pane layui-tab-item">
-                    <form action="/user/repass" method="post">
+                    <form method="post">
                         <div class="layui-form-item">
                             <label class="layui-form-label">当前密码</label>
                             <div class="layui-input-inline">
-                                <input type="password" required lay-verify="required" autocomplete="off"
+                                <input type="password" id="oldPassword" name="oldPassword" required
+                                       lay-verify="required|password"
+                                       autocomplete="off"
                                        class="layui-input">
                             </div>
+                            <div class="layui-form-mid layui-word-aux"><span id="spMessage"></span></div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">新密码</label>
                             <div class="layui-input-inline">
-                                <input type="password" required lay-verify="required" autocomplete="off"
+                                <input type="password" name="password" id="password" required
+                                       lay-verify="required|password|newPassword"
+                                       autocomplete="off"
                                        class="layui-input">
                             </div>
                             <div class="layui-form-mid layui-word-aux">6到16个字符</div>
@@ -167,12 +225,14 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">确认密码</label>
                             <div class="layui-input-inline">
-                                <input type="password" required lay-verify="required" autocomplete="off"
+                                <input type="password" name="rePassword" id="rePassword" required
+                                       lay-verify="required|password|confirm"
+                                       autocomplete="off"
                                        class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <input class="layui-btn" value="确认修改">
+                            <input class="layui-btn" lay-submit lay-filter="resetPassword" value="确认修改">
                         </div>
                     </form>
                 </div>
@@ -184,6 +244,134 @@
 <script>
     layui.use('element', function () {
         var element = layui.element();
+    });
+</script>
+<script>
+    layui.use(['jquery', 'form', 'layer'], function () {
+        var $ = layui.jquery;
+        var form = layui.form();//表单验证
+        var layer = layui.layer;
+
+
+        //表单验证（页面自动关联,验证结果绑定在表单）
+        form.verify({
+            newPassword: function (value, item) {
+                if (!/^.{6,16}$/img.test(value)) {
+                    return "密码必须位6~16位"
+                }
+                if (value == $('input[name="oldPassword"]').val()) {
+                    return "新密码与原密码相同"
+                }
+            },
+            password: function (value, item) {
+                if (!/^.{6,16}$/img.test(value)) {
+                    return "密码必须位6~16位"
+                }
+            },
+            confirm: function (value, item) {
+                if (!/^.{6,16}$/img.test(value)) {
+                    return "密码必须位6~16位"
+                }
+                if (value != $('input[name="password"]').val()) {
+                    return "两次密码不一致"
+                }
+            }
+        });
+
+
+        form.on('submit(reSet)', function (data) {
+            //用ajax时需要注意你的url接口、采用哪一种方式type获取，它的使用的哪种数据类型datatype
+            $.ajax({
+                url: '/profile/reSet',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    //监听的内容有哪些,你的登陆界面上用户输入的有哪些，就监听那些
+                    nickname: $('input[name="nickname"]').val(),
+                    bio: $('textarea[name="bio"]').val(),
+                    city: $('input[name="city"]').val()
+                },
+
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("修改成功", {icon: 1, time: 800, shade: 0.4});
+                        location.reload();
+                    } else {
+                        //不等于200时填出的错误信息内容
+                        layer.msg(res.message, {icon: 2, time: 1000, shade: 0.4});
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                        }, 1000);
+                    }
+                },
+                error: function () {
+                    //用户输入与接口内容不对应，显示文字
+                    layer.msg("网络繁忙波动，访问失败", {icon: 7, time: 1000, shade: 0.4});
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1000);
+                }
+                /*         complete: function () {
+                             //关掉loading
+                             layer.closeAll();
+                         }*/
+            });
+            //不会跳转到网址栏，只会跳转到你要的界面 一定要写。
+            return false;
+        });
+
+
+        form.on('submit(resetPassword)', function (data) {
+            //用ajax时需要注意你的url接口、采用哪一种方式type获取，它的使用的哪种数据类型datatype
+            $.ajax({
+                url: '/profile/resetPassword',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    //监听的内容有哪些,你的登陆界面上用户输入的有哪些，就监听那些
+                    oldPassword: $('input[name="oldPassword"]').val(),
+                    password: $('input[name="password"]').val()
+                },
+                /*
+                beforeSend: function () {
+                    //弹出的lodinng层
+                    layer.load(2, {
+                        shade: [0.5, "#333"]
+                    });
+                },
+                */
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("修改成功，请重新登录", {icon: 1, time: 800, shade: 0.4});
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                            location.href = "/loginout";
+                        }, 1000);
+                    } else {
+                        //不等于200时填出的错误信息内容
+                        layer.msg(res.message, {icon: 2, time: 1000, shade: 0.4});
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                        }, 1000);
+                    }
+                },
+                error: function () {
+                    //用户输入与接口内容不对应，显示文字
+                    layer.msg("网络繁忙，访问失败", {icon: 7, time: 1000, shade: 0.4});
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1000);
+                },
+                /*         complete: function () {
+                             //关掉loading
+                             layer.closeAll();
+                         }*/
+            })
+            //不会跳转到网址栏，只会跳转到你要的界面 一定要写。
+            return false;
+        });
     });
 </script>
 

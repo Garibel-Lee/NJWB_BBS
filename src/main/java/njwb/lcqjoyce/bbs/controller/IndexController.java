@@ -1,6 +1,4 @@
 package njwb.lcqjoyce.bbs.controller;
-
-
 import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
 import njwb.lcqjoyce.bbs.dto.QuestionDTO;
 import njwb.lcqjoyce.bbs.dto.ResultDTO;
@@ -33,16 +31,52 @@ public class IndexController {
     private QuestionService questionService;
 
 
+
+    /*
+    PageInfo这个类里面的属性:
+            pageNum当前页
+            pageSize每页的数量
+            size当前页的数量
+            orderBy排序
+            startRow当前页面第一个元素在数据库中的行号
+            endRow当前页面最后一个元素在数据库中的行号
+            total总记录数(在这里也就是查询到的用户总数)
+            pages总页数 (这个页数也很好算，每页5条，总共有11条，需要3页才可以显示完)
+            list结果集
+            prePage前一页
+            nextPage下一页
+            isFirstPage是否为第一页
+            isLastPage是否为最后一页
+            hasPreviousPage是否有前一页
+            hasNextPage是否有下一页
+            navigatePages导航页码数
+            navigatepageNums所有导航页号
+            navigateFirstPage导航第一页
+            navigateLastPage导航最后一页
+            firstPage第一页
+            lastPage最后一页
+
+    * */
+
     //主页控制
     @GetMapping("/")
     public String index(@RequestParam(defaultValue = "1") int page,
                         @RequestParam(defaultValue = "10") int size,
                         Model model) {
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index",page, size);
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index",page, size);
+        if (pagination.getPages().size()==0){
+            pagination.setPageinfo(-1,-1);
+            pagination.setPage(0);
+            pagination.setShowPrevious(false);
+            pagination.setShowNext(false);
+            pagination.setShowFirstPage(false);
+            pagination.setShowEndPage(false);
+            pagination.setTotalPage(-1);
+        }
         model.addAttribute("pagination", pagination);
         return "index";
     }
@@ -51,28 +85,46 @@ public class IndexController {
     //主页控制
     @GetMapping("/top")
     public String top(@RequestParam(defaultValue = "1") int page,
-                        @RequestParam(defaultValue = "10") int size,
-                        Model model) {
+                      @RequestParam(defaultValue = "10") int size,
+                      Model model) {
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
         PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top",page, size);
-
+        if (pagination.getPages().size()==0){
+            pagination.setPageinfo(-1,-1);
+            pagination.setPage(0);
+            pagination.setShowPrevious(false);
+            pagination.setShowNext(false);
+            pagination.setShowFirstPage(false);
+            pagination.setShowEndPage(false);
+            pagination.setTotalPage(-1);
+        }
         model.addAttribute("pagination", pagination);
+
         return "top";
     }
 
     //主页控制
     @GetMapping("/solved")
     public String solved(@RequestParam(defaultValue = "1") int page,
-                        @RequestParam(defaultValue = "10") int size,
-                        Model model) {
+                         @RequestParam(defaultValue = "10") int size,
+                         Model model) {
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
         PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved",page, size);
+        if (pagination.getPages().size()==0){
+            pagination.setPageinfo(-1,-1);
+            pagination.setPage(0);
+            pagination.setShowPrevious(false);
+            pagination.setShowNext(false);
+            pagination.setShowFirstPage(false);
+            pagination.setShowEndPage(false);
+            pagination.setTotalPage(-1);
+       }
         model.addAttribute("pagination", pagination);
         return "solved";
     }
@@ -80,17 +132,17 @@ public class IndexController {
     //主页控制
     @GetMapping("/unsolve")
     public String unsolve(@RequestParam(defaultValue = "1") int page,
-                        @RequestParam(defaultValue = "10") int size,
-                        Model model) {
+                          @RequestParam(defaultValue = "10") int size,
+                          Model model) {
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
         PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve",page, size);
+       /* if(pagination.getData())*/
         model.addAttribute("pagination", pagination);
         return "unsolve";
     }
-
 
     //登录之后可以查看其他用户的主页
     @GetMapping("/user/{id}")
@@ -112,8 +164,6 @@ public class IndexController {
             model.addAttribute("user", anthor);
             return "userIndex";
         }
-
-
     }
 
     //保存文件

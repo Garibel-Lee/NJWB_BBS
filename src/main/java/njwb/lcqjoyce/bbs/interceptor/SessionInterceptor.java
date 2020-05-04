@@ -40,7 +40,6 @@ public class SessionInterceptor implements HandlerInterceptor {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
-
                     List<User> users =userService.selectByToken(token);;
                     if (users.size() != 0) {
                         //cookie放入session用于页面渲染

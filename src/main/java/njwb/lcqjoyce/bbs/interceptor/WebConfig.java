@@ -33,5 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
       registry.addResourceHandler("/**")
               .addResourceLocations("file:" + PathUtil.getProjectPath() + uploadFolder)
               .addResourceLocations("classpath:/static/");
+            //；ocalhots:8080/upload/img/...
+        //localhost:8080/img/....
     }
 }

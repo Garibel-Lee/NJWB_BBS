@@ -22,10 +22,14 @@ public interface QuestionMapper {
 
     int updateByPrimaryKey(Question record);
 
-    Integer count();
+    Integer count(@Param("questionCreator") Long questionCreator,@Param("questionStatus") Integer questionStatus, @Param("questionTop") Integer questionTop);
 
     Integer countByQuestionCreator(@Param("questionCreator")Long questionCreator);
 
 
     int updateViewByPrimaryKey(Question question);
+
+    List<Question> selectAll();
+
+
 }

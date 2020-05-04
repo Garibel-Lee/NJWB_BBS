@@ -12,10 +12,11 @@ public class BankNumberUtil{
 	 * 需要传入一个前缀：6、8、9中的一个。
 	 * 其中：6：类型1，8：类型2，9：类型3 【根据自己的业务定义】
 	 * 其他则会返回异常
-	 * @param prefix
+	 * @param
 	 * @return
 	 */
-	public synchronized static String getBrankNumber(String prefix){
+	public synchronized static String getBrankNumber(){
+		String prefix="8";
 		if(StringUtils.isNotBlank(prefix)){
 			if("689".indexOf(prefix)>=0&&prefix.length()==1){
 				String st = "666"+prefix+getUnixTime();
@@ -83,7 +84,7 @@ public class BankNumberUtil{
     //test
     public static void main(String[] args) {
     	try {
-			System.out.println(getBrankNumber("8"));
+			System.out.println(getBrankNumber());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,0 +1,91 @@
+alipay:
+  alipay-public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkJk05hZogOeOPOoAFMvXTimoTvCL98SIEk5Ao7Opi5JCThNJp0nVEEXpRrg2lSTKFFSB/Vhhr3U/8j/1I95ulpPXSXb4lgEf/x0iHVO/mPwcdlZI13CtocHnfkV4hU+EExuaN9sqHdhCO3lyQZBl14N1OM4+m5dlYZBf+f44QKDaur4/28zYy/B5j7PGnFJ/q5Uk0VI9BsnamOck8Lg4bYKoV/FCyu/i40owZhGXGC3L218DhE3Tq4IactJcgLaxCVzNYjMWXFgQaNKJzWKFL5kdMMkILsJfuaR7phTEcgvhGKkxlg2GmCY6Hsbnos0UhoWgY2DysW2Zt9oUFMJTuwIDAQAB
+  app-private-key: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCmGLFTWkdFRkL+EPBBj59xTaYOmHo6Wk1JiKgtcxmX9V8ZWh/YqN+XWZWY0YVTSHkkFbKqLsHHVrWG0AzshO9rpf03G+2kvvxc8WRICmydTzyVXd5SLyFSAC+jta/frm0vgKuvYu85naiJvjlGHOf7cKBinPB1ox04v6K2eZFLONpCUSfTLBqgw+4KpzOv6bFzQucrU4X4BOXNoSS7ej7xq9KSRzZhEPdk8N3wdzcEuXzUVx7Q3lnJnKiVIMqzkJoeZZPAvhfeUrlVBDp46hzGGSUNGJ74SoQGL5NL4NUa52kkW0vBndzqEVHZTt/RIHKLZ2uL4qghc5qcjMII/A5RAgMBAAECggEAZZ513yk8sYVrN0XluDbGtetrzUI8hbb50iNpwWTKI85bgIdDNKsdINwOSpDloS6V7x3XUYeJxwulw/VF8u7iDFphsXXEzyaJ/9MwJ2M5UIVJ65iijGWJXUH/44klMRTmeEmgwI0nD3kFxEA9ikflJlChz7N06oQBPNcCFeIKopoJM8N3JajPLEZLCULWdsve/0GCsjTTWaNzQIdmkZlMInVrjYfuqEJcxwV+k9lmadDf1z3ieyKhQZdqyWkQThU0dnu0BLEeIsMdJEBaXR5VCUwM90wfPyEP9hKhW6yMRrHfKARHNn260/8yEw6USpIGKrPZ0PrkSM9nfaWD8M6IAQKBgQDaUAWLa4ehNlUK46lzNkezulMLWkzuPiKZz8uNmquODqRDB+kkeWOUT/iGwduv5GIR2r6q+HO1bP92nEoZlMlJwF+0PY6YkHuRj4CAQDtjJxFpDvPU/h0oa+1wwa7UKs0ZfKXvdVNLsC0Szn/ON5yMhLvhLnV/TwFxhhR05Qxp+QKBgQDCxQ/iBCTaH7kbcUV3X3dbBVhz5ryY3A/62u54hsI+F4b14Xu4HBOCfFYVO4e/Fi5+iXGse9Tn9hjthePOzTlNbqxRg8QDKULTwNTY4k5hGz5Y4ZWg1tRjA6pjNvPXv7F2g1HDtkvjCoenvI3Y2Gb76HhvKTH6a41vFSk5LgidGQKBgCYVubHl02ZrXRCmQMRpnr6a7avYV/1j95NPrdoJNo50vXE4KxMC3j1caiXQIewgcn9c4tBewYjP+A0QHNkznJ3yIoAGER9KbVQqbadyDSoyAZaLVjw9DIcltOlr0H0Q7nDYzvXkSOC2Xlaekas/Bl95NHGHMlZASSct1dnCr5S5AoGAHBTfgl3Ilm5meO9u7ZQlGEmABE3rOTrZTvjL0zLSxLMNsVvOQ7BAm9qjarJHkyR2laXpbs33123jEDPysXljXqerTqFp3G7RhMhTp+WRGW0dIyF7OlJfEtuPcHiW1a98vbKXUllxPY3iGywTY4Vn68ALxTMyUoG5RZ/ObsEVWtkCgYAnuD9kqY97bOkvGBVEOpesxY/KIHjXnHc0dfNVXAcsCaNbtgL6FzdpoESPO46NYcvOMfCL0BvAcCXpud/PPYeo4MyEl0bBOi07o/2GcR/R5dbdEtldDw4cUsWDuxwjHrw2aLp1+bu4fzS1awNSKNI0q16cKZyC8LUHnkQJ9He9DQ==
+  appid: 2016102200738782
+  charset: utf-8
+  format: JSON
+  gatewayUrl: https://openapi.alipaydev.com/gateway.do
+  notifyUrl: http://127.0.0.1:8888/notify
+  returnUrl: http://127.0.0.1:8888/return
+  signType: RSA2
+file:
+  uploadFolder: /upload/
+github:
+  client:
+    id: 353705c353a909271afe
+    secret: 21de8259a71a4339dda48d680f4615f9fef4e755
+  redirect:
+    uri: http://127.0.0.1:8888/callback
+logging:
+  file:
+    name: D:/log.log
+  level:
+    com:
+      maven:
+        springboot: DEBUG
+    njwb:
+      lcqjoyce:
+        bbs:
+          mapper: debug
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: njwb.lcqjoyce.bbs.entity
+pagehelper:
+  helper-dialect: mysql
+  params: count=countSql
+  reasonable: true
+server:
+  port: 8888
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      connection-timeout: 60000
+      idle-timeout: 60000
+      login-timeout: 5
+      max-lifetime: 60000
+      maximum-pool-size: 60
+      minimum-idle: 10
+      read-only: false
+      validation-timeout: 3000
+    initial-size: 5
+    jdbc-interceptors: ConnectionState;SlowQueryReport(threshold=0)
+    max-idle: 10
+    max-wait: 10000
+    min-idle: 5
+    password: Lcq@1223
+    test-on-borrow: false
+    test-while-idle: true
+    time-between-eviction-runs-millis: 18800
+    url: jdbc:mysql://39.97.100.234:3306/bbs?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    validation-query: SELECT 1
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  redis:
+    host: 39.97.102.57
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 10
+        min-idle: 1
+    password: 123456
+    port: 6378
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 11MB
+  thymeleaf:
+    cache: false
+user:
+  boy:
+    avatar: /upload/img/0.jpg
+  girl:
+    avatar: /upload/img/1.jpg

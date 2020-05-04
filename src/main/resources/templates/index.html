@@ -12,13 +12,7 @@
     <script src="/layui/layui.js"></script>
 </head>
 <body>
-<script>
-    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-    layui.use('element', function(){
-        var element = layui.element;
 
-    });
-</script>
 <div th:insert="~{navigation :: nav}"></div>
 
 <div class="main layui-clear">
@@ -30,7 +24,7 @@
                   <a href="/unsolve">未结帖</a>
                   <a href="/solved">已采纳</a>
                   <a href="/top">置顶帖</a>
-                  <a href="/profile/questions"  th:if="${session.user != null}" >我的帖</a>
+                  <a href="/profile/questions" th:if="${session.user != null}">我的帖</a>
                 </span>
                 <form action="/" class="fly-search">
                     <i class="iconfont icon-sousuo"></i>
@@ -50,7 +44,8 @@
                         <span class="fly-tip-stick" th:if="${question.questionTop} eq 1">置顶</span>
                     </h2>
                     <p>
-                        <span><a  th:href="@{'/user/'+${question.user.getUserId()}}"  th:text="${question.user.userName}"></a></span>
+                        <span><a th:href="@{'/user/'+${question.user.getUserId()}}"
+                                 th:text="${question.user.userName}"></a></span>
                         <span th:text="${#dates.format(question.questionGmtcreate,'yyyy-MM-dd HH:mm:ss')}"></span>
                         <span th:text="${question.questionTag}"></span>
                         <span class="fly-list-hint">
@@ -63,16 +58,14 @@
                 </li>
             </ul>
 
-            <!-- <div class="fly-none">并无相关数据</div> -->
-
             <div style="text-align: center;">
 
-                <div class="layui-box layui-laypage layui-laypage-default">
+                <div class="layui-box layui-laypage layui-laypage-default"  th:if="${pagination.getData() ne null}">
                     <div >
-                       <div> <a th:href="@{/(page=${pagination.page -1})}"  th:hidden="${pagination.showPrevious}"
-                           class="layui-laypage-prev">上一页</a>
-                       </div>
-                        <div>    <a href="/?page=1" th:hidden="${pagination.showFirstPage}" class="laypage_first" title="首页">首页</a></div>
+                        <div style="float: left"> <a th:href="@{/(page=${pagination.page -1})}"  th:hidden="${pagination.showPrevious}"
+                                 class="layui-laypage-prev">上一页</a>
+                        </div>
+                        <div style="float: left">    <a href="/?page=1" th:hidden="${pagination.showFirstPage}" class="laypage_first" title="首页">首页</a></div>
 
 
                         <div th:each="page :${pagination.pages}" style="float: left">
@@ -86,11 +79,11 @@
                         </div>
 
 
-                        <div> <a th:href="@{/(page=${pagination.totalPage})}" th:hidden="${pagination.showEndPage}"
-                           class="layui-laypage-last" title="尾页">末页</a></div>
-                    <div>        <a th:hidden="${pagination.showNext}" th:href="@{/(page=${pagination.page +1})}"
-                           class="layui-laypage-next">下一页</a></div>
-                </div>
+                        <div style="float: left"> <a th:href="@{/(page=${pagination.totalPage})}" th:hidden="${pagination.showEndPage}"
+                                 class="layui-laypage-last" title="尾页">末页</a></div>
+                        <div style="float: left">        <a th:hidden="${pagination.showNext}" th:href="@{/(page=${pagination.page +1})}"
+                                        class="layui-laypage-next">下一页</a></div>
+                    </div>
                 </div>
 
             </div>

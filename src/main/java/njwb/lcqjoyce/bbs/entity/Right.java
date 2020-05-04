@@ -1,7 +1,8 @@
 package njwb.lcqjoyce.bbs.entity;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class Right implements Serializable {
@@ -11,12 +12,12 @@ public class Right implements Serializable {
     private Integer rightId;
 
     /**
-    * 角色id
+    * 角户id
     */
     private Long rightUserid;
 
     /**
-    * 用户id
+    * 用色id
     */
     private Long rightRoleid;
 

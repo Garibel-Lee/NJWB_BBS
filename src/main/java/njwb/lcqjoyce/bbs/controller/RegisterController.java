@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
@@ -44,17 +43,27 @@ public class RegisterController {
         if (old_yzm == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NULL_CODE);
         } else if (old_yzm.equals(code)) {
+            //查询email是否重复使用
+            if (userService.checkExistEmail(email)) {
+                return ResultDTO.errorOf(CustomizeErrorCode.HAS_EMAIL);
+            }
+            //性别字符转化
             Integer SEX = Integer.valueOf(sex);
+
             User user = new User();
             user.setUserPassword(password);
             user.setUserEmail(email);
             user.setUserName(username);
+            //token session cookies持久化登录的信息来源
             String token = UUID.randomUUID().toString();
             user.setUserToken(token);
             user.setUserGmtcreate(System.currentTimeMillis());
             user.setUserGmtmodified(System.currentTimeMillis());
             user.setUserBio("暂时无");
-
+            user.setUserSex(Integer.valueOf(sex));
+            user.setUserStatus(0);
+            user.setUserCity("暂时无");
+            user.setUserBalances(100);
             if (SEX == 1) {
                 user.setUserAvatarurl("/images/1.jpg");
             } else if (SEX == 0) {
@@ -62,22 +71,14 @@ public class RegisterController {
             } else {
                 user.setUserAvatarurl("/images/-1.jpg");
             }
-            user.setUserSex(Integer.valueOf(sex));
-            user.setUserStatus(0);
-            user.setUserCity("暂时无");
-            user.setUserBalances(100);
-            userService.insert(user);
-            response.addCookie(new Cookie("token", token));
-            System.out.println(user);
             if (userService.insert(user) != 0) {
-                return ResultDTO.okOf();
+               return ResultDTO.okOf();
             } else {
                 return ResultDTO.errorOf(CustomizeErrorCode.INVALID_OPERATION);
             }
         } else {
             return ResultDTO.errorOf(CustomizeErrorCode.ERROR_CODE);
         }
-
 
     }
 
