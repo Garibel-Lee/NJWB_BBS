@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="njwb.lcqjoyce.bbs.mapper.CardMapper">
+  <resultMap id="BaseResultMap" type="njwb.lcqjoyce.bbs.entity.Card">
+    <!--@mbg.generated-->
+    <!--@Table card-->
+    <id column="card_id" jdbcType="BIGINT" property="cardId" />
+    <result column="card_userId" jdbcType="BIGINT" property="cardUserid" />
+    <result column="card_number" jdbcType="BIGINT" property="cardNumber" />
+    <result column="card_pwd" jdbcType="VARCHAR" property="cardPwd" />
+    <result column="card_balance" jdbcType="DECIMAL" property="cardBalance" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    card_id, card_userId, card_number, card_pwd, card_balance
+  </sql>
+
+  <select id="selectByUseId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from card
+    where card_userId = #{userId,jdbcType=BIGINT}
+  </select>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from card
+    where card_id = #{cardId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from card
+    where card_id = #{cardId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="card_id" keyProperty="cardId" parameterType="njwb.lcqjoyce.bbs.entity.Card" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into card (card_userId, card_number, card_pwd, 
+      card_balance)
+    values (#{cardUserid,jdbcType=BIGINT}, #{cardNumber,jdbcType=BIGINT}, #{cardPwd,jdbcType=VARCHAR}, 
+      #{cardBalance,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="card_id" keyProperty="cardId" parameterType="njwb.lcqjoyce.bbs.entity.Card" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into card
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cardUserid != null">
+        card_userId,
+      </if>
+      <if test="cardNumber != null">
+        card_number,
+      </if>
+      <if test="cardPwd != null">
+        card_pwd,
+      </if>
+      <if test="cardBalance != null">
+        card_balance,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cardUserid != null">
+        #{cardUserid,jdbcType=BIGINT},
+      </if>
+      <if test="cardNumber != null">
+        #{cardNumber,jdbcType=BIGINT},
+      </if>
+      <if test="cardPwd != null">
+        #{cardPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="cardBalance != null">
+        #{cardBalance,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="njwb.lcqjoyce.bbs.entity.Card">
+    <!--@mbg.generated-->
+    update card
+    <set>
+      <if test="cardUserid != null">
+        card_userId = #{cardUserid,jdbcType=BIGINT},
+      </if>
+      <if test="cardNumber != null">
+        card_number = #{cardNumber,jdbcType=BIGINT},
+      </if>
+      <if test="cardPwd != null">
+        card_pwd = #{cardPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="cardBalance != null">
+        card_balance = #{cardBalance,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where card_id = #{cardId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="njwb.lcqjoyce.bbs.entity.Card">
+    <!--@mbg.generated-->
+    update card
+    set card_userId = #{cardUserid,jdbcType=BIGINT},
+      card_number = #{cardNumber,jdbcType=BIGINT},
+      card_pwd = #{cardPwd,jdbcType=VARCHAR},
+      card_balance = #{cardBalance,jdbcType=DECIMAL}
+    where card_id = #{cardId,jdbcType=BIGINT}
+  </update>
+</mapper>
