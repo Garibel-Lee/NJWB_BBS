@@ -1,7 +1,10 @@
 package njwb.lcqjoyce.bbs.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import njwb.lcqjoyce.bbs.entity.Comment;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface CommentMapper {
@@ -16,4 +19,9 @@ public interface CommentMapper {
     int updateByPrimaryKeySelective(Comment record);
 
     int updateByPrimaryKey(Comment record);
+
+    int addCommentCount(Comment parentComment);
+
+    List<Comment> findAllByCommentParentidAndCommentType(@Param("commentParentids") List<Long> commentParentids,@Param("commentType")Integer commentType);
+
 }

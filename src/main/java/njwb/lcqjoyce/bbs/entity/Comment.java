@@ -55,8 +55,9 @@ public class Comment implements Serializable {
     /**
     * 评论状态（
      *
-     * 1:普通回帖
-     * 2:最佳答案）
+     * 0:普通回帖
+     * 1:最佳答案
+     * ）
     */
     private Integer commentStatus;
 

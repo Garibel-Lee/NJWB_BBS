@@ -1,228 +1,243 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="njwb.lcqjoyce.bbs.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="njwb.lcqjoyce.bbs.entity.User">
-    <!--@mbg.generated-->
-    <!--@Table `user`-->
-    <id column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="user_accountId" jdbcType="VARCHAR" property="userAccountid" />
-    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
-    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="user_token" jdbcType="VARCHAR" property="userToken" />
-    <result column="user_gmtCreate" jdbcType="BIGINT" property="userGmtcreate" />
-    <result column="user_gmtModified" jdbcType="BIGINT" property="userGmtmodified" />
-    <result column="user_bio" jdbcType="VARCHAR" property="userBio" />
-    <result column="user_avatarUrl" jdbcType="VARCHAR" property="userAvatarurl" />
-    <result column="user_sex" jdbcType="INTEGER" property="userSex" />
-    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
-    <result column="user_city" jdbcType="VARCHAR" property="userCity" />
-    <result column="user_balances" jdbcType="INTEGER" property="userBalances" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    user_id, user_accountId, user_email, user_password, user_name, user_token, user_gmtCreate, 
-    user_gmtModified, user_bio, user_avatarUrl, user_sex, user_status, user_city, user_balances
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select 
-    <include refid="Base_Column_List" />
-    from `user`
-    where user_id = #{userId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    <!--@mbg.generated-->
-    delete from `user`
-    where user_id = #{userId,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" keyColumn="user_id" keyProperty="userId" parameterType="njwb.lcqjoyce.bbs.entity.User" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into `user` (user_accountId, user_email, user_password, 
-      user_name, user_token, user_gmtCreate, 
-      user_gmtModified, user_bio, user_avatarUrl, 
-      user_sex, user_status, user_city, 
-      user_balances)
-    values (#{userAccountid,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
-      #{userName,jdbcType=VARCHAR}, #{userToken,jdbcType=VARCHAR}, #{userGmtcreate,jdbcType=BIGINT}, 
-      #{userGmtmodified,jdbcType=BIGINT}, #{userBio,jdbcType=VARCHAR}, #{userAvatarurl,jdbcType=VARCHAR}, 
-      #{userSex,jdbcType=INTEGER}, #{userStatus,jdbcType=INTEGER}, #{userCity,jdbcType=VARCHAR}, 
-      #{userBalances,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" keyColumn="user_id" keyProperty="userId" parameterType="njwb.lcqjoyce.bbs.entity.User" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into `user`
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userAccountid != null">
-        user_accountId,
-      </if>
-      <if test="userEmail != null">
-        user_email,
-      </if>
-      <if test="userPassword != null">
-        user_password,
-      </if>
-      <if test="userName != null">
-        user_name,
-      </if>
-      <if test="userToken != null">
-        user_token,
-      </if>
-      <if test="userGmtcreate != null">
-        user_gmtCreate,
-      </if>
-      <if test="userGmtmodified != null">
-        user_gmtModified,
-      </if>
-      <if test="userBio != null">
-        user_bio,
-      </if>
-      <if test="userAvatarurl != null">
-        user_avatarUrl,
-      </if>
-      <if test="userSex != null">
-        user_sex,
-      </if>
-      <if test="userStatus != null">
-        user_status,
-      </if>
-      <if test="userCity != null">
-        user_city,
-      </if>
-      <if test="userBalances != null">
-        user_balances,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userAccountid != null">
-        #{userAccountid,jdbcType=VARCHAR},
-      </if>
-      <if test="userEmail != null">
-        #{userEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="userPassword != null">
-        #{userPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="userToken != null">
-        #{userToken,jdbcType=VARCHAR},
-      </if>
-      <if test="userGmtcreate != null">
-        #{userGmtcreate,jdbcType=BIGINT},
-      </if>
-      <if test="userGmtmodified != null">
-        #{userGmtmodified,jdbcType=BIGINT},
-      </if>
-      <if test="userBio != null">
-        #{userBio,jdbcType=VARCHAR},
-      </if>
-      <if test="userAvatarurl != null">
-        #{userAvatarurl,jdbcType=VARCHAR},
-      </if>
-      <if test="userSex != null">
-        #{userSex,jdbcType=INTEGER},
-      </if>
-      <if test="userStatus != null">
-        #{userStatus,jdbcType=INTEGER},
-      </if>
-      <if test="userCity != null">
-        #{userCity,jdbcType=VARCHAR},
-      </if>
-      <if test="userBalances != null">
-        #{userBalances,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="njwb.lcqjoyce.bbs.entity.User">
-    <!--@mbg.generated-->
-    update `user`
-    <set>
-      <if test="userAccountid != null">
-        user_accountId = #{userAccountid,jdbcType=VARCHAR},
-      </if>
-      <if test="userEmail != null">
+    <resultMap id="BaseResultMap" type="njwb.lcqjoyce.bbs.entity.User">
+        <!--@mbg.generated-->
+        <!--@Table `user`-->
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="user_accountId" jdbcType="VARCHAR" property="userAccountid"/>
+        <result column="user_email" jdbcType="VARCHAR" property="userEmail"/>
+        <result column="user_password" jdbcType="VARCHAR" property="userPassword"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_token" jdbcType="VARCHAR" property="userToken"/>
+        <result column="user_gmtCreate" jdbcType="BIGINT" property="userGmtcreate"/>
+        <result column="user_gmtModified" jdbcType="BIGINT" property="userGmtmodified"/>
+        <result column="user_bio" jdbcType="VARCHAR" property="userBio"/>
+        <result column="user_avatarUrl" jdbcType="VARCHAR" property="userAvatarurl"/>
+        <result column="user_sex" jdbcType="INTEGER" property="userSex"/>
+        <result column="user_status" jdbcType="INTEGER" property="userStatus"/>
+        <result column="user_city" jdbcType="VARCHAR" property="userCity"/>
+        <result column="user_balances" jdbcType="INTEGER" property="userBalances"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        user_id, user_accountId, user_email, user_password, user_name, user_token, user_gmtCreate,
+        user_gmtModified, user_bio, user_avatarUrl, user_sex, user_status, user_city, user_balances
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from `user`
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete from `user`
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" keyColumn="user_id" keyProperty="userId" parameterType="njwb.lcqjoyce.bbs.entity.User"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into `user` (user_accountId, user_email, user_password,
+        user_name, user_token, user_gmtCreate,
+        user_gmtModified, user_bio, user_avatarUrl,
+        user_sex, user_status, user_city,
+        user_balances)
+        values (#{userAccountid,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR},
+        #{userName,jdbcType=VARCHAR}, #{userToken,jdbcType=VARCHAR}, #{userGmtcreate,jdbcType=BIGINT},
+        #{userGmtmodified,jdbcType=BIGINT}, #{userBio,jdbcType=VARCHAR}, #{userAvatarurl,jdbcType=VARCHAR},
+        #{userSex,jdbcType=INTEGER}, #{userStatus,jdbcType=INTEGER}, #{userCity,jdbcType=VARCHAR},
+        #{userBalances,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" keyColumn="user_id" keyProperty="userId" parameterType="njwb.lcqjoyce.bbs.entity.User"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into `user`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userAccountid != null">
+                user_accountId,
+            </if>
+            <if test="userEmail != null">
+                user_email,
+            </if>
+            <if test="userPassword != null">
+                user_password,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userToken != null">
+                user_token,
+            </if>
+            <if test="userGmtcreate != null">
+                user_gmtCreate,
+            </if>
+            <if test="userGmtmodified != null">
+                user_gmtModified,
+            </if>
+            <if test="userBio != null">
+                user_bio,
+            </if>
+            <if test="userAvatarurl != null">
+                user_avatarUrl,
+            </if>
+            <if test="userSex != null">
+                user_sex,
+            </if>
+            <if test="userStatus != null">
+                user_status,
+            </if>
+            <if test="userCity != null">
+                user_city,
+            </if>
+            <if test="userBalances != null">
+                user_balances,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userAccountid != null">
+                #{userAccountid,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userToken != null">
+                #{userToken,jdbcType=VARCHAR},
+            </if>
+            <if test="userGmtcreate != null">
+                #{userGmtcreate,jdbcType=BIGINT},
+            </if>
+            <if test="userGmtmodified != null">
+                #{userGmtmodified,jdbcType=BIGINT},
+            </if>
+            <if test="userBio != null">
+                #{userBio,jdbcType=VARCHAR},
+            </if>
+            <if test="userAvatarurl != null">
+                #{userAvatarurl,jdbcType=VARCHAR},
+            </if>
+            <if test="userSex != null">
+                #{userSex,jdbcType=INTEGER},
+            </if>
+            <if test="userStatus != null">
+                #{userStatus,jdbcType=INTEGER},
+            </if>
+            <if test="userCity != null">
+                #{userCity,jdbcType=VARCHAR},
+            </if>
+            <if test="userBalances != null">
+                #{userBalances,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="njwb.lcqjoyce.bbs.entity.User">
+        <!--@mbg.generated-->
+        update `user`
+        <set>
+            <if test="userAccountid != null">
+                user_accountId = #{userAccountid,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                user_email = #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                user_password = #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userToken != null">
+                user_token = #{userToken,jdbcType=VARCHAR},
+            </if>
+            <if test="userGmtcreate != null">
+                user_gmtCreate = #{userGmtcreate,jdbcType=BIGINT},
+            </if>
+            <if test="userGmtmodified != null">
+                user_gmtModified = #{userGmtmodified,jdbcType=BIGINT},
+            </if>
+            <if test="userBio != null">
+                user_bio = #{userBio,jdbcType=VARCHAR},
+            </if>
+            <if test="userAvatarurl != null">
+                user_avatarUrl = #{userAvatarurl,jdbcType=VARCHAR},
+            </if>
+            <if test="userSex != null">
+                user_sex = #{userSex,jdbcType=INTEGER},
+            </if>
+            <if test="userStatus != null">
+                user_status = #{userStatus,jdbcType=INTEGER},
+            </if>
+            <if test="userCity != null">
+                user_city = #{userCity,jdbcType=VARCHAR},
+            </if>
+            <if test="userBalances != null">
+                user_balances = #{userBalances,jdbcType=INTEGER},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="njwb.lcqjoyce.bbs.entity.User">
+        <!--@mbg.generated-->
+        update `user`
+        set user_accountId = #{userAccountid,jdbcType=VARCHAR},
         user_email = #{userEmail,jdbcType=VARCHAR},
-      </if>
-      <if test="userPassword != null">
         user_password = #{userPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="userToken != null">
         user_token = #{userToken,jdbcType=VARCHAR},
-      </if>
-      <if test="userGmtcreate != null">
         user_gmtCreate = #{userGmtcreate,jdbcType=BIGINT},
-      </if>
-      <if test="userGmtmodified != null">
         user_gmtModified = #{userGmtmodified,jdbcType=BIGINT},
-      </if>
-      <if test="userBio != null">
         user_bio = #{userBio,jdbcType=VARCHAR},
-      </if>
-      <if test="userAvatarurl != null">
         user_avatarUrl = #{userAvatarurl,jdbcType=VARCHAR},
-      </if>
-      <if test="userSex != null">
         user_sex = #{userSex,jdbcType=INTEGER},
-      </if>
-      <if test="userStatus != null">
         user_status = #{userStatus,jdbcType=INTEGER},
-      </if>
-      <if test="userCity != null">
         user_city = #{userCity,jdbcType=VARCHAR},
-      </if>
-      <if test="userBalances != null">
-        user_balances = #{userBalances,jdbcType=INTEGER},
-      </if>
-    </set>
-    where user_id = #{userId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="njwb.lcqjoyce.bbs.entity.User">
-    <!--@mbg.generated-->
-    update `user`
-    set user_accountId = #{userAccountid,jdbcType=VARCHAR},
-      user_email = #{userEmail,jdbcType=VARCHAR},
-      user_password = #{userPassword,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      user_token = #{userToken,jdbcType=VARCHAR},
-      user_gmtCreate = #{userGmtcreate,jdbcType=BIGINT},
-      user_gmtModified = #{userGmtmodified,jdbcType=BIGINT},
-      user_bio = #{userBio,jdbcType=VARCHAR},
-      user_avatarUrl = #{userAvatarurl,jdbcType=VARCHAR},
-      user_sex = #{userSex,jdbcType=INTEGER},
-      user_status = #{userStatus,jdbcType=INTEGER},
-      user_city = #{userCity,jdbcType=VARCHAR},
-      user_balances = #{userBalances,jdbcType=INTEGER}
-    where user_id = #{userId,jdbcType=BIGINT}
-  </update>
+        user_balances = #{userBalances,jdbcType=INTEGER}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
 
 
-
-<!--auto generated by MybatisCodeHelper on 2020-05-01-->
-  <select id="selectAllByUserEmail" resultMap="BaseResultMap">
+    <!--auto generated by MybatisCodeHelper on 2020-05-01-->
+    <select id="selectAllByUserEmail" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from `user`
         where user_email=#{userEmail,jdbcType=VARCHAR}
     </select>
 
-<!--auto generated by MybatisCodeHelper on 2020-05-02-->
-  <select id="selectAllByUserToken" resultMap="BaseResultMap">
+    <!--auto generated by MybatisCodeHelper on 2020-05-02-->
+    <select id="selectAllByUserToken" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from `user`
         where user_token=#{userToken,jdbcType=VARCHAR}
     </select>
 
-<!--auto generated by MybatisCodeHelper on 2020-05-02-->
-  <select id="selectAllByUserEmailAndUserPassword" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from `user`
-    where user_email=#{userEmail,jdbcType=VARCHAR} and user_password=#{userPassword,jdbcType=VARCHAR}
-  </select>
+    <!--auto generated by MybatisCodeHelper on 2020-05-02-->
+    <select id="selectAllByUserEmailAndUserPassword" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `user`
+        where user_email=#{userEmail,jdbcType=VARCHAR} and user_password=#{userPassword,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findInId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `user` where 1=1
+        <if test="userIds != null">
+           and user_id in
+            <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+
+    </select>
 </mapper>

@@ -15,7 +15,7 @@
     <script src="/js/editormd.min.js" type="application/javascript"></script>
     <script src="/js/moment.js" type="application/javascript"></script>
     <script src="/js/lib/marked.min.js"></script>
-
+    <script src="/js/community.js" type="application/javascript"></script>
     <script src="/js/lib/prettify.min.js"></script>
     <style type="text/css" rel="stylesheet">
         form {
@@ -37,68 +37,112 @@
         <div class="content detail">
             <div class="fly-panel detail-box">
                 <h1>帖子标题</h1>
-                <div class="fly-tip fly-detail-hint" data-id="">
-                    <span class="fly-tip-stick" th:if="${question.getQuestionTop()      eq 1}">置顶帖</span>
-                    <span                       th:if="${question.getQuestionStatus()   eq 0}">未结贴</span>
-                    <span class="fly-tip-jie"   th:if="${question.getQuestionStatus()   eq 1}">已采纳</span>
+                <div class="fly-tip fly-detail-hint" data-id="" style="height: 24px;">
+                    <span class="fly-tip-stick" th:if="${statusList['topStatus'] eq 1}">置顶帖</span>
+                    <span th:if="${statusList['questionStaus']    eq 0}">未结贴</span>
+                    <span class="fly-tip-jie" th:if="${statusList['questionStaus']  eq 1}">已采纳</span>
 
-                    <span class="jie-admin" >
-                        <a href="">点击置顶</a>
-                    </span>
+                    <span class="jie-admin" th:if="${statusList['setTopStatus']   eq 0}">
+                            <a href="">点击置顶</a>
+                        </span>
 
-                    <span class="layui-btn layui-btn-mini jie-admin">
-                        <a href="">取消置顶</a>
-					</span>
+                    <span class="layui-btn layui-btn-mini jie-admin" th:if="${statusList['setTopStatus']   eq 1}">
+                            <a href="">取消置顶</a>
+                        </span>
 
-                    <span class="jie-admin" type="del" style="margin-left: 20px;">
+                    <span class="jie-admin" type="del" style="margin-left: 20px;"
+                          th:if="${statusList['deleteQuestionStatus']   eq 0}">
 							<a>删除该帖</a>
                     </span>
 
-                    <span class="fly-tip-jie">已举报</span>
+                    <span class="fly-tip-jie" th:if="${statusList['reportStatus']   eq 0}">已举报</span>
 
-                    <span  class="fly-tip-jie">
+                    <span class="fly-tip-jie" th:if="${statusList['reportStatus']   eq 1}">
                         <a href="#">举报</a>
 					</span>
 
 
                     <div class="fly-list-hint">
-                        <i class="iconfont" title="回答">&#xe60c;</i> 2
-                        <i class="iconfont" title="人气">&#xe60b;</i> 243
+                        <i class="iconfont" title="回答">&#xe60c;</i> <span
+                            th:text="${question.getQuestionCommentcount()}"></span>
+                        <i class="iconfont" title="人气">&#xe60b;</i> <span
+                            th:text="${question.getQuestionViewcount()}"></span>
                     </div>
 
                 </div>
 
                 <div class="detail-about">
-                    <a class="jie-user"th:href="@{'/user/'+${question.user.getUserId()}}" >
+                    <a class="jie-user" th:href="@{'/user/'+${question.user.getUserId()}}">
                         <img th:src="${question.user.userAvatarurl}" alt="头像">
-                        <cite th:text="${question.user.getUserName()}+'   '+${#dates.format(question.questionGmtcreate,'yyyy-MM-dd HH:mm:ss')}+'发布'">
-
-                            <em><span  th:text=""></span> </em>
+                        <cite th:text="${question.user.getUserName()+#dates.format(question.questionGmtcreate,'yyyy-MM-dd HH:mm:ss')+'发布'}">
+                            <em><span></span> </em>
                         </cite>
                     </a>
 
                     <div class="detail-hits">
 
-                        <span style="color:#FF7200" th:text="${'悬赏：'+question.getQuestionExpend()+'飞吻'}" ></span>
+                        <span style="color:#FF7200" th:text="${'悬赏：'+question.getQuestionExpend()+'飞吻'}"></span>
 
-                        <span class="layui-btn layui-btn-mini jie-admin"  th:if="${question.getQuestionCreator() eq user.getUserId()}">
-                            <a th:href="@{'/publish/'+${question.getQuestionId()}}" >编辑此贴</a>
+                        <span class="layui-btn layui-btn-mini jie-admin" th:if="${statusList['editStatus']   eq 0}">
+                            <a th:href="@{'/publish/'+${question.getQuestionId()}}">编辑此贴</a>
 						</span>
 
-                        <span class="layui-btn layui-btn-mini jie-admin" th:if="${question.getQuestionStatus() eq 1 }" >
+                        <span class="layui-btn layui-btn-mini jie-admin" th:if="${statusList['editStatus']   eq 1}">
                             <a href="#">已完帖，无法编辑</a>
                         </span>
 
-                        <span class="layui-btn layui-btn-mini jie-admin" type="collect" data-type="add" th:if="${question.user.getUserId() ne user.getUserId()}">
-                            <a id="collectPost" >收藏</a>
+                        <span class="layui-btn layui-btn-mini jie-admin" type="collect" data-type="add"
+                              th:if="${statusList['collectStatus']   eq 0}">
+                            <a id="collectPost">收藏</a>
                         </span>
 
-                        <span  class="layui-btn layui-btn-mini jie-admin layui-btn-danger" type="collect" data-type="add" th:if="${question.user.getUserId() ne user.getUserId()}">
+                        <span class="layui-btn layui-btn-mini jie-admin layui-btn-danger" type="collect" data-type="add"
+                              th:if="${statusList['collectStatus']   eq 1}">
                             <a>取消收藏</a>
                         </span>
 
-                        <span class="layui-btn layui-btn-mini jie-admin  layui-btn-normal" data-type="add" th:if="${question.getQuestionCreator() != user.getUserId()}">
-                            <a>回复楼主</a>
+                        <span class="layui-btn layui-btn-mini jie-admin  layui-btn-normal" data-type="add"
+                              th:if="${statusList['replyStatus'] eq 0}">
+                                 <a onclick="replylou(this)" th:data-creatorName="${question.user.getUserName()}"
+                                    th:data-creatorId="${question.user.getUserId()}">回复楼主</a>
+                            <script>
+                                function replylou(e) {
+                                    var creatorName = e.getAttribute("data-creatorName");
+                                    var creatorId = e.getAttribute("data-creatorId");
+                                    $("input[name='type_id']").val("1");
+                                    document.getElementById("replyFrom").scrollIntoView();
+                                    $("#toName").html("@ " + creatorName + "(楼主)");
+                                    return true;
+                                }
+                                function reply(e) {
+                                    var commentUserName = e.getAttribute("data-commentUserName");
+                                    var commentId = e.getAttribute("data-commentId");
+                                    $("input[name='comment_id']").val(commentId);
+                                    $("input[name='type_id']").val("2");
+                                    document.getElementById("replyFrom").scrollIntoView();
+                                    $("#toName").html("@ " + commentUserName );
+                                    return true;
+                                }
+                            </script>
+                            <script>
+                                function open() {
+                                    layui.use("layer", function () {
+                                        layer.open({
+                                            title: ''
+                                            , btn: ''
+                                            , content: '<form action="/" method="get">' +
+                                                'First name:<br>' +
+                                                '<input type="text" name="firstname" value="Mickey">' +
+                                                '<br>' +
+                                                'Last name:<br>' +
+                                                '<input type="text" name="lastname" value="Mouse">' +
+                                                '<br><br>' +
+                                                '<input type="submit" value="Submit">' +
+                                                '</form>'
+                                        });
+                                    });
+                                }
+                                </script>
                         </span>
 
                     </div>
@@ -125,94 +169,85 @@
                 <a name="comment"></a>
 
                 <ul class="jieda photos" id="jieda">
-                    <li data-id="12" class="jieda-daan">
+
+
+                    <li class="jieda-daan" th:each="comment:${comments} ">
                         <a name="item-121212121212"></a>
                         <div class="detail-about detail-about-reply">
-                            <a class="jie-user" href="../user/home.html">
-                                <img src="/images/avatar/0.jpg" alt="">
-                                <cite> <i>纸飞机</i>
-                                <!-- <em>(楼主)</em>
-          <em style="color:#5FB878">(管理员)</em> -->
+                            <a class="jie-user" th:href="@{'/user/'+${comment.user.getUserId()}}">
+                                <img th:src="${comment.user.userAvatarurl}" alt="">
+                                <cite> <i><span th:if="${question.questionCreator ne comment.getCommentCommentator()}"
+                                                th:text="${comment.getUser().getUserName()}">
+
+                                   </span></i>
+                                    <em><span th:if="${question.getUser().getUserId() eq comment.getCommentCommentator()}"
+                                              th:text="${comment.getUser().getUserName()+'（楼主）'}">
+                                   </span>
+                                    </em>
+
                                 </cite>
                             </a>
 
                             <div class="detail-hits">
-                                <span>3分钟前</span>
+                                <span th:text="${#dates.format(comment.getCommentGmtcreate(),'yyyy-MM-dd HH:mm:ss')}"></span>
                             </div>
 
-                            <i class="iconfont icon-caina" title="最佳答案"></i>
+                            <i class="iconfont icon-caina" th:if="${comment.getCommentStatus() eq 1}" title="最佳答案"></i>
 
                         </div>
 
                         <div class="detail-body jieda-body">
-                            <p>么么哒</p>
+                            <p th:text="${comment.getCommentContent()}"></p>
                         </div>
 
                         <div class="jieda-reply">
 								<span class="jieda-zan zanok" type="zan">
                                     <i class="iconfont icon-zan"></i>
-                                    <em>12</em>
+                                    <em>0</em>
 								</span>
-                            <span type="reply">
-                                <i class="iconfont icon-svgmoban53"></i>回复
+                            <span type="reply" th:data-commentId="${comment.getCommentId()}"   th:data-commentUserName="${comment.getUser().getUserName()}" onclick="reply(this)">
+                                <i class="iconfont icon-svgmoban53"></i>
+                                回复
                             </span>
 
-                             <div class="jieda-admin">
-                                <span type="del">删除</span>
-                                <span class="jieda-accept" type="accept">采纳</span>
-                             </div>
-                        </div>
-                    </li>
 
-                    <li data-id="13"><a name="item-121212121212"></a>
-                        <div class="detail-about detail-about-reply">
-                            <a class="jie-user" href="../user/home.html"> <img
-                                    src="/images/avatar/0.jpg" alt=""> <cite> <i>香菇</i>
-                                <em style="color:#FF9E3F">活雷锋</em> </cite> </a>
-                            <div class="detail-hits">
-                                <span>刚刚</span>
-                            </div>
-                        </div>
-
-                        <div class="detail-body jieda-body">
-                            <p>@纸飞机 :蓝瘦</p>
-                        </div>
-                        <div class="jieda-reply">
-								<span class="jieda-zan" type="zan"><i
-                                        class="iconfont icon-zan"></i><em>0</em>
-								</span> <span type="reply"><i class="iconfont icon-svgmoban53"></i>回复</span>
-                            <div class="jieda-admin">
-                                <span type="del"><a href="#"
-                                                    class="layui-btn layui-btn-danger layui-btn-small">删除</a></span>
+                            <div class="jieda-admin"  th:if="${statusList['editStatus']   eq 0}">
+                                <span type="del"><a href="#" class="layui-btn layui-btn-danger layui-btn-small">删除</a></span>
                                 <span class="jieda-accept" type="accept">
 									<a href="#" class="layui-btn  layui-btn-small">采纳</a></span>
                             </div>
+
                         </div>
                     </li>
+
 
                     <!-- <li class="fly-none">没有任何回答</li> -->
                 </ul>
 
 
-                <span id="toName">@ 压缩(楼主)</span>
+                <span id="toName"  name="toName"></span>
 
-                <div class="layui-form layui-form-pane">
+                <div class="layui-form layui-form-pane" id="replyFrom">
                     <form action="">
+
                         <div class="layui-form-item layui-form-text">
                             <div class="layui-input-block">
                                 <div id="editor">
-										<textarea id="L_content" name="content" required
+										<textarea id="comment_content" name="comment_content" required
                                                   lay-verify="required" placeholder="我要回答"
                                                   class="layui-textarea " style="height: 250px;"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <input class="layui-btn" value="提交回答"/>
+                            <input type="hidden" id="type_id" name="type_id">
+
+                            <input type="hidden" id="question_id" th:value="${question.getQuestionId()}">
+                            <input type="hidden" id="comment_id" name="comment_id" >
+                            <input class="layui-btn" onclick="post()" value="提交回答"/>
                         </div>
                     </form>
                 </div>
-
 
 
             </div>
@@ -220,77 +255,22 @@
     </div>
 
 
-
     <div class="edge">
         <dl class="fly-panel fly-list-one">
-            <dt class="fly-panel-title">最近热帖</dt>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局（基本结构）</a> <span><i
-                    class="iconfont">&#xe60b;</i> 6087</span>
-            </dd>
-            <dd>
-                <a href="">Java实现LayIM后端的核心代码</a> <span><i class="iconfont">&#xe60b;</i>
-						767</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局（基本结构）</a> <span><i
-                    class="iconfont">&#xe60b;</i> 6087</span>
-            </dd>
-            <dd>
-                <a href="">Java实现LayIM后端的核心代码</a> <span><i class="iconfont">&#xe60b;</i>
-						767</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局（基本结构）</a> <span><i
-                    class="iconfont">&#xe60b;</i> 6087</span>
-            </dd>
-            <dd>
-                <a href="">Java实现LayIM后端的核心代码</a> <span><i class="iconfont">&#xe60b;</i>
-						767</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局（基本结构）</a> <span><i
-                    class="iconfont">&#xe60b;</i> 6087</span>
-            </dd>
-            <dd>
-                <a href="">Java实现LayIM后端的核心代码</a> <span><i class="iconfont">&#xe60b;</i>
-						767</span>
+            <dt class="fly-panel-title" th:if="${hotQuestions} ne null">最近热帖</dt>
+
+            <dd th:each="hotQuestion: ${hotQuestions}">
+                <a th:href="@{'/question/'+${hotQuestion.questionId}}" th:text="${hotQuestion.questionTitle}"></a>
+                <i class="iconfont">&#xe60b;</i><span th:text="${hotQuestion.getQuestionViewcount()}"></span>
             </dd>
         </dl>
 
         <dl class="fly-panel fly-list-one">
-            <dt class="fly-panel-title">近期热议</dt>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局之基本结构</a> <span><i
-                    class="iconfont">&#xe60c;</i> 96</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局之基本结构</a> <span><i
-                    class="iconfont">&#xe60c;</i> 96</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局之基本结构</a> <span><i
-                    class="iconfont">&#xe60c;</i> 96</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局之基本结构</a> <span><i
-                    class="iconfont">&#xe60c;</i> 96</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局之基本结构</a> <span><i
-                    class="iconfont">&#xe60c;</i> 96</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局之基本结构</a> <span><i
-                    class="iconfont">&#xe60c;</i> 96</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局之基本结构</a> <span><i
-                    class="iconfont">&#xe60c;</i> 96</span>
-            </dd>
-            <dd>
-                <a href="">使用 layui 秒搭后台大布局之基本结构</a> <span><i
-                    class="iconfont">&#xe60c;</i> 96</span>
+            <dt class="fly-panel-title" th:if="${relatedQuestions} ne null">相关问题</dt>
+            <dd th:each="relatedQuestion: ${relatedQuestions}">
+                <a th:href="@{'/question/'+${relatedQuestion.questionId}}"
+                   th:text="${relatedQuestion.questionTitle}"></a>
+                <i class="iconfont">&#xe60b;</i><span th:text="${relatedQuestion.getQuestionViewcount()}"></span>
             </dd>
         </dl>
     </div>

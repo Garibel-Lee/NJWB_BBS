@@ -3,11 +3,12 @@ package njwb.lcqjoyce.bbs.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PageinfoDTO<T> {
+public class PageinfoDTO<T> implements Serializable {
     private List<T> data;
     private Integer page;
     private Boolean showPrevious;

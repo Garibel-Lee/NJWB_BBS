@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * Created by LCQJOYCE on 2020.5.1.
+ * Created by LCQJOYCE on 2020/5/1.
  */
 @Service
 public class SessionInterceptor implements HandlerInterceptor {

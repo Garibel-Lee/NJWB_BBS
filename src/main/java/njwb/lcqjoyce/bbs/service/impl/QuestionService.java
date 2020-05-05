@@ -28,4 +28,8 @@ public interface QuestionService{
     void inView(Long questionId);
 
     List<Question> findAll();
+
+    List<QuestionDTO> selectRelated(QuestionDTO questionDTO);
+
+    List<QuestionDTO> selectHot(QuestionDTO questionDTO);
 }

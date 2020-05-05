@@ -73,7 +73,7 @@ public class KaptchaController {
             }
             if ("publish".equals(action)) {
                 forValue.set(ip + "_publishCheck", result);
-                rt.expire(ip + "_publishCheck", 60 * 1000, TimeUnit.MILLISECONDS);
+                rt.expire(ip + "_publishCheck", 60 * 5000, TimeUnit.MILLISECONDS);
                 ImageIO.write(image, "jpg", out);
             }
         } catch (IOException e) {

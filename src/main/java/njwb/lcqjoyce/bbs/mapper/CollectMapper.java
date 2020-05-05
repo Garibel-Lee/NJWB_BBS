@@ -1,7 +1,9 @@
 package njwb.lcqjoyce.bbs.mapper;
-
 import njwb.lcqjoyce.bbs.entity.Collect;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface CollectMapper {
@@ -16,4 +18,8 @@ public interface CollectMapper {
     int updateByPrimaryKeySelective(Collect record);
 
     int updateByPrimaryKey(Collect record);
+
+    List<Collect> selectByCollectPostidAndCollectUserid(@Param("collectPostid")Long collectPostid,@Param("collectUserid")Long collectUserid);
+
+
 }

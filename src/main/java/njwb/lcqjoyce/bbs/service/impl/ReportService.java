@@ -16,4 +16,5 @@ public interface ReportService{
 
     int updateByPrimaryKey(Report record);
 
+    Report selectByQuestionId(Long reportId);
 }

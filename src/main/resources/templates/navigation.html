@@ -19,11 +19,12 @@
                 <div class="nav-user">
                     <!-- 登入后的状态 -->
                     <div th:if="${session.user!=null}">
-                        <a class="avatar" href="/profile/myIndex">
+
+                        <a class="avatar"  th:href="@{'/user/'+${session.user.getUserId()}}">
                             <img id="nav_avator"
                                     th:src="${session.user.getUserAvatarurl()}"> <cite
                                 th:text="${session.user.getUserName()}"></cite>
-                            <i th:if="${session.user.getUserStatus()!='1'?'正常':'封禁'}"></i></a>
+                            <i th:text="${session.user.getUserStatus() eq 0 ?'正常':'封禁'}"></i></a>
                         <div class="nav">
                             <a href="/profile/myCenter"><i class="iconfont icon-shezhi"></i>设置</a>
                             <a href="/loginout"><i class="iconfont icon-tuichu"

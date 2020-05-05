@@ -32,4 +32,9 @@ public interface QuestionMapper {
     List<Question> selectAll();
 
 
+    int addCommentCount(Question question);
+
+    List<Question> selectRelated(Question question);
+
+    List<Question> selectHot(Question question);
 }

@@ -1,10 +1,13 @@
 package njwb.lcqjoyce.bbs.service;
 
-import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
-import njwb.lcqjoyce.bbs.mapper.ReportMapper;
 import njwb.lcqjoyce.bbs.entity.Report;
+import njwb.lcqjoyce.bbs.mapper.ReportMapper;
 import njwb.lcqjoyce.bbs.service.impl.ReportService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
 @Service
 public class ReportServiceImpl implements ReportService{
 
@@ -29,6 +32,14 @@ public class ReportServiceImpl implements ReportService{
     @Override
     public Report selectByPrimaryKey(Long reportId) {
         return reportMapper.selectByPrimaryKey(reportId);
+    }
+    @Override
+    public Report selectByQuestionId(Long reportId) {
+        List<Report> reports = reportMapper.selectByReportPostid(reportId);
+        if(reports.size()>0){
+            return reports.get(0);
+        }
+        return null;
     }
 
     @Override

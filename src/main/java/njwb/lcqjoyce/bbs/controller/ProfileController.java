@@ -5,10 +5,7 @@ import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
 import njwb.lcqjoyce.bbs.dto.QuestionDTO;
 import njwb.lcqjoyce.bbs.dto.ResultDTO;
 import njwb.lcqjoyce.bbs.dto.UserDTO;
-import njwb.lcqjoyce.bbs.entity.Card;
-import njwb.lcqjoyce.bbs.entity.Right;
-import njwb.lcqjoyce.bbs.entity.Role;
-import njwb.lcqjoyce.bbs.entity.User;
+import njwb.lcqjoyce.bbs.entity.*;
 import njwb.lcqjoyce.bbs.exception.CustomizeErrorCode;
 import njwb.lcqjoyce.bbs.service.impl.*;
 import org.springframework.beans.BeanUtils;
@@ -35,7 +32,8 @@ public class ProfileController {
     private RoleService roleService;
     @Autowired
     private CardService cardService;
-
+    @Autowired
+    private VipService vipService;
     @PostMapping("/profile/{action}")
     @ResponseBody
     public Object profile(HttpServletRequest request, @PathVariable(name = "action")
@@ -133,6 +131,11 @@ public class ProfileController {
             // model.addAttribute("unreadCount", unreadCount);
             //model.addAttribute("sectionName", "我的回复");
         } else if ("myIndex".equals(action)) {
+            User loginUser = (User) request.getSession().getAttribute("user");
+            if (ObjectUtils.isEmpty(loginUser)) {
+                return "redirect:/";
+            }
+            model.addAttribute("user", loginUser);
             return "myIndex";
         } else if ("myCenter".equals(action)) {
             return "myCenter";
@@ -142,11 +145,19 @@ public class ProfileController {
             Right rightUser = rightService.selectByUserId(user.getUserId());
             Role roleUser = roleService.selectByPrimaryKey(rightUser.getRightRoleid());
             Card cardUser = cardService.selectByUseId(user.getUserId());
-
-            userDTO.setRight(rightUser);
-            userDTO.setRole(roleUser);
-            userDTO.setCard(cardUser);
-
+            Vip vipUser=vipService.selectByUserId(user.getUserId());
+            if(!ObjectUtils.isEmpty(rightUser)){
+                userDTO.setRight(rightUser);
+            }
+            if(!ObjectUtils.isEmpty(roleUser)){
+                userDTO.setRole(roleUser);
+            }
+            if(!ObjectUtils.isEmpty(cardUser)){
+                userDTO.setCard(cardUser);
+            }
+            if(!ObjectUtils.isEmpty(vipUser)){
+                userDTO.setVip(vipUser);
+            }
             model.addAttribute("userDTO", userDTO);
             return "mySet";
         } else if ("myCenter".equals(action)) {

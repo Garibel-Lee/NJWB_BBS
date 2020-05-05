@@ -25,7 +25,7 @@ public interface UserMapper {
 
     List<User> selectAllByUserEmailAndUserPassword(@Param("userEmail")String userEmail,@Param("userPassword")String userPassword);
 
-
+    List<User> findInId(@Param("userIds") List<Long> userIds);
 
 
 }

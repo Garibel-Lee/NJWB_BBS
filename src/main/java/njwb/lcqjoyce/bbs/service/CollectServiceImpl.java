@@ -1,10 +1,11 @@
 package njwb.lcqjoyce.bbs.service;
 
-import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
 import njwb.lcqjoyce.bbs.entity.Collect;
 import njwb.lcqjoyce.bbs.mapper.CollectMapper;
 import njwb.lcqjoyce.bbs.service.impl.CollectService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 @Service
 public class CollectServiceImpl implements CollectService{
 
@@ -39,6 +40,11 @@ public class CollectServiceImpl implements CollectService{
     @Override
     public int updateByPrimaryKey(Collect record) {
         return collectMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public Integer selectByUserIdandQuestionId(Long userId, Long questionId) {
+        return collectMapper.selectByCollectPostidAndCollectUserid(userId,questionId).size();
     }
 
 }

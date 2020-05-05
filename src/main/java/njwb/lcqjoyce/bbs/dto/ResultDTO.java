@@ -6,7 +6,7 @@ import njwb.lcqjoyce.bbs.exception.CustomizeErrorCode;
 import njwb.lcqjoyce.bbs.exception.CustomizeException;
 
 /**
- * Created by LCQJOYCE on 2020.5.1.
+ * Created by LCQJOYCE on 2020/5/1.
  */
 @Data
 public class ResultDTO<T> {

@@ -7,6 +7,7 @@ import njwb.lcqjoyce.bbs.entity.Question;
 import njwb.lcqjoyce.bbs.entity.User;
 import njwb.lcqjoyce.bbs.exception.CustomizeErrorCode;
 import njwb.lcqjoyce.bbs.service.impl.QuestionService;
+import njwb.lcqjoyce.bbs.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class PublishController {
 
+    @Autowired
+    private UserService userService;
     @Autowired
     private QuestionService questionService;
     @Autowired
@@ -75,25 +78,34 @@ public class PublishController {
             if (old_yzm == null) {
                 return ResultDTO.errorOf(CustomizeErrorCode.NULL_CODE);
             } else if (old_yzm.equals(code)) {
-                Question question = new Question();
-                question.setQuestionTitle(title);
-                question.setQuestionDescription(content);
-                question.setQuestionGmtcreate(System.currentTimeMillis());
-                question.setQuestionGmtmodified(System.currentTimeMillis());
-                question.setQuestionCreator(user.getUserId());
-                question.setQuestionCommentcount(0);
-                question.setQuestionViewcount(0);
-                question.setQuestionLikecount(0);
-                question.setQuestionTag(tag);
-                question.setQuestionExpend(experience);
-                question.setQuestionStatus(0);
-                question.setQuestionTop(0);
-                questionService.insert(question);
-                return ResultDTO.okOf();
+                if (user.getUserBalances() - experience >= 0) {
+                    Question question = new Question();
+                    question.setQuestionTitle(title);
+                    question.setQuestionDescription(content);
+                    question.setQuestionGmtcreate(System.currentTimeMillis());
+                    question.setQuestionGmtmodified(System.currentTimeMillis());
+                    question.setQuestionCreator(user.getUserId());
+                    question.setQuestionCommentcount(0);
+                    question.setQuestionViewcount(0);
+                    question.setQuestionLikecount(0);
+                    question.setQuestionTag(tag);
+                    question.setQuestionExpend(experience);
+                    question.setQuestionStatus(0);
+                    question.setQuestionTop(0);
+                    questionService.insert(question);
+                    User updateuser=new User();
+                    updateuser.setUserId(user.getUserId());
+                    updateuser.setUserBalances(user.getUserBalances() - experience);
+                    userService.updateByPrimaryKeySelective(updateuser);
+                    return ResultDTO.okOf();
+                } else {
+                    return ResultDTO.errorOf(500, "飞吻余额不足，还剩" + user.getUserBalances());
+                }
             } else {
                 return ResultDTO.errorOf(CustomizeErrorCode.ERROR_CODE);
             }
         }
+
     }
 
 }

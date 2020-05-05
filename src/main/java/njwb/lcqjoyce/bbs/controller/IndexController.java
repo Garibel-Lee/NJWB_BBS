@@ -1,11 +1,11 @@
 package njwb.lcqjoyce.bbs.controller;
+
 import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
 import njwb.lcqjoyce.bbs.dto.QuestionDTO;
 import njwb.lcqjoyce.bbs.dto.ResultDTO;
 import njwb.lcqjoyce.bbs.entity.User;
 import njwb.lcqjoyce.bbs.provider.FileUpload;
-import njwb.lcqjoyce.bbs.service.impl.QuestionService;
-import njwb.lcqjoyce.bbs.service.impl.UserService;
+import njwb.lcqjoyce.bbs.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
- * Created by LCQJOYCE on 2020.5.1.
+ * Created by LCQJOYCE on 2020/5/1.
  */
 @Controller
 public class IndexController {
@@ -29,7 +28,18 @@ public class IndexController {
 
     @Resource
     private QuestionService questionService;
-
+    @Autowired
+    private RightService rightService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private VipService vipService;
+    @Autowired
+    private ReportService reportService;
+    @Autowired
+    private CollectService collectService;
 
 
     /*
@@ -63,13 +73,13 @@ public class IndexController {
     public String index(@RequestParam(defaultValue = "1") int page,
                         @RequestParam(defaultValue = "10") int size,
                         Model model) {
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index",page, size);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index", page, size);
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        if (pagination.getPages().size()==0){
-            pagination.setPageinfo(-1,-1);
+        if (pagination.getPages().size() == 0) {
+            pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
             pagination.setShowPrevious(false);
             pagination.setShowNext(false);
@@ -91,9 +101,9 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top",page, size);
-        if (pagination.getPages().size()==0){
-            pagination.setPageinfo(-1,-1);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top", page, size);
+        if (pagination.getPages().size() == 0) {
+            pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
             pagination.setShowPrevious(false);
             pagination.setShowNext(false);
@@ -115,16 +125,16 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved",page, size);
-        if (pagination.getPages().size()==0){
-            pagination.setPageinfo(-1,-1);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved", page, size);
+        if (pagination.getPages().size() == 0) {
+            pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
             pagination.setShowPrevious(false);
             pagination.setShowNext(false);
             pagination.setShowFirstPage(false);
             pagination.setShowEndPage(false);
             pagination.setTotalPage(-1);
-       }
+        }
         model.addAttribute("pagination", pagination);
         return "solved";
     }
@@ -134,12 +144,12 @@ public class IndexController {
     public String unsolve(@RequestParam(defaultValue = "1") int page,
                           @RequestParam(defaultValue = "10") int size,
                           Model model) {
-/*        PaginationDTO pagination = questionService.list(search, page, size);
+/*       PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve",page, size);
-       /* if(pagination.getData())*/
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve", page, size);
+        /* if(pagination.getData())*/
         model.addAttribute("pagination", pagination);
         return "unsolve";
     }
@@ -157,13 +167,22 @@ public class IndexController {
             return "redirect:/";
         }
 
-        //查看自己去myIndex渲染
-        if (loginUser.getUserId().equals(anthor.getUserId())) {
-            return "myIndex";
-        } else {
-            model.addAttribute("user", anthor);
-            return "userIndex";
+        PageinfoDTO<QuestionDTO> questionDTOS = questionService.listMyQuestion(id, 1, 10);
+        if (questionDTOS.getPages().size() == 0) {
+            questionDTOS.setPageinfo(-1, -1);
+            questionDTOS.setPage(0);
+            questionDTOS.setShowPrevious(false);
+            questionDTOS.setShowNext(false);
+            questionDTOS.setShowFirstPage(false);
+            questionDTOS.setShowEndPage(false);
+            questionDTOS.setTotalPage(-1);
         }
+
+
+        model.addAttribute("pagination", questionDTOS);
+        model.addAttribute("user", anthor);
+        return "myIndex";
+        // }
     }
 
     //保存文件

@@ -126,7 +126,7 @@
                             //如果输入成功，可以跳到另一个你需要的界面
                             location.href = "/";
                         }, 1200);
-                    } else {
+                    } else if(res.code == 500) {
                         layer.msg(res.message, {icon: 2, time: 800, shade: 0.4});
                     }
                 }

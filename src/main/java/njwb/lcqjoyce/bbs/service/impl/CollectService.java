@@ -16,4 +16,5 @@ public interface CollectService{
 
     int updateByPrimaryKey(Collect record);
 
+    Integer selectByUserIdandQuestionId(Long userId, Long questionId);
 }

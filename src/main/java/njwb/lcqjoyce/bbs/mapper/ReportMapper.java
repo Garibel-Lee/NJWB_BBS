@@ -1,7 +1,9 @@
 package njwb.lcqjoyce.bbs.mapper;
-
 import njwb.lcqjoyce.bbs.entity.Report;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface ReportMapper {
@@ -16,4 +18,8 @@ public interface ReportMapper {
     int updateByPrimaryKeySelective(Report record);
 
     int updateByPrimaryKey(Report record);
+
+    List<Report> selectByReportPostid(@Param("reportPostid")Long reportPostid);
+
+
 }

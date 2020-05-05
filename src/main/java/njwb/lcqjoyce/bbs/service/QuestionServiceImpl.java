@@ -9,12 +9,14 @@ import njwb.lcqjoyce.bbs.exception.CustomizeException;
 import njwb.lcqjoyce.bbs.mapper.QuestionMapper;
 import njwb.lcqjoyce.bbs.mapper.UserMapper;
 import njwb.lcqjoyce.bbs.service.impl.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -171,4 +173,41 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
 
+    @Override
+    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
+        if (StringUtils.isBlank(queryDTO.getQuestionTag())) {
+            return new ArrayList<>();
+        }
+
+        Question question = new Question();
+        question.setQuestionId(queryDTO.getQuestionId());
+        question.setQuestionTag(queryDTO.getQuestionTag());
+
+        List<Question> questions = questionMapper.selectRelated(question);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOS;
+    }
+
+    @Override
+    public List<QuestionDTO> selectHot(QuestionDTO queryDTO) {
+        if (StringUtils.isBlank(queryDTO.getQuestionTag())) {
+            return new ArrayList<>();
+        }
+
+        Question question = new Question();
+        question.setQuestionId(queryDTO.getQuestionId());
+
+
+        List<Question> questions = questionMapper.selectHot(question);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOS;
+    }
 }
