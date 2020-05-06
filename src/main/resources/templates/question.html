@@ -31,6 +31,167 @@
 </head>
 <body>
 <div th:insert="~{navigation :: nav}"></div>
+<script>
+    function topQuestion(e) {
+        var questionId = e.getAttribute("data-questionId");
+        $.ajax({
+            type: "POST",
+            url: "/topQuestion",
+            dataType: "json",
+            data: {
+                "questionId": questionId
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    alert(response.message);
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+            }
+
+        });
+
+    }
+
+
+    function collectQuestion(e) {
+        var questionId = e.getAttribute("data-questionId");
+        $.ajax({
+            type: "POST",
+            url: "/collectQuestion",
+            dataType: "json",
+            data: {
+                "questionId": questionId
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    alert(response.message);
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+            }
+
+        });
+
+    }
+
+    function unCollectQuestion(e) {
+        var questionId = e.getAttribute("data-questionId");
+        $.ajax({
+            type: "POST",
+            url: "/unCollectQuestion",
+            dataType: "json",
+            data: {
+                "questionId": questionId
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    alert(response.message);
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+            }
+
+        });
+
+    }
+
+    function userThisComment(e) {
+        var questionId = e.getAttribute("data-questionId");
+        var commentId = e.getAttribute("data-commentId");
+        $.ajax({
+            type: "POST",
+            url: "/userThisComment",
+            dataType: "json",
+            data: {
+                "questionId": questionId,
+                "commentId": commentId
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    alert(response.message);
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+            }
+
+        });
+
+    }
+
+    function lovethisComment(e) {
+        var commentId = e.getAttribute("data_commentId");
+        var replyId = e.getAttribute("data_replyId");
+        $.ajax({
+            type: "POST",
+            url: "/lovethisComment",
+            dataType: "json",
+            data: {
+                commentId: commentId,
+                replyId: replyId
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    alert(response.message);
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+            }
+
+        });
+
+    }
+
+
+    function untopQuestion(e) {
+        var questionId = e.getAttribute("data-questionId");
+        $.ajax({
+            type: "POST",
+            url: "/untopQuestion",
+            dataType: "json",
+            data: {
+                "questionId": questionId
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    alert(response.message);
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+            }
+
+        });
+    }
+
+    function deleteQustion(e) {
+        var questionId = e.getAttribute("data-questionId");
+        $.ajax({
+            type: "POST",
+            url: "/deleteQustion",
+            dataType: "json",
+            data: {
+                "questionId": questionId
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    alert(response.message);
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+            }
+
+        });
+    }
+
+
+</script>
 
 <div class="main layui-clear">
     <div class="wrap">
@@ -42,25 +203,93 @@
                     <span th:if="${statusList['questionStaus']    eq 0}">未结贴</span>
                     <span class="fly-tip-jie" th:if="${statusList['questionStaus']  eq 1}">已采纳</span>
 
-                    <span class="jie-admin" th:if="${statusList['setTopStatus']   eq 0}">
+                    <span class="jie-admin" onclick="topQuestion(this)" th:data-questionId="${question.getQuestionId()}"
+                          th:if="${statusList['setTopStatus']   eq 0}">
                             <a href="">点击置顶</a>
-                        </span>
+                     </span>
 
-                    <span class="layui-btn layui-btn-mini jie-admin" th:if="${statusList['setTopStatus']   eq 1}">
+                    <span class="layui-btn layui-btn-mini jie-admin" onclick="untopQuestion(this)"
+                          th:data-questionId="${question.getQuestionId()}" th:if="${statusList['setTopStatus']   eq 1}">
                             <a href="">取消置顶</a>
                         </span>
 
                     <span class="jie-admin" type="del" style="margin-left: 20px;"
                           th:if="${statusList['deleteQuestionStatus']   eq 0}">
-							<a>删除该帖</a>
+							<a onclick="deleteQustion(this)" th:data-questionId="${question.getQuestionId()}">删除该帖</a>
                     </span>
 
                     <span class="fly-tip-jie" th:if="${statusList['reportStatus']   eq 0}">已举报</span>
 
                     <span class="fly-tip-jie" th:if="${statusList['reportStatus']   eq 1}">
-                        <a href="#">举报</a>
+                        <a onclick="openWindow(this)"
+                           th:data-questionId="${question.getQuestionId()}"
+                           th:data-questionUserId="${question.getQuestionCreator()}"
+
+                        >举报</a>
 					</span>
 
+                    <script>
+                        function openWindow(e) {
+                            var questionId = e.getAttribute("data-questionId");
+                            var questionUserId = e.getAttribute("data-questionUserId");
+
+                            layui.use(['jquery', 'form', 'layer'], function () {
+                                var $ = layui.jquery;
+                                var layer = layui.layer;
+                                layer.open({
+                                    id: 1,
+                                    type: 1,
+                                    title: '举报帖子',
+                                    skin: 'layui-layer-rim',
+                                    area: ['450px', 'auto'],
+
+                                    content: ' <div class="row" style="width: 420px;  margin-left:7px; margin-top:10px;">'
+                                        + '<div class="col-sm-12">'
+                                        + '<div class="input-group">'
+                                        + '<span class="input-group-addon"> 举报标题   :</span>'
+                                        + '<input id="reportTile" name="reportTile" type="text" class="form-control" placeholder="请输入举报标题">'
+                                        + '</div>'
+                                        + '</div>'
+                                        + '<div class="col-sm-12" style="margin-top: 10px">'
+                                        + '<div class="input-group">'
+                                        + '<span class="input-group-addon">举报理由:</span>'
+                                        + '<input id="reportReason"  name="reportReason" type="text" class="form-control" placeholder="请再输入举报理由">'
+                                        + '</div>'
+                                        + '</div>'
+                                        + '</div>'
+                                    ,
+                                    btn: ['提交', '取消'],
+                                    btn1: function (index, layero) {
+                                        $.ajax({
+                                            url: "/report",
+                                            type: 'post',
+                                            dataType: 'json',
+                                            data: {
+                                                "questionId": questionId,
+                                                "questionUserId": questionUserId,
+                                                "reportTile": $("input[name='reportTile']").val(),
+                                                "reportReason": $("input[name='reportReason']").val()
+                                            },
+                                            success: function (response) {
+                                                if (response.code == 200) {
+                                                    //如果输入成功，可以跳到另一个你需要的界面
+                                                    layer.close(index);
+                                                }
+                                            }
+
+                                        });
+                                    },
+                                    btn2: function (index, layero) {
+                                        layer.close(index);
+                                    },
+                                    end: function () {
+                                        location.reload();
+                                    }
+
+                                });
+                            });
+                        }
+                    </script>
 
                     <div class="fly-list-hint">
                         <i class="iconfont" title="回答">&#xe60c;</i> <span
@@ -92,11 +321,14 @@
                         </span>
 
                         <span class="layui-btn layui-btn-mini jie-admin" type="collect" data-type="add"
+                              onclick="collectQuestion(this)" th:data-questionId="${question.getQuestionId()}"
                               th:if="${statusList['collectStatus']   eq 0}">
                             <a id="collectPost">收藏</a>
                         </span>
 
                         <span class="layui-btn layui-btn-mini jie-admin layui-btn-danger" type="collect" data-type="add"
+
+                              onclick="unCollectQuestion(this)" th:data-questionId="${question.getQuestionId()}"
                               th:if="${statusList['collectStatus']   eq 1}">
                             <a>取消收藏</a>
                         </span>
@@ -104,7 +336,7 @@
                         <span class="layui-btn layui-btn-mini jie-admin  layui-btn-normal" data-type="add"
                               th:if="${statusList['replyStatus'] eq 0}">
                                  <a onclick="replylou(this)" th:data-creatorName="${question.user.getUserName()}"
-                                    th:data-creatorId="${question.user.getUserId()}">回复楼主</a>
+                                    -creatorId="${question.user.getUserId()}">回复楼主</a>
                             <script>
                                 function replylou(e) {
                                     var creatorName = e.getAttribute("data-creatorName");
@@ -114,35 +346,18 @@
                                     $("#toName").html("@ " + creatorName + "(楼主)");
                                     return true;
                                 }
+
                                 function reply(e) {
                                     var commentUserName = e.getAttribute("data-commentUserName");
                                     var commentId = e.getAttribute("data-commentId");
                                     $("input[name='comment_id']").val(commentId);
                                     $("input[name='type_id']").val("2");
                                     document.getElementById("replyFrom").scrollIntoView();
-                                    $("#toName").html("@ " + commentUserName );
+                                    $("#toName").html("@ " + commentUserName);
                                     return true;
                                 }
                             </script>
-                            <script>
-                                function open() {
-                                    layui.use("layer", function () {
-                                        layer.open({
-                                            title: ''
-                                            , btn: ''
-                                            , content: '<form action="/" method="get">' +
-                                                'First name:<br>' +
-                                                '<input type="text" name="firstname" value="Mickey">' +
-                                                '<br>' +
-                                                'Last name:<br>' +
-                                                '<input type="text" name="lastname" value="Mouse">' +
-                                                '<br><br>' +
-                                                '<input type="submit" value="Submit">' +
-                                                '</form>'
-                                        });
-                                    });
-                                }
-                                </script>
+
                         </span>
 
                     </div>
@@ -180,8 +395,9 @@
                                                 th:text="${comment.getUser().getUserName()}">
 
                                    </span></i>
-                                    <em><span th:if="${question.getUser().getUserId() eq comment.getCommentCommentator()}"
-                                              th:text="${comment.getUser().getUserName()+'（楼主）'}">
+                                    <em><span
+                                            th:if="${question.getUser().getUserId() eq comment.getCommentCommentator()}"
+                                            th:text="${comment.getUser().getUserName()+'（楼主）'}">
                                    </span>
                                     </em>
 
@@ -201,20 +417,38 @@
                         </div>
 
                         <div class="jieda-reply">
-								<span class="jieda-zan zanok" type="zan">
-                                    <i class="iconfont icon-zan"></i>
-                                    <em>0</em>
+
+                            <div th:each="like,size:${comment.likes}">
+                                <span class="jieda-zan " type="zan"  th:if="${like.getLikeReplyid() eq session.user.getUserId()}" >
+                                    已点赞
 								</span>
-                            <span type="reply" th:data-commentId="${comment.getCommentId()}"   th:data-commentUserName="${comment.getUser().getUserName()}" onclick="reply(this)">
+                            </div>
+                                <span class="jieda-zan zanok " type="zan"
+                                      onclick="lovethisComment(this)"
+                                      th:data_commentId="${comment.getCommentId()}"
+                                      th:data_replyId="${session.user.userId}"
+                                >
+                                    <i class="iconfont icon-zan"></i>
+                                    <em> [(${comment.likes.size()})]</em>
+								</span>
+
+
+
+                            <span type="reply" th:data-commentId="${comment.getCommentId()}"
+                                  th:data-commentUserName="${comment.getUser().getUserName()}" onclick="reply(this)">
                                 <i class="iconfont icon-svgmoban53"></i>
                                 回复
                             </span>
 
 
-                            <div class="jieda-admin"  th:if="${statusList['editStatus']   eq 0}">
-                                <span type="del"><a href="#" class="layui-btn layui-btn-danger layui-btn-small">删除</a></span>
+                            <div class="jieda-admin" th:if="${statusList['editStatus']   eq 0}">
+                                <span type="del"><a href="#"
+                                                    class="layui-btn layui-btn-danger layui-btn-small">删除</a></span>
                                 <span class="jieda-accept" type="accept">
-									<a href="#" class="layui-btn  layui-btn-small">采纳</a></span>
+									<a onclick="userThisComment(this)" class="layui-btn  layui-btn-small"
+                                       th:data-commentId="${comment.getCommentId()}"
+                                       th:data-questionId="${question.getQuestionId()}"
+                                       th:if="${question.getQuestionCreator() ne comment.getCommentCommentator()}">采纳</a></span>
                             </div>
 
                         </div>
@@ -225,7 +459,7 @@
                 </ul>
 
 
-                <span id="toName"  name="toName"></span>
+                <span id="toName" name="toName"></span>
 
                 <div class="layui-form layui-form-pane" id="replyFrom">
                     <form action="">
@@ -243,7 +477,7 @@
                             <input type="hidden" id="type_id" name="type_id">
 
                             <input type="hidden" id="question_id" th:value="${question.getQuestionId()}">
-                            <input type="hidden" id="comment_id" name="comment_id" >
+                            <input type="hidden" id="comment_id" name="comment_id">
                             <input class="layui-btn" onclick="post()" value="提交回答"/>
                         </div>
                     </form>

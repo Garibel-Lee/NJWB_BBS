@@ -55,6 +55,16 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public Question selectById(Long questionId) {
+        Question question = questionMapper.selectByPrimaryKey(questionId);
+        if (question == null || question.equals(null)) {
+            return null;
+        }
+
+        return question;
+    }
+
+    @Override
     public int updateByPrimaryKeySelective(Question record) {
         return questionMapper.updateByPrimaryKeySelective(record);
     }

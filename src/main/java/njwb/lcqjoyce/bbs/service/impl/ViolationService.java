@@ -1,7 +1,8 @@
 package njwb.lcqjoyce.bbs.service.impl;
 
 import njwb.lcqjoyce.bbs.entity.Violation;
-public interface ViolationService{
+
+public interface ViolationService {
 
 
     int deleteByPrimaryKey(Long violationId);
@@ -17,3 +18,4 @@ public interface ViolationService{
     int updateByPrimaryKey(Violation record);
 
 }
+

@@ -281,4 +281,15 @@
        ORDER BY question_viewCount desc LIMIT 10
 
     </select>
+    <select id="findInId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from QUESTION where 1=1
+        <if test="questionIds != null">
+            and question_id in
+            <foreach item="item" index="index" collection="questionIds" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
 </mapper>

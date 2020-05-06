@@ -22,6 +22,11 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     HAS_EMAIL(2015,"邮箱已存在"),
     NOTHIS_EMAIL(2016,"邮箱不存在"),
     ERROR_PWD(2017,"密码错误"),
+    NOMONEY(2019,"囊中羞涩"),
+    NOVIP(2019,"还不是会员"),
+    RIGATER_BROKEN(2016,"注册存在问题的账号及时联系管理员"),
+    GUANLIYUAN(2016,"管理员权限较大，不支持充值会员"),
+    ISVIP(2016,"你要是会员才能续费哦"),
     NOT_EMAIL(2018,"邮箱格式有误"),
     ;
 

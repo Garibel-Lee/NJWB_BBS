@@ -37,4 +37,7 @@ public interface QuestionMapper {
     List<Question> selectRelated(Question question);
 
     List<Question> selectHot(Question question);
+
+    List<Question> findInId(@Param("questionIds") List<Long> questionIds);
+
 }

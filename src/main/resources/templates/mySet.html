@@ -75,7 +75,7 @@
 
 <div class="main fly-user-main layui-clear">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-        <li class="layui-nav-item"><a href="/profile/myIndex"> <i
+        <li class="layui-nav-item"><a th:href="@{'/user/'+${session.user.getUserId()}}"> <i
                 class="layui-icon">&#xe609;</i> 我的主页 </a></li>
         <li class="layui-nav-item "><a href="/profile/myCenter"> <i
                 class="layui-icon">&#xe612;</i> 用户中心 </a></li>
@@ -85,7 +85,7 @@
                 class="layui-icon">&#xe611;</i> 我的消息 </a></li>
         <li class="layui-nav-item  "><a href="/profile/myRecharge"> <i
                 class="layui-icon">&#xe61a;</i> 账户充值/会员 </a></li>
-        <li class="layui-nav-item "><a href="/profile/report"> <i
+        <li class="layui-nav-item "th:if="${session.userDTO.getRole().getRoleId() eq 3}"><a href="/profile/report"> <i
                 class="layui-icon">&#xe61a;</i> 审核举报 </a></li>
     </ul>
     <div class="site-tree-mobile layui-hide">

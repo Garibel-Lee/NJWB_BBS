@@ -1,6 +1,9 @@
 package njwb.lcqjoyce.bbs.service.impl;
 
 import njwb.lcqjoyce.bbs.entity.Like;
+
+import java.util.List;
+
 public interface LikeService{
 
 
@@ -16,4 +19,9 @@ public interface LikeService{
 
     int updateByPrimaryKey(Like record);
 
+    List<Like> selectByCommentId(Long commentId);
+
+    Like selectByPostIDandReplyId(Long postId,Long replyId);
+
+     int updateByByPostIDandReplyId(Like record);
 }

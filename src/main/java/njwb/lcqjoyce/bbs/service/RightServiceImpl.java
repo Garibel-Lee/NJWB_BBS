@@ -45,7 +45,7 @@ public class RightServiceImpl implements RightService{
     @Override
     public Right selectByUserId(Long userId) {
 
-        return rightMapper.selectByRightUserid(userId).get(0);
+        return rightMapper.selectAllByRightUserid(userId).get(0);
     }
 
 }

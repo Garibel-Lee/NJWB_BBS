@@ -21,5 +21,8 @@ public interface CollectMapper {
 
     List<Collect> selectByCollectPostidAndCollectUserid(@Param("collectPostid")Long collectPostid,@Param("collectUserid")Long collectUserid);
 
+    List<Collect> findAllByCollectUserid(@Param("collectUserid")Long collectUserid);
+
+
 
 }

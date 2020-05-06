@@ -1,10 +1,7 @@
 package njwb.lcqjoyce.bbs.controller;
 
 
-import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
-import njwb.lcqjoyce.bbs.dto.QuestionDTO;
-import njwb.lcqjoyce.bbs.dto.ResultDTO;
-import njwb.lcqjoyce.bbs.dto.UserDTO;
+import njwb.lcqjoyce.bbs.dto.*;
 import njwb.lcqjoyce.bbs.entity.*;
 import njwb.lcqjoyce.bbs.exception.CustomizeErrorCode;
 import njwb.lcqjoyce.bbs.service.impl.*;
@@ -16,6 +13,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -31,9 +30,12 @@ public class ProfileController {
     @Autowired
     private RoleService roleService;
     @Autowired
+    private CollectService collectService;
+    @Autowired
     private CardService cardService;
     @Autowired
     private VipService vipService;
+
     @PostMapping("/profile/{action}")
     @ResponseBody
     public Object profile(HttpServletRequest request, @PathVariable(name = "action")
@@ -66,11 +68,11 @@ public class ProfileController {
                 updateUser.setUserBio(bio);
                 updateUser.setUserCity(city);
                 updateUser.setUserName(nickname);
-               if( userService.updateByPrimaryKeySelective(updateUser)!=0){
-                   return ResultDTO.okOf(200, "修改成功");
-               }else {
-                   return ResultDTO.okOf(200, "修改失败，请联系管理员");
-               }
+                if (userService.updateByPrimaryKeySelective(updateUser) != 0) {
+                    return ResultDTO.okOf(200, "修改成功");
+                } else {
+                    return ResultDTO.okOf(200, "修改失败，请联系管理员");
+                }
 
             }
 
@@ -137,36 +139,115 @@ public class ProfileController {
             }
             model.addAttribute("user", loginUser);
             return "myIndex";
+
+
         } else if ("myCenter".equals(action)) {
+            PageinfoDTO<QuestionDTO> questionDTOS = questionService.listMyQuestion(user.getUserId(), page, 15);
+            if (questionDTOS.getPages().size() == 0) {
+                questionDTOS.setPageinfo(-1, -1);
+                questionDTOS.setPage(0);
+                questionDTOS.setShowPrevious(false);
+                questionDTOS.setShowNext(false);
+                questionDTOS.setShowFirstPage(false);
+                questionDTOS.setShowEndPage(false);
+                questionDTOS.setTotalPage(-1);
+            }
+            List<Collect> collects = collectService.listMyCollsections(user.getUserId());
+            List<CollectDTO> collectDTOS = new ArrayList<>();
+            if (!ObjectUtils.isEmpty(collects)) {
+                for (Collect collect : collects) {
+                    CollectDTO collectDTO = new CollectDTO();
+                    BeanUtils.copyProperties(collect, collectDTO);
+                    Question question = questionService.selectById(collect.getCollectPostid());
+                    collectDTO.setQuestion(question);
+                    collectDTOS.add(collectDTO);
+                }
+            }
+
+
+            model.addAttribute("collects", collectDTOS);
+            model.addAttribute("questionPages", questionDTOS);
+
+
             return "myCenter";
+
         } else if ("mySet".equals(action)) {
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(user, userDTO);
             Right rightUser = rightService.selectByUserId(user.getUserId());
             Role roleUser = roleService.selectByPrimaryKey(rightUser.getRightRoleid());
             Card cardUser = cardService.selectByUseId(user.getUserId());
-            Vip vipUser=vipService.selectByUserId(user.getUserId());
-            if(!ObjectUtils.isEmpty(rightUser)){
+            Vip vipUser = vipService.selectByUserId(user.getUserId());
+            if (!ObjectUtils.isEmpty(rightUser)) {
                 userDTO.setRight(rightUser);
             }
-            if(!ObjectUtils.isEmpty(roleUser)){
+            if (!ObjectUtils.isEmpty(roleUser)) {
                 userDTO.setRole(roleUser);
             }
-            if(!ObjectUtils.isEmpty(cardUser)){
+            if (!ObjectUtils.isEmpty(cardUser)) {
                 userDTO.setCard(cardUser);
             }
-            if(!ObjectUtils.isEmpty(vipUser)){
+            if (!ObjectUtils.isEmpty(vipUser)) {
                 userDTO.setVip(vipUser);
             }
             model.addAttribute("userDTO", userDTO);
             return "mySet";
-        } else if ("myCenter".equals(action)) {
-            return "myCenter";
         } else if ("myMessage".equals(action)) {
+/*
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setNotificationId();
+            notificationDTO.setNotificationNotifier();
+            notificationDTO.setNotificationNotifiername();
+            notificationDTO.setNotificationReceiver();
+            notificationDTO.setNotificationOuterid();
+            notificationDTO.setNotificationType();
+            notificationDTO.setNotificationTypeName();
+            notificationDTO.setNotificationGmtcreate();
+            notificationDTO.setNotificationStatus();
+            notificationDTO.setNotificationOutertitle();
+*/
+
+            PageinfoDTO<NotificationDTO> notificationDTOPages = new PageinfoDTO<>();
+            notificationDTOPages=notificationService.list(user.getUserId(), page, size);
+            if (notificationDTOPages.getPages().size() == 0) {
+                notificationDTOPages.setPageinfo(-1, -1);
+                notificationDTOPages.setPage(0);
+                notificationDTOPages.setShowPrevious(false);
+                notificationDTOPages.setShowNext(false);
+                notificationDTOPages.setShowFirstPage(false);
+                notificationDTOPages.setShowEndPage(false);
+                notificationDTOPages.setTotalPage(-1);
+            }
+            model.addAttribute("section", "replies");
+            model.addAttribute("sectionName", "最新回复");
+            model.addAttribute("notificationPages", notificationDTOPages);
             return "myMessage";
         } else if ("myRecharge".equals(action)) {
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user, userDTO);
+            Right rightUser = rightService.selectByUserId(user.getUserId());
+            Role roleUser = roleService.selectByPrimaryKey(rightUser.getRightRoleid());
+            Card cardUser = cardService.selectByUseId(user.getUserId());
+            Vip vipUser = vipService.selectByUserId(user.getUserId());
+            if (!ObjectUtils.isEmpty(rightUser)) {
+                userDTO.setRight(rightUser);
+            }
+            if (!ObjectUtils.isEmpty(roleUser)) {
+                userDTO.setRole(roleUser);
+            }
+            if (!ObjectUtils.isEmpty(cardUser)) {
+                userDTO.setCard(cardUser);
+            }
+            if (!ObjectUtils.isEmpty(vipUser)) {
+                userDTO.setVip(vipUser);
+            }
+            model.addAttribute("userDTO", userDTO);
+
+
             return "myRecharge";
         } else if ("report".equals(action)) {
+
+
             return "report";
         }
         return "redirect:/";

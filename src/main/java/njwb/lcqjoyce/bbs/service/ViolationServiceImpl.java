@@ -5,8 +5,9 @@ import javax.annotation.Resource;
 import njwb.lcqjoyce.bbs.entity.Violation;
 import njwb.lcqjoyce.bbs.mapper.ViolationMapper;
 import njwb.lcqjoyce.bbs.service.impl.ViolationService;
+
 @Service
-public class ViolationServiceImpl implements ViolationService{
+public class ViolationServiceImpl implements ViolationService {
 
     @Resource
     private ViolationMapper violationMapper;
@@ -42,3 +43,4 @@ public class ViolationServiceImpl implements ViolationService{
     }
 
 }
+

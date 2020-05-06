@@ -6,7 +6,7 @@ import njwb.lcqjoyce.bbs.entity.Question;
 
 import java.util.List;
 
-public interface QuestionService{
+public interface QuestionService {
 
 
     int deleteByPrimaryKey(Long questionId);
@@ -16,6 +16,8 @@ public interface QuestionService{
     int insertSelective(Question record);
 
     QuestionDTO selectByPrimaryKey(Long questionId);
+
+    Question selectById(Long questionId);
 
     int updateByPrimaryKeySelective(Question record);
 
@@ -31,5 +33,7 @@ public interface QuestionService{
 
     List<QuestionDTO> selectRelated(QuestionDTO questionDTO);
 
+
     List<QuestionDTO> selectHot(QuestionDTO questionDTO);
+
 }

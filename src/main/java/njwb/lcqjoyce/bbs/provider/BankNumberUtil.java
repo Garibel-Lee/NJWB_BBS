@@ -81,12 +81,5 @@ public class BankNumberUtil{
         return (luhmSum % 10 == 0) ? '0' : (char)((10 - luhmSum % 10) + '0');
     }
 
-    //test
-    public static void main(String[] args) {
-    	try {
-			System.out.println(getBrankNumber());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 }

@@ -1,7 +1,10 @@
 package njwb.lcqjoyce.bbs.service.impl;
 
 import njwb.lcqjoyce.bbs.entity.Collect;
-public interface CollectService{
+
+import java.util.List;
+
+public interface CollectService {
 
 
     int deleteByPrimaryKey(Long collectId);
@@ -16,5 +19,12 @@ public interface CollectService{
 
     int updateByPrimaryKey(Collect record);
 
-    Integer selectByUserIdandQuestionId(Long userId, Long questionId);
+    Integer selectByQuestionIdandUserId(Long questionId, Long userId);
+
+    Collect selectByQuestIdandUId(Long questionId, Long userId);
+
+    List<Collect> listMyCollsections(Long userId);
+
+    void createNotify(Collect comment, String loginuserName, String outerTitle);
+
 }

@@ -19,7 +19,8 @@ public interface RightMapper {
 
     int updateByPrimaryKey(Right record);
 
-    List<Right> selectByRightUserid(@Param("rightUserid")Long rightUserid);
+
+    List<Right> selectAllByRightUserid(@Param("rightUserid")Long rightUserid);
 
 
 }

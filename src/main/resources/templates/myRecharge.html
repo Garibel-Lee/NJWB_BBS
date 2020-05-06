@@ -14,10 +14,59 @@
 <body>
 <div th:insert="~{navigation :: nav}"></div>
 
+<script>
+    layui.use(['jquery', 'form', 'layer'], function () {
+        var $ = layui.jquery;
+        var form = layui.form();//表单验证
+        var layer = layui.layer;
+
+
+        form.on('submit(goOnVip)', function (data) {
+            //用ajax时需要注意你的url接口、采用哪一种方式type获取，它的使用的哪种数据类型datatype
+            var scan = $("input[name='goOnVip']:checked").val();
+            $.ajax({
+                url: '/goOnVip',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    //监听的内容有哪些,你的登陆界面上用户输入的有哪些，就监听那些
+                    data: scan
+                },
+
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("续费成功", {icon: 1, time: 1000, shade: 0.4});
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                            location.reload();
+                        }, 1200);
+                    } else {
+                        //不等于200时填出的错误信息内容 mn
+                        layer.msg(res.message, {icon: 2, time: 1200, shade: 0.4});
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                            location.reload();
+                        }, 1300);
+                    }
+                },
+                error: function () {
+                    //用户输入与接口内容不对应，显示文字
+                    layer.msg("网络繁忙，访问失败", {icon: 3, time: 1000, shade: 0.4});
+
+                }
+
+            });
+            //不会跳转到网址栏，只会跳转到你要的界面 一定要写。
+            return false;
+        });
+    });
+</script>
+
 
 <div class="main fly-user-main layui-clear">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-        <li class="layui-nav-item"><a href="/profile/myIndex"> <i
+        <li class="layui-nav-item"><a th:href="@{'/user/'+${session.user.getUserId()}}"> <i
                 class="layui-icon">&#xe609;</i> 我的主页 </a></li>
         <li class="layui-nav-item "><a href="/profile/myCenter"> <i
                 class="layui-icon">&#xe612;</i> 用户中心 </a></li>
@@ -27,7 +76,7 @@
                 class="layui-icon">&#xe611;</i> 我的消息 </a></li>
         <li class="layui-nav-item  layui-this"><a href="/profile/myRecharge"> <i
                 class="layui-icon ">&#xe61a;</i> 账户充值/会员 </a></li>
-        <li class="layui-nav-item "><a href="/profile/report"> <i
+        <li class="layui-nav-item " th:if="${session.userDTO.getRole().getRoleId() eq 3}"><a href="/profile/report"> <i
                 class="layui-icon">&#xe61a;</i> 审核举报 </a></li>
     </ul>
 
@@ -39,102 +88,149 @@
     <div class="fly-panel fly-panel-user" pad20>
         <div class="layui-tab layui-tab-brief" lay-filter="user">
             <ul class="layui-tab-title" id="LAY_mine">
-                <li data-type="mine-jie" lay-id="index">我的会员</li>
-                <li data-type="collection" class="layui-this" data-url="/collection/find/"
-                    lay-id="collection">充值中心
+                <li>我的会员</li>
+                <li class="layui-this">充值中心
                 </li>
             </ul>
+
             <div class="layui-tab-content" style="padding: 20px 0;">
                 <div class="layui-form layui-form-pane layui-tab-item ">
-                    <form action="">
+                    <form action="/goOnVip" method="post" th:if="${userDTO.getVip() ne null}">
                         <div class="layui-form-item">
-                            <h2>续费会员</h2>
-                            <p>会员开始时间:2017-05-01</p>
-                            <p>会员结束时间:2017-06-01</p>
+                            <h2>可以续费会员哦</h2>
+                            <p>会员开始时间: <span
+                                    th:text="${#dates.format(userDTO.getVip().getVipStarttime(),'yyyy-MM-dd')}"></span>
+                            </p>
+                            <p>会员结束时间: <span
+                                    th:text="${#dates.format(userDTO.getVip().getVipEndtime(),'yyyy-MM-dd')}"></span>
+                            </p>
                         </div>
-                        <div class="layui-form-item">
+                        <div class="layui-form-item" th:if="${userDTO.getVip() ne null}">
                             <label class="layui-form-label">充值时长</label>
                             <div class="layui-input-block">
-                                <input type="radio" checked="checked" title="一个月(30天)"/><span style="color:#ccc">￥18/<i
-                                    class="iconfont icon-zuichun" title="飞吻"></i>249</span><span
-                                    style="color:red">￥15/<i class="iconfont icon-zuichun" title="飞吻"></i>180</span>
-                                <input type="radio" title="三个月(90天)"/><span style="color:#ccc">￥50/<i
-                                    class="iconfont icon-zuichun" title="飞吻"></i>680</span><span
-                                    style="color:red">￥42/<i class="iconfont icon-zuichun"
-                                                             title="飞吻"></i>500</span><br/>
-                                <input type="radio" title="六个月(180天)"/><span style="color:#ccc">￥100/<i
-                                    class="iconfont icon-zuichun" title="飞吻"></i>1200</span><span style="color:red">￥80/<i
-                                    class="iconfont icon-zuichun" title="飞吻"></i>900</span>
-                                <input type="radio" title="年费会员(365天)"/><span style="color:#ccc">￥188/<i
-                                    class="iconfont icon-zuichun" title="飞吻"></i>2000</span><span style="color:red">￥150/<i
-                                    class="iconfont icon-zuichun" title="飞吻"></i>1666</span>
+
+                                <input type="radio" value="30,180" name="goOnVip" title="一个月(30天)"/>
+                                <!-- <span  th:if="${userDTO.getVip() eq null}" style="color:#ccc">￥18/<i class="iconfont icon-zuichun" title="飞吻"></i>249</span>-->
+                                <span th:if="${userDTO.getVip() ne null}" style="color:red">
+                                    ￥15/<i class="iconfont icon-zuichun" title="飞吻"></i>180
+                                </span>
+
+
+                                <input type="radio" value="90,500" name="goOnVip" title="三个月(90天)"/>
+                                <!--  <span  th:if="${userDTO.getVip() eq null}" style="color:#ccc">￥50/<i class="iconfont icon-zuichun" title="飞吻"></i>680</span>-->
+                                <span th:if="${userDTO.getVip() ne null}" style="color:red">
+                                    ￥42/<i class="iconfont icon-zuichun" title="飞吻"></i>500
+                                </span>
+
+
+                                <br/>
+
+                                <input type="radio" value="180,900" name="goOnVip" title="六个月(180天)"/>
+                                <!-- <span  th:if="${userDTO.getVip() eq null}" style="color:#ccc">￥100/<i  class="iconfont icon-zuichun" title="飞吻"></i>1200</span>-->
+                                <span th:if="${userDTO.getVip() ne null}" style="color:red">
+                                    ￥80/<i class="iconfont icon-zuichun" title="飞吻"></i>900
+                                </span>
+
+
+                                <input type="radio" value="365,1666" name="goOnVip" title="年费会员(365天)"/>
+                                <!--   <span  th:if="${userDTO.getVip() eq null}" style="color:#ccc">￥188/<i class="iconfont icon-zuichun" title="飞吻"></i>2000</span>-->
+                                <span th:if="${userDTO.getVip() ne null}" style="color:red">
+                                    ￥150/<i class="iconfont icon-zuichun" title="飞吻"></i>1666
+                                </span>
+
                             </div>
                         </div>
+
+
                         <div class="layui-form-item">
                             <label class="layui-form-label">购买方式</label>
                             <div class="layui-input-block">
-                                <input type="radio" checked="checked" title="银联购买"/>
-                                <input type="radio" title="飞吻购买"/>
+                                <!--  <input type="radio" checked="checked" title="银联购买"/>-->
+                                <input type="radio" checked="checked" title="飞吻购买"/>
                             </div>
                         </div>
-                        <input type="submit" class="layui-btn" value="确认购买"/>
 
+                        <input type="button" lay-submit lay-filter="goOnVip" class="layui-btn" value="确认购买"/>
+                    </form>
+
+
+                    <form action="/getVip" method="post" th:if="${userDTO.getVip() eq null}">
                         <div class="layui-form-item">
                             <h2>充值会员</h2>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">充值时长</label>
                             <div class="layui-input-block">
-                                <input type="radio" checked="checked" title="一个月(30天)"/>￥18/<i
-                                    class="iconfont icon-zuichun" title="飞吻"></i>249
-                                <input type="radio" title="三个月(90天)"/>￥50/<i class="iconfont icon-zuichun"
-                                                                             title="飞吻"></i>680<br/>
-                                <input type="radio" title="六个月(180天)"/>￥100/<i class="iconfont icon-zuichun"
-                                                                               title="飞吻"></i>1200
-                                <input type="radio" title="年费会员(365天)"/>￥188/<i class="iconfont icon-zuichun"
-                                                                                title="飞吻"></i>2000
+
+                                <input type="radio" value="30,249" name="getVip" title="一个月(30天)"/>
+                                ￥18/<i class="iconfont icon-zuichun" title="飞吻"></i>249
+
+                                <input type="radio" value="90,680" name="getVip" title="三个月(90天)"/>
+                                ￥50/<i class="iconfont icon-zuichun" title="飞吻"></i>680
+
+                                <br/>
+
+                                <input type="radio" value="180,1200" name="getVip" title="六个月(180天)"/>
+                                ￥100/<i class="iconfont icon-zuichun" title="飞吻"></i>1200
+
+                                <input type="radio" value="365,2000" name="getVip" title="年费会员(365天)"/>
+                                ￥188/<i class="iconfont icon-zuichun" title="飞吻"></i>2000
+
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">购买方式</label>
                             <div class="layui-input-block">
-                                <input type="radio" checked="checked" title="银联购买"/>
-                                <input type="radio" title="飞吻购买"/>
+                                <input type="radio" checked="checked" title="飞吻购买"/>
+                                <!-- <input type="radio" title="银联购买"/>-->
                             </div>
                         </div>
-                        <input type="submit" class="layui-btn" value="确认购买"/>
+                        <input type="button" lay-submit lay-filter="getVip" class="layui-btn" value="确认购买"/>
 
                     </form>
+
+
                     <div class="home-dacontent">
                         会员充值规则: 普通会员充值会员按默认价格支付，如账户是会员，对账户会员进行续费充值，续费充值时按照会员价格进行优惠，选择银行卡充值会直接对账户绑定的银行卡进行扣费。
                     </div>
+
+
                 </div>
+
+
                 <div class="layui-tab-item layui-show">
-                    <div class="layui-form-item">
-                        <input type="hidden" id="userId" value="${user.id}"/>
-                        <label class="layui-form-label">银行卡号</label>
-                        <div class="layui-input-inline">
-                            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入银行卡号"
-                                   class="layui-input"/>
+                    <form method="post">
+                        <div class="layui-form-item">
+                            <input type="hidden" id="userId" value="${user.id}"/>
+                            <label class="layui-form-label">银行卡号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" required lay-verify="required|card" autocomplete="off"
+                                       placeholder="请输入银行卡号"
+                                       id="cardNumber" name="cardNumber"
+                                       class="layui-input"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">银行卡密码</label>
-                        <div class="layui-input-inline">
-                            <input type="password" lay-verify="title" autocomplete="off" placeholder="请输入银行卡密码"
-                                   class="layui-input"/>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">银行卡密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" required lay-verify="required|password" autocomplete="off"
+                                       placeholder="请输入银行卡密码"
+                                       id="password" name="password"
+                                       class="layui-input"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">充值金额</label>
-                        <div class="layui-input-inline">
-                            <input type="text" lay-verify="title" autocomplete="off" placeholder="￥(RMB:飞吻=1:10)"
-                                   class="layui-input"/>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">充值金额</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="commount" name="commount" required lay-verify="required|commout"
+                                       autocomplete="off" placeholder="￥(RMB:飞吻=1:10)"
+                                       class="layui-input"/>
+                            </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <a class="layui-btn">立即充值</a>
-                    </div>
+                        <div class="layui-form-item">
+                            <a class="layui-btn" type="button" lay-submit lay-filter="bankCardCharge">立即充值</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -143,26 +239,139 @@
 <div th:insert="~{footer :: nav}"></div>
 
 <script>
+    layui.use(['jquery', 'form', 'layer'], function () {
+        var $ = layui.jquery;
+        var form = layui.form();//表单验证
+        var layer = layui.layer;
+
+        form.verify({
+
+            card: function (value, item) {
+                if ($('input[name=cardNumber]').val() !== value){
+                    return 'error';
+                }
+                if (!new RegExp("^(\\d{16})$").test(value)) {
+                    return '银行卡格式不对';
+                }
+            },
+            password: function (value, item) {
+                if ($('input[name=password]').val() !== value){
+                    return 'error';
+                }
+                if (!new RegExp("^[1-6]\\d*$").test(value)) {
+                    return '密码格式不对';
+                }
+            },
+            commout: function (value, item) {
+                if ($('input[name=commount]').val() !== value){
+                    return 'error';
+                }
+                if (!new RegExp("^[1-9]\\d*$").test(value)) {
+                    return '输入金额有误';
+                }
+            }
+        });
+
+
+
+        form.on('submit(bankCardCharge)', function (data) {
+            //用ajax时需要注意你的url接口、采用哪一种方式type获取，它的使用的哪种数据类型datatype
+
+            $.ajax({
+                url: '/bankCardCharge',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    //监听的内容有哪些,你的登陆界面上用户输入的有哪些，就监听那些
+                    cardNumber: $('input[name="cardNumber"]').val(),
+                    password: $('input[name="password"]').val(),
+                    comount: $('input[name="commount"]').val(),
+                },
+
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("充值飞吻成功", {icon: 1, time: 1000, shade: 0.4});
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                            location.reload();
+                        }, 1200);
+                    } else {
+                        //不等于200时填出的错误信息内容 mn
+                        layer.msg(res.message, {icon: 2, time: 1200, shade: 0.4});
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                            location.reload();
+                        }, 1300);
+                    }
+                },
+                error: function () {
+                    //用户输入与接口内容不对应，显示文字
+                    layer.msg("网络繁忙，访问失败", {icon: 3, time: 1000, shade: 0.4});
+
+                }
+
+            });
+            //不会跳转到网址栏，只会跳转到你要的界面 一定要写。
+            return false;
+        });
+    });
+</script>
+
+<script>
     layui.use('element', function () {
         var element = layui.element();
     });
 </script>
+
 <script>
 
-    layui.cache.page = '';
-    layui.cache.user = {
-        username: '游客'
-        , uid: -1
-        , avatar: '/images/avatar/00.jpg'
-        , experience: 83
-        , sex: '男'
-    };
-    layui.config({
-        version: "2.0.0"
-        , base: '/mods/'
-    }).extend({
-        fly: 'index'
-    }).use('fly');
+
+    layui.use(['jquery', 'form', 'layer'], function () {
+        var $ = layui.jquery;
+        var form = layui.form();//表单验证
+        var layer = layui.layer;
+
+        form.on('submit(getVip)', function (data) {
+            var scan = $("input[name='getVip']:checked").val();
+            //用ajax时需要注意你的url接口、采用哪一种方式type获取，它的使用的哪种数据类型datatype
+            $.ajax({
+                url: '/getVip',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    //监听的内容有哪些,你的登陆界面上用户输入的有哪些，就监听那些
+                    data: scan
+                },
+
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg(res.message, {icon: 1, time: 1000, shade: 0.4});
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                            location.reload();
+                        }, 1200);
+                    } else {
+                        //不等于200时填出的错误信息内容 mn
+                        layer.msg(res.message, {icon: 2, time: 1200, shade: 0.4});
+                        setTimeout(function () {
+                            //如果输入成功，可以跳到另一个你需要的界面
+                            location.reload();
+                        }, 1300);
+                    }
+                },
+                error: function () {
+                    //用户输入与接口内容不对应，显示文字
+                    layer.msg("网络繁忙，访问失败", {icon: 3, time: 1000, shade: 0.4});
+
+                }
+
+            });
+            //不会跳转到网址栏，只会跳转到你要的界面 一定要写。
+            return false;
+        });
+    });
 </script>
 </body>
 </html>

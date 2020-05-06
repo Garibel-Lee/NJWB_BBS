@@ -2,6 +2,9 @@ package njwb.lcqjoyce.bbs.mapper;
 
 import njwb.lcqjoyce.bbs.entity.Notification;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface NotificationMapper {
@@ -16,4 +19,12 @@ public interface NotificationMapper {
     int updateByPrimaryKeySelective(Notification record);
 
     int updateByPrimaryKey(Notification record);
+
+    Long findAllByNotificationReceiverAndNotificationStatus(@Param("notificationReceiver") Long notificationReceiver, @Param("notificationStatus") Integer notificationStatus);
+
+    List<Notification> findAllByNotificationReceiver(@Param("notificationReceiver") Long notificationReceiver);
+
+    List<Notification> selectAllByNotificationReceiver(@Param("notificationReceiver") Long notificationReceiver, @Param("offset") Integer offset, @Param("size") Integer size);
+
+
 }

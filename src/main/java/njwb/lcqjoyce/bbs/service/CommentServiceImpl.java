@@ -1,14 +1,20 @@
 package njwb.lcqjoyce.bbs.service;
 
+import lombok.extern.slf4j.Slf4j;
 import njwb.lcqjoyce.bbs.dto.CommentDTO;
+import njwb.lcqjoyce.bbs.dto.CommentExsDTO;
 import njwb.lcqjoyce.bbs.dto.QuestionDTO;
 import njwb.lcqjoyce.bbs.entity.Comment;
+import njwb.lcqjoyce.bbs.entity.Notification;
 import njwb.lcqjoyce.bbs.entity.Question;
 import njwb.lcqjoyce.bbs.entity.User;
 import njwb.lcqjoyce.bbs.enums.CommentTypeEnum;
+import njwb.lcqjoyce.bbs.enums.NotificationStatusEnum;
+import njwb.lcqjoyce.bbs.enums.NotificationTypeEnum;
 import njwb.lcqjoyce.bbs.exception.CustomizeErrorCode;
 import njwb.lcqjoyce.bbs.exception.CustomizeException;
 import njwb.lcqjoyce.bbs.mapper.CommentMapper;
+import njwb.lcqjoyce.bbs.mapper.NotificationMapper;
 import njwb.lcqjoyce.bbs.mapper.QuestionMapper;
 import njwb.lcqjoyce.bbs.mapper.UserMapper;
 import njwb.lcqjoyce.bbs.service.impl.CommentService;
@@ -20,6 +26,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CommentServiceImpl implements CommentService {
 
     @Resource
@@ -28,6 +35,8 @@ public class CommentServiceImpl implements CommentService {
     private QuestionMapper questionMapper;
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private NotificationMapper notificationMapper;
 
     @Override
     public int deleteByPrimaryKey(Long commentId) {
@@ -63,8 +72,8 @@ public class CommentServiceImpl implements CommentService {
 
             commentMapper.addCommentCount(parentComment);
 
-            // 创建通知
-            // createNotify(comment, dbComment.getCommentator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId());
+            //创建通知
+             createNotify(comment, dbComment.getCommentCommentator(), commentator.getUserName(), question.getQuestionTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getQuestionId());
         } else {
             // 回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getCommentParentid());
@@ -78,9 +87,28 @@ public class CommentServiceImpl implements CommentService {
             questionMapper.addCommentCount(question);
 
             // 创建通知
-            //  createNotify(comment, question.getCreator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_QUESTION, question.getId());
+            createNotify(comment, question.getQuestionCreator(), commentator.getUserName(), question.getQuestionTitle(), NotificationTypeEnum.REPLY_QUESTION, question.getQuestionId());
         }
     }
+
+    @Override
+    public void  createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
+        if (receiver .equals(comment.getCommentCommentator()) ) {
+            return;
+        }
+        Notification notification = new Notification();
+        notification.setNotificationGmtcreate(System.currentTimeMillis());
+        notification.setNotificationType(notificationType.getType());
+        notification.setNotificationOuterid(outerId);
+        notification.setNotificationNotifier(comment.getCommentCommentator());
+        notification.setNotificationStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setNotificationReceiver(receiver);
+        notification.setNotificationNotifiername(notifierName);
+        notification.setNotificationOutertitle(outerTitle);
+        notificationMapper.insert(notification);
+    }
+
+
 
     @Override
     public int insertSelective(Comment record) {
@@ -175,6 +203,52 @@ public class CommentServiceImpl implements CommentService {
         }).collect(Collectors.toList());
 
         return commentDTOS;
+    }
+
+    @Override
+    public List<CommentExsDTO> listmyCommentsByUserId(Long id) {
+        List<Comment> commentList = commentMapper.findAllByCommentCommentatorAndCommentType(id,1);
+        if(commentList.size()==0){
+            return null;
+        }
+
+        List<CommentExsDTO> commentExsDTOs =new ArrayList<>();
+        for (Comment comment : commentList) {
+            CommentExsDTO commentExsDTO = new CommentExsDTO();
+            BeanUtils.copyProperties(comment, commentExsDTO);
+            commentExsDTO.setQuestion(questionMapper.selectByPrimaryKey(comment.getCommentParentid()));
+            commentExsDTOs.add(commentExsDTO);
+        }
+
+        return commentExsDTOs;
+    }
+
+    @Override
+    public int deleteByPrimaryKeyAndComments(Long questionId) {
+        List<Long> questionIds = new ArrayList<>();
+        questionIds.add(questionId);
+        //查出该问题所有一级回复
+        List<Comment> replyQustions = commentMapper.findAllByCommentParentidAndCommentType(questionIds, CommentTypeEnum.QUESTION.getType());
+        //取出一级回复所有id集合 ，查询改集合每一条一级评论下的所有二级评论
+        if (replyQustions.size() <= 0) {
+            return 0;
+        }
+        List<Long> commentIds = new ArrayList<>();
+        //取出一级回复所有id集合
+        for (Comment replyQustion : replyQustions) {
+            commentIds.add(replyQustion.getCommentId());
+        }
+        //查询改集合每一条一级评论下的所有二级评论
+        List<Comment> replyThisQuestionComments = commentMapper.findAllByCommentParentidAndCommentType(commentIds, CommentTypeEnum.COMMENT.getType());
+        for (Comment replyQustion : replyThisQuestionComments) {
+            commentIds.add(replyQustion.getCommentId());
+        }
+
+        for (Long commentId : commentIds) {
+            commentMapper.deleteByPrimaryKey(commentId);
+        }
+        questionMapper.deleteByPrimaryKey(questionId);
+            return 0;
     }
 
 

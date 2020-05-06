@@ -24,7 +24,7 @@
                             <img id="nav_avator"
                                     th:src="${session.user.getUserAvatarurl()}"> <cite
                                 th:text="${session.user.getUserName()}"></cite>
-                            <i th:text="${session.user.getUserStatus() eq 0 ?'正常':'封禁'}"></i></a>
+                            <i th:text="${session.userDTO.getRole().getRoleName()}"></i></a>
                         <div class="nav">
                             <a href="/profile/myCenter"><i class="iconfont icon-shezhi"></i>设置</a>
                             <a href="/loginout"><i class="iconfont icon-tuichu"

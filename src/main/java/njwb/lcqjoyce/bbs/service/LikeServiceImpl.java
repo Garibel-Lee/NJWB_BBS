@@ -1,12 +1,15 @@
 package njwb.lcqjoyce.bbs.service;
 
-import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
-import njwb.lcqjoyce.bbs.mapper.LikeMapper;
 import njwb.lcqjoyce.bbs.entity.Like;
+import njwb.lcqjoyce.bbs.mapper.LikeMapper;
 import njwb.lcqjoyce.bbs.service.impl.LikeService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
 @Service
-public class LikeServiceImpl implements LikeService{
+public class LikeServiceImpl implements LikeService {
 
     @Resource
     private LikeMapper likeMapper;
@@ -39,6 +42,29 @@ public class LikeServiceImpl implements LikeService{
     @Override
     public int updateByPrimaryKey(Like record) {
         return likeMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<Like> selectByCommentId(Long commentId) {
+        return likeMapper.selectAllByLikePostid(commentId);
+
+    }
+
+    @Override
+    public Like selectByPostIDandReplyId(Long postId, Long replyId) {
+
+        List<Like> likes = likeMapper.selectAllByLikePostidAndLikeReplyid(postId, replyId);
+        if (likes.size() == 0) {
+            return null;
+        } else {
+            return likes.get(0);
+        }
+
+    }
+
+    @Override
+    public int updateByByPostIDandReplyId(Like record) {
+        return likeMapper.updateByPrimaryKeySelective(record);
     }
 
 }

@@ -2,16 +2,13 @@ package njwb.lcqjoyce.bbs.dto;
 
 
 import lombok.Data;
-import njwb.lcqjoyce.bbs.entity.Like;
-import njwb.lcqjoyce.bbs.entity.User;
-
-import java.util.List;
+import njwb.lcqjoyce.bbs.entity.Question;
 
 /**
  * Created by LCQJOYCE on 2020/5/2.
  */
 @Data
-public class CommentDTO {
+public class CommentExsDTO {
     /**
      * 一二级评论id
      */
@@ -67,7 +64,5 @@ public class CommentDTO {
      */
     private Integer commentStatus;
 
-    private List<Like> likes;
-
-    private User user;
+    private Question question;
 }

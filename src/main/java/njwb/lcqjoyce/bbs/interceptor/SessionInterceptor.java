@@ -1,12 +1,14 @@
 package njwb.lcqjoyce.bbs.interceptor;
 
-import njwb.lcqjoyce.bbs.entity.User;
-import njwb.lcqjoyce.bbs.service.impl.NotificationService;
-import njwb.lcqjoyce.bbs.service.impl.UserService;
+import njwb.lcqjoyce.bbs.dto.UserDTO;
+import njwb.lcqjoyce.bbs.entity.*;
+import njwb.lcqjoyce.bbs.service.impl.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,8 +22,14 @@ import java.util.List;
  */
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
-
-
+    @Autowired
+    private RightService rightService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private VipService vipService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -40,9 +48,30 @@ public class SessionInterceptor implements HandlerInterceptor {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
-                    List<User> users =userService.selectByToken(token);;
+                    List<User> users =userService.selectByToken(token);
                     if (users.size() != 0) {
+                        User use=users.get(0);
                         //cookie放入session用于页面渲染
+                        UserDTO userDTO = new UserDTO();
+                        BeanUtils.copyProperties(use, userDTO);
+                        System.out.println(userDTO);
+                        Right rightUser =rightService.selectByUserId(userDTO.getUserId());
+                        Role roleUser = roleService.selectByPrimaryKey(rightUser.getRightRoleid());
+                        Card cardUser = cardService.selectByUseId(users.get(0).getUserId());
+                        Vip vipUser=vipService.selectByUserId(users.get(0).getUserId());
+                        if(!ObjectUtils.isEmpty(rightUser)){
+                            userDTO.setRight(rightUser);
+                        }
+                        if(!ObjectUtils.isEmpty(roleUser)){
+                            userDTO.setRole(roleUser);
+                        }
+                        if(!ObjectUtils.isEmpty(cardUser)){
+                            userDTO.setCard(cardUser);
+                        }
+                        if(!ObjectUtils.isEmpty(vipUser)){
+                            userDTO.setVip(vipUser);
+                        }
+                        request.getSession().setAttribute("userDTO", userDTO);
                         System.out.println("已有登录用户" + users.get(0).getUserName());
                         request.getSession().setAttribute("user", users.get(0));
                         //    Long unreadCount = notificationService.unreadCount(users.get(0).getId());

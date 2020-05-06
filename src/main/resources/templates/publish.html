@@ -25,18 +25,18 @@
 
         <div class="layui-form layui-form-pane">
             <form action="/publish" method="post">
-
+                <input type="hidden" id="id" name="id" th:value="${id}">
                 <div class="layui-form-item">
                     <label class="layui-form-label">标题</label>
                     <div class="layui-input-block">
-                        <input type="text" id="L_title" name="title" lay-verify="required" autocomplete="off"
+                        <input type="text" id="L_title"  placeholder="问题标题……" name="title" required lay-verify="required" th:value="${title}"  autocomplete="off"
                                class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item layui-form-text">
                     <div class="layui-input-block">
                         <div class="editor" id="question-editor">
-                            <textarea name="content" style="display: none;"></textarea>
+                            <textarea id="content" name="content" style="display: none;"  th:text="${description}"  ></textarea>
                         </div>
                     </div>
 
@@ -46,24 +46,25 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">所在类别</label>
                         <div class="layui-input-block">
-                            <select name="class">
+                            <select required  lay-verify="required|selection" name="class">
                                 <option value="0" selected>请选择</option>
                                 <option th:each="selectCategory,loopStatus:${tags}"
                                         th:value="${selectCategory.getCategoryName()}"
                                         th:text="${selectCategory.getCategoryName()}"
-                                        th:selected="${loopStatus.first}"
+                                        th:selected="${selectCategory.getCategoryName() eq tag}"
                                 ></option>
                             </select>
                         </div>
                     </div>
-                    <div class="layui-inline">
+                    <div class="layui-inline"  th:if="${experience eq null}">
                         <label class="layui-form-label">悬赏飞吻</label>
                         <div class="layui-input-block">
-                            <select name="experience">
-                                <option selected>5</option>
-                                <option>20</option>
-                                <option>50</option>
-                                <option>100</option>
+                            <select required  lay-verify="required|selectionExpend" name="experience">
+                                <option value="0" selected>请选择</option>
+                                <option >5</option>
+                                <option >20</option>
+                                <option >50</option>
+                                <option >100</option>
                             </select>
                         </div>
                     </div>
@@ -104,8 +105,35 @@
         var $ = layui.jquery;
         var form = layui.form();//表单验证
         var layer = layui.layer;
+        var questionId=$('input[name="id"]').val();
+
+        //表单验证（页面自动关联,验证结果绑定在表单）
+        form.verify({
+            selectionExpend: function (value, item) {
+                if(questionId==null || questionId==0){
+                    if (value==0) {
+                        return "下拉框需要选择"
+                    }
+                }
+
+            },
+            selection: function (value, item) {
+                if (value==0) {
+                    return "下拉框需要选择"
+                }
+            }
+        });
+
+
+
+
+
+
+
+
 
         form.on('submit(publish)', function (data) {
+            console.log(questionId);
             //用ajax时需要注意你的url接口、采用哪一种方式type获取，它的使用的哪种数据类型datatype
             $.ajax({
                 url: '/publish',
@@ -116,18 +144,26 @@
                     title: $('input[name="title"]').val(),
                     code: $('input[name="code"]').val(),
                     tag: $('select[name="class"]').val(),
+                    id: $('input[name="id"]').val(),
                     content: $('textarea[name="content"]').val(),
                     experience: $('select[name="experience"]').val()
                 },
                 success: function (res) {
                     if (res.code == 200) {
-                        layer.msg("发布成功", {icon: 1, time: 1000, shade: 0.4});
+                        layer.msg(res.message, {icon: 1, time: 1000, shade: 0.4});
                         setTimeout(function () {
                             //如果输入成功，可以跳到另一个你需要的界面
                             location.href = "/";
                         }, 1200);
-                    } else if(res.code == 500) {
+                    }
+                    if(res.code == 500) {
                         layer.msg(res.message, {icon: 2, time: 800, shade: 0.4});
+                    }
+                    if(res.code == 2013) {
+                        layer.msg("验证码有误", {icon: 2, time: 800, shade: 0.4});
+                    }
+                    if(res.code == 2020) {
+                        layer.msg("文本为空", {icon: 2, time: 800, shade: 0.4});
                     }
                 }
                 /*   error: function () {

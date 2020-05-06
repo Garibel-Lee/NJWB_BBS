@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ public class QuestionController {
     private ReportService reportService;
     @Autowired
     private CollectService collectService;
+    @Autowired
+    private LikeService likeService;
 
 
     @Autowired
@@ -60,10 +63,13 @@ public class QuestionController {
         List<QuestionDTO> hotQuestions = questionService.selectHot(questionDTO);
         //  null全部评论               问题回复评论CommentTypeEnum.QUESTION
         List<CommentDTO> comments = commentService.listByTargetId(questionDTO,null);
-
-
-
-
+        if(!ObjectUtils.isEmpty(comments)){
+            for (CommentDTO comment : comments) {
+                List<Like> objects = new ArrayList<>();
+                objects=likeService.selectByCommentId(comment.getCommentId());
+                comment.setLikes(objects);
+            }
+        }
 
         Map<String, Object> statusList = new HashMap<>();
         User loginUser = (User) request.getSession().getAttribute("user");
@@ -75,6 +81,7 @@ public class QuestionController {
         statusList.put("editStatus", -1);  //编辑标记
         statusList.put("collectStatus", -1);  //收藏标记
         statusList.put("replyStatus", -1);  //回复标记
+        statusList.put("loveStatus", -1);
         //游客 普通用户  会员管理员   优先级最低
         //不需要任何权限
         statusList.put("topStatus", questionDTO.getQuestionTop());
@@ -82,9 +89,10 @@ public class QuestionController {
 
         if (ObjectUtils.isEmpty(loginUser)) {
             //未登录用户
-
+            statusList.put("loveStatus", -1);
             model.addAttribute("userId", loginUser);
         } else {
+            statusList.put("loveStatus", 0);//登录的用户可以点赞
             statusList.put("replyStatus", 0);  //回复标记
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(loginUser, userDTO);
@@ -126,7 +134,7 @@ public class QuestionController {
                 }
             }//不是自己帖子可以进行收藏
             else {
-               Integer collectSign=collectService.selectByUserIdandQuestionId(userDTO.getUserId(),questionDTO.getQuestionId());
+               Integer collectSign=collectService.selectByQuestionIdandUserId(questionDTO.getQuestionId(),userDTO.getUserId());
 
                if(collectSign>0){
                    statusList.put("collectStatus", 1);  //可以编辑标记
@@ -159,9 +167,7 @@ public class QuestionController {
         }
 
 
-        // List<QuestionDTO> relateQuestions = questionService.selectRelated(questionDTO);
-
-
+        // List<QuestionDTO> relateQuestions = questionService.selectRelated(questionDTO)
         //传参枚举类型1  ，名为回复问题的评论
         //List<CommentDTO> commentDTOS = commentService.findAllByParentIdAndType(questionId, CommentTypeEnum.QUSTION);
         // System.out.println(commentDTOS);

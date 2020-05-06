@@ -17,7 +17,7 @@
 
 <div class="main fly-user-main layui-clear">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-        <li class="layui-nav-item"><a href="/profile/myIndex"> <i
+        <li class="layui-nav-item"><a th:href="@{'/user/'+${session.user.getUserId()}}"> <i
                 class="layui-icon">&#xe609;</i> 我的主页 </a></li>
         <li class="layui-nav-item "><a href="/profile/myCenter"> <i
                 class="layui-icon">&#xe612;</i> 用户中心 </a></li>
@@ -27,7 +27,7 @@
                 class="layui-icon">&#xe611;</i> 我的消息 </a></li>
         <li class="layui-nav-item  "><a href="/profile/myRecharge"> <i
                 class="layui-icon">&#xe61a;</i> 账户充值/会员 </a></li>
-        <li class="layui-nav-item "><a href="/profile/report"> <i
+        <li class="layui-nav-item "th:if="${session.userDTO.getRole().getRoleId() eq 3}"><a href="/profile/report"> <i
                 class="layui-icon">&#xe61a;</i> 审核举报 </a></li>
     </ul>
 
@@ -42,24 +42,51 @@
             <div id="LAY_minemsg" style="margin-top: 10px;">
                 <!--<div class="fly-none">您暂时没有最新消息</div>-->
                 <ul class="mine-msg">
-                    <li data-id="123">
+
+
+
+                    <li  th:each="notification : ${notificationPages.data}">
                         <blockquote class="layui-elem-quote">
-                            <a href=/profile/home target="_blank"><cite>Absolutely</cite></a>回答了您的求解<a target="_blank"
-                                                                                                     href="messageDetail.html"><cite>layui后台框架</cite></a>
+                            <a th:href="@{'/user/'+${notification.notificationNotifier}}" target="_blank"><cite>Absolutely</cite></a> <span th:text="${notification.notificationTypeName}"></span>
+                            <a target="_blank"  th:href="@{'/notification/'+ ${notification.notificationId}}"  ><cite> [(${notification.notificationOutertitle})]</cite></a>
                         </blockquote>
-                        <p><span>2017-05-01</span><a href="javascript:;"
-                                                     class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a>
+                        <p><span> [(${#dates.format(notification.notificationGmtcreate,'yyyy-MM-dd HH:mm:ss')})]</span>
+                            <a th:href="@{'/notification/delete/'+ ${notification.notificationId}}"   th:if="${notification.getNotificationStatus() eq 1}"    class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a>
                         </p>
                     </li>
-                    <li data-id="123">
-                        <blockquote class="layui-elem-quote">
-                            系统消息：欢迎使用 layui
-                        </blockquote>
-                        <p><span>2017-05-01</span><a href="javascript:;"
-                                                     class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a>
-                        </p>
-                    </li>
+
+
                 </ul>
+
+                <div style="text-align: center;">
+
+                    <div class="layui-box layui-laypage layui-laypage-default"  th:if="${notificationPages.getData() ne null}">
+                        <div >
+                            <div style="float: left"> <a th:href="@{/profile/myMessage/(page=${notificationPages.page -1})}"  th:hidden="${notificationPages.showPrevious}"
+                                                         class="layui-laypage-prev">上一页</a>
+                            </div>
+                            <div style="float: left">    <a href="/profile/myMessage/?page=1" th:hidden="${notificationPages.showFirstPage}" class="laypage_first" title="首页">首页</a></div>
+
+
+                            <div th:each="page :${notificationPages.pages}" style="float: left">
+
+                                <a th:href="@{/profile/myMessage/(page=${page})}" th:if="${notificationPages.page!=page}" th:text="${page}"></a>
+
+                                <span th:if="${notificationPages.page==page}" class="layui-laypage-curr">
+                            <em class="layui-laypage-em" th:href="@{/profile/myMessage/(page=${page})}" th:text="${page}"></em>
+                          </span>
+
+                            </div>
+
+
+                            <div style="float: left"> <a th:href="@{/profile/myMessage/(page=${notificationPages.totalPage})}" th:hidden="${notificationPages.showEndPage}"
+                                                         class="layui-laypage-last" title="尾页">末页</a></div>
+                            <div style="float: left">        <a th:hidden="${notificationPages.showNext}" th:href="@{/profile/myMessage/(page=${notificationPages.page +1})}"
+                                                                class="layui-laypage-next">下一页</a></div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

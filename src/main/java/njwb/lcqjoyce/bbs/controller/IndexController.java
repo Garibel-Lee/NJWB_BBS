@@ -1,5 +1,6 @@
 package njwb.lcqjoyce.bbs.controller;
 
+import njwb.lcqjoyce.bbs.dto.CommentExsDTO;
 import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
 import njwb.lcqjoyce.bbs.dto.QuestionDTO;
 import njwb.lcqjoyce.bbs.dto.ResultDTO;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LCQJOYCE on 2020/5/1.
@@ -24,8 +27,8 @@ public class IndexController {
 
     @Autowired
     private UserService userService;
-
-
+    @Resource
+    private CommentService commentService;
     @Resource
     private QuestionService questionService;
     @Autowired
@@ -73,7 +76,7 @@ public class IndexController {
     public String index(@RequestParam(defaultValue = "1") int page,
                         @RequestParam(defaultValue = "10") int size,
                         Model model) {
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index", page, size);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index", page, 10);
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
@@ -101,7 +104,7 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top", page, size);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top", page, 10);
         if (pagination.getPages().size() == 0) {
             pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
@@ -125,7 +128,7 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved", page, size);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved", page, 10);
         if (pagination.getPages().size() == 0) {
             pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
@@ -148,7 +151,7 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve", page, size);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve", page, 10);
         /* if(pagination.getData())*/
         model.addAttribute("pagination", pagination);
         return "unsolve";
@@ -179,6 +182,11 @@ public class IndexController {
         }
 
 
+        List<CommentExsDTO>  commentExsDTOs = new ArrayList<>();
+        commentExsDTOs=commentService.listmyCommentsByUserId(id);
+        System.out.println(commentExsDTOs);
+
+        model.addAttribute("myComments", commentExsDTOs);
         model.addAttribute("pagination", questionDTOS);
         model.addAttribute("user", anthor);
         return "myIndex";
