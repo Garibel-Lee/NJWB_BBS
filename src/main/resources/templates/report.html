@@ -63,7 +63,7 @@
                     <ul class="mine-view jie-row">
                         <li  th:each="handleReport:${reportDTOS}" th:if="${handleReport.getReportStatus() eq 1}">
                             <a  class="jie-title"
-                                th:href="@{/(reportDetail=${handleReport.getReportId()})}"
+                                th:href="@{'/reportOver/'+${handleReport.getReportId()}}"
                                 th:text="${handleReport.getReportTitle()}">
                             </a>
                             <i>[(${#dates.format(handleReport.getReportGmtcreatetime(),'yyyy-MM-dd')})]</i>

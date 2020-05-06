@@ -159,6 +159,15 @@ public class PageFunctionController {
 
     }
 
+    @RequestMapping("/deleteMessage")
+    @ResponseBody
+    public Object deleteMessage(HttpServletRequest request, Long questionId) {
+        User user = (User) request.getSession().getAttribute("user");
+        notificationService.deleteByNotificationReceiver(user.getUserId());
+        return ResultDTO.errorOf(200, "删除成功");
+
+    }
+
 
     //
     @RequestMapping("/userThisComment")

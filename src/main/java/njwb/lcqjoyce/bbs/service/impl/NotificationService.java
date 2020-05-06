@@ -29,4 +29,6 @@ public interface NotificationService {
     Long unreadCount(Long userId);
 
     void  ViocreateNotify(ReportDTO reportDTO, String outerTitle, NotificationTypeEnum notificationType);
+
+    void deleteByNotificationReceiver(Long userId);
 }

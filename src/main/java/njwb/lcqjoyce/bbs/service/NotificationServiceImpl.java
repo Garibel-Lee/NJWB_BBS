@@ -153,5 +153,10 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
+    @Override
+    public void deleteByNotificationReceiver(Long userId) {
+        notificationMapper.deleteByNotificationReceiver(userId);
+    }
+
 
 }

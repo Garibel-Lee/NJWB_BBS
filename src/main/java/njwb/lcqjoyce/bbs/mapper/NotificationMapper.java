@@ -26,5 +26,8 @@ public interface NotificationMapper {
 
     List<Notification> selectAllByNotificationReceiver(@Param("notificationReceiver") Long notificationReceiver, @Param("offset") Integer offset, @Param("size") Integer size);
 
+    int deleteByNotificationReceiver(@Param("notificationReceiver")Long notificationReceiver);
+
+
 
 }

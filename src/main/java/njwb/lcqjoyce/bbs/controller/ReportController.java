@@ -50,6 +50,15 @@ public class ReportController {
         model.addAttribute("reportDTO", reportDTO);
         return "reportDetail";
     }
+    @GetMapping("/reportOver/{id}")
+    public String reportOver(@PathVariable(name = "id") Long id,
+                           Model model) {
+        ReportDTO reportDTO = reportService.selectOneReportDto(id);
+        Audit audit=auditService.findAuditBySome(reportDTO.getReportUser().getUserId(),reportDTO.getPostUser().getUserId(),reportDTO.getReportPostid());
+        model.addAttribute("reportResult", audit.getAuditResult());
+        model.addAttribute("reportDTO", reportDTO);
+        return "reportOver";
+    }
 
     //校验验证码
     @RequestMapping(value = "/reportOver", method = RequestMethod.POST)
@@ -157,5 +166,6 @@ public class ReportController {
          audit.setAuditPostuserid(report.getReportPostuserid());
          audit.setAuditResult(section);
          audit.setAuditGmtcreatetime(System.currentTimeMillis());
+         auditService.insert(audit);
     }
 }

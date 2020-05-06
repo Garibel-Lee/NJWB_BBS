@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="njwb.lcqjoyce.bbs.mapper.DeleMapper">
+  <resultMap id="BaseResultMap" type="njwb.lcqjoyce.bbs.entity.Dele">
+    <!--@mbg.generated-->
+    <!--@Table dele-->
+    <id column="deletion_id" jdbcType="BIGINT" property="deletionId" />
+    <result column="deletion_postUserId" jdbcType="BIGINT" property="deletionPostuserid" />
+    <result column="deletion_postTitle" jdbcType="VARCHAR" property="deletionPosttitle" />
+    <result column="deletion_postContent" jdbcType="VARCHAR" property="deletionPostcontent" />
+    <result column="deletion_remark" jdbcType="VARCHAR" property="deletionRemark" />
+    <result column="deletion_gmtCreatetime" jdbcType="BIGINT" property="deletionGmtcreatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    deletion_id, deletion_postUserId, deletion_postTitle, deletion_postContent, deletion_remark, 
+    deletion_gmtCreatetime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from dele
+    where deletion_id = #{deletionId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from dele
+    where deletion_id = #{deletionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="njwb.lcqjoyce.bbs.entity.Dele">
+    <!--@mbg.generated-->
+    insert into dele (deletion_id, deletion_postUserId, deletion_postTitle, 
+      deletion_postContent, deletion_remark, deletion_gmtCreatetime
+      )
+    values (#{deletionId,jdbcType=BIGINT}, #{deletionPostuserid,jdbcType=BIGINT}, #{deletionPosttitle,jdbcType=VARCHAR}, 
+      #{deletionPostcontent,jdbcType=VARCHAR}, #{deletionRemark,jdbcType=VARCHAR}, #{deletionGmtcreatetime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="njwb.lcqjoyce.bbs.entity.Dele">
+    <!--@mbg.generated-->
+    insert into dele
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deletionId != null">
+        deletion_id,
+      </if>
+      <if test="deletionPostuserid != null">
+        deletion_postUserId,
+      </if>
+      <if test="deletionPosttitle != null">
+        deletion_postTitle,
+      </if>
+      <if test="deletionPostcontent != null">
+        deletion_postContent,
+      </if>
+      <if test="deletionRemark != null">
+        deletion_remark,
+      </if>
+      <if test="deletionGmtcreatetime != null">
+        deletion_gmtCreatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deletionId != null">
+        #{deletionId,jdbcType=BIGINT},
+      </if>
+      <if test="deletionPostuserid != null">
+        #{deletionPostuserid,jdbcType=BIGINT},
+      </if>
+      <if test="deletionPosttitle != null">
+        #{deletionPosttitle,jdbcType=VARCHAR},
+      </if>
+      <if test="deletionPostcontent != null">
+        #{deletionPostcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="deletionRemark != null">
+        #{deletionRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="deletionGmtcreatetime != null">
+        #{deletionGmtcreatetime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="njwb.lcqjoyce.bbs.entity.Dele">
+    <!--@mbg.generated-->
+    update dele
+    <set>
+      <if test="deletionPostuserid != null">
+        deletion_postUserId = #{deletionPostuserid,jdbcType=BIGINT},
+      </if>
+      <if test="deletionPosttitle != null">
+        deletion_postTitle = #{deletionPosttitle,jdbcType=VARCHAR},
+      </if>
+      <if test="deletionPostcontent != null">
+        deletion_postContent = #{deletionPostcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="deletionRemark != null">
+        deletion_remark = #{deletionRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="deletionGmtcreatetime != null">
+        deletion_gmtCreatetime = #{deletionGmtcreatetime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where deletion_id = #{deletionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="njwb.lcqjoyce.bbs.entity.Dele">
+    <!--@mbg.generated-->
+    update dele
+    set deletion_postUserId = #{deletionPostuserid,jdbcType=BIGINT},
+      deletion_postTitle = #{deletionPosttitle,jdbcType=VARCHAR},
+      deletion_postContent = #{deletionPostcontent,jdbcType=VARCHAR},
+      deletion_remark = #{deletionRemark,jdbcType=VARCHAR},
+      deletion_gmtCreatetime = #{deletionGmtcreatetime,jdbcType=BIGINT}
+    where deletion_id = #{deletionId,jdbcType=BIGINT}
+  </update>
+</mapper>

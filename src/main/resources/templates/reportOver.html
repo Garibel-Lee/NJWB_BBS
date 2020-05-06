@@ -40,7 +40,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">帖子标题</label>
             <div class="layui-input-inline">
-                <input style="border:none;" type="text" th:value="${reportDTO.getPostQuestion().getQuestionTitle()}"
+                <input style="border:none;" type="text" th:text="${reportDTO.getPostQuestion().getQuestionTitle()}"
                        readonly="readonly"/>
             </div>
         </div>
@@ -48,15 +48,15 @@
             <label class="layui-form-label">帖子内容</label>
             <div class="layui-input-inline">
                     <textarea rows="5" readonly="readonly"
-                              th:value="${reportDTO.getPostQuestion().getQuestionDescription()}"
-                              cols="50">帖子内容</textarea>
+                              th:text="${reportDTO.getPostQuestion().getQuestionDescription()}"
+                              cols="50"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">举报标题</label>
             <div class="layui-input-inline">
                 <input style="border:none;" type="text" readonly="readonly"
-                       th:value="${reportDTO.getReportTitle()}"/>
+                       th:text="${reportDTO.getReportTitle()}"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -75,6 +75,7 @@
             <div class="layui-form-item">
                 <label>审核结果</label>
                 <div th:text="${reportResult}"></div>
+
             </div>
 
 

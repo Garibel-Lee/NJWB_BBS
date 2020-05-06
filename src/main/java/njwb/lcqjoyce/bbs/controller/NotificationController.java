@@ -12,13 +12,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by codedrinker on 2019/6/14.
+ * Created by LCQJOYCE on 2019/6/14.
  */
 @Controller
 public class NotificationController {
 
     @Autowired
     private NotificationService notificationService;
+
+    @GetMapping("/notification/delete/{id}")
+    public String deleteNotification(HttpServletRequest request,  @PathVariable(name = "id") Long id) {
+
+        User user = (User) request.getSession().getAttribute("user");
+        notificationService.deleteByPrimaryKey(id);
+
+            return "redirect:/";
+
+    }
+    @GetMapping("/deleteAllnotifications")
+    public String delete(HttpServletRequest request) {
+
+        User user = (User) request.getSession().getAttribute("user");
+        notificationService.deleteByNotificationReceiver(user.getUserId());
+
+        return "redirect:/";
+
+    }
+
+
+
 
     @GetMapping("/notification/{id}")
     public String profile(HttpServletRequest request,
