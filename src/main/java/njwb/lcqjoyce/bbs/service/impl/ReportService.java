@@ -1,6 +1,10 @@
 package njwb.lcqjoyce.bbs.service.impl;
 
+import njwb.lcqjoyce.bbs.dto.ReportDTO;
 import njwb.lcqjoyce.bbs.entity.Report;
+
+import java.util.List;
+
 public interface ReportService{
 
 
@@ -17,4 +21,9 @@ public interface ReportService{
     int updateByPrimaryKey(Report record);
 
     Report selectByQuestionId(Long reportId);
+
+    List<ReportDTO> selectAllreports();
+
+    ReportDTO selectOneReportDto(Long reportId);
+
 }

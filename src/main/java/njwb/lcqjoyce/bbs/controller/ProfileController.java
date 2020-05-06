@@ -30,6 +30,8 @@ public class ProfileController {
     @Autowired
     private RoleService roleService;
     @Autowired
+    private ReportService reportService;
+    @Autowired
     private CollectService collectService;
     @Autowired
     private CardService cardService;
@@ -246,7 +248,9 @@ public class ProfileController {
 
             return "myRecharge";
         } else if ("report".equals(action)) {
+            List<ReportDTO> reportDTOS = reportService.selectAllreports();
 
+            model.addAttribute("reportDTOS", reportDTOS);
 
             return "report";
         }

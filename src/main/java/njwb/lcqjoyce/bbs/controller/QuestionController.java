@@ -143,7 +143,6 @@ public class QuestionController {
                }
             }
 
-
             //会员用户且是我的自己的帖子
             if (!ObjectUtils.isEmpty(userDTO.getVip()) && questionDTO.getQuestionCreator().equals(userDTO.getUserId())) {
                 if (questionDTO.getQuestionTop() == 0) {
@@ -162,6 +161,14 @@ public class QuestionController {
                     statusList.put("setTopStatus", 1);
                 }
             }
+
+
+            Right selecRight = rightService.selectByUserId(questionDTO.getQuestionCreator());
+            if(selecRight.getRightRoleid()==3){
+                statusList.put("reportStatus", -1);
+            }
+
+
             System.out.println(questionDTO);
             System.out.println(userDTO);
         }

@@ -73,10 +73,11 @@ public class IndexController {
 
     //主页控制
     @GetMapping("/")
-    public String index(@RequestParam(defaultValue = "1") int page,
-                        @RequestParam(defaultValue = "10") int size,
+    public String index(@RequestParam(name ="page",defaultValue = "1") int page,
+                        @RequestParam(name ="size",defaultValue = "10") int size,
+                        @RequestParam(name ="search",required =false) String  search,
                         Model model) {
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index", page, 10);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index", page, 10,search);
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
@@ -99,12 +100,13 @@ public class IndexController {
     @GetMapping("/top")
     public String top(@RequestParam(defaultValue = "1") int page,
                       @RequestParam(defaultValue = "10") int size,
+                      @RequestParam(name ="search",required =false) String  search,
                       Model model) {
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top", page, 10);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top", page, 10,search);
         if (pagination.getPages().size() == 0) {
             pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
@@ -123,12 +125,14 @@ public class IndexController {
     @GetMapping("/solved")
     public String solved(@RequestParam(defaultValue = "1") int page,
                          @RequestParam(defaultValue = "10") int size,
+                         @RequestParam(name ="search",required =false) String  search,
+
                          Model model) {
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved", page, 10);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved", page, 10,search);
         if (pagination.getPages().size() == 0) {
             pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
@@ -146,12 +150,14 @@ public class IndexController {
     @GetMapping("/unsolve")
     public String unsolve(@RequestParam(defaultValue = "1") int page,
                           @RequestParam(defaultValue = "10") int size,
+                          @RequestParam(name ="search",required =false) String  search,
+
                           Model model) {
 /*       PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve", page, 10);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve", page, 10,search);
         /* if(pagination.getData())*/
         model.addAttribute("pagination", pagination);
         return "unsolve";

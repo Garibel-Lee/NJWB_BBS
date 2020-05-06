@@ -2,6 +2,7 @@ package njwb.lcqjoyce.bbs.service;
 
 import njwb.lcqjoyce.bbs.dto.NotificationDTO;
 import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
+import njwb.lcqjoyce.bbs.dto.ReportDTO;
 import njwb.lcqjoyce.bbs.entity.Notification;
 import njwb.lcqjoyce.bbs.entity.User;
 import njwb.lcqjoyce.bbs.enums.NotificationStatusEnum;
@@ -134,6 +135,22 @@ public class NotificationServiceImpl implements NotificationService {
         Long unReadCount = notificationMapper.findAllByNotificationReceiverAndNotificationStatus(userId, NotificationStatusEnum.UNREAD.getStatus());
 
         return unReadCount;
+    }
+
+    @Override
+    public void ViocreateNotify(ReportDTO reportDTO, String vioSection, NotificationTypeEnum notificationType) {
+
+        Notification notification = new Notification();
+        notification.setNotificationGmtcreate(System.currentTimeMillis());
+        notification.setNotificationType(notificationType.getType());
+        notification.setNotificationOuterid(-1L);
+        notification.setNotificationNotifier(reportDTO.getReportReportuserid());
+        notification.setNotificationStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setNotificationReceiver(reportDTO.getReportPostuserid());
+        notification.setNotificationNotifiername(reportDTO.getReportUser().getUserName());
+        notification.setNotificationOutertitle(vioSection);
+        notificationMapper.insert(notification);
+
     }
 
 

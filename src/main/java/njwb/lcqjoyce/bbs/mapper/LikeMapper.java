@@ -24,6 +24,10 @@ public interface LikeMapper {
 
     List<Like> selectAllByLikePostid(@Param("likePostid") Long likePostid);
 
+    int deleteByLikePostid(@Param("likePostid")Long likePostid);
+
+
+
     List<Like> selectAllByLikePostidAndLikeReplyid(@Param("likePostid") Long likePostid, @Param("likeReplyid") Long likeReplyid);
 
 

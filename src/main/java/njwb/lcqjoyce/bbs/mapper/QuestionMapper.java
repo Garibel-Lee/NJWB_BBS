@@ -18,11 +18,11 @@ public interface QuestionMapper {
 
     int updateByPrimaryKeySelective(Question record);
 
-    List<Question> selectAllByQuestionCreator(@Param("questionCreator") Long questionCreator,@Param("questionStatus") Integer questionStatus, @Param("questionTop") Integer questionTop,@Param("offset")Integer offset,@Param("size") Integer size);
+    List<Question> selectAllByQuestionCreator(@Param("search") String search,@Param("questionCreator") Long questionCreator,@Param("questionStatus") Integer questionStatus, @Param("questionTop") Integer questionTop,@Param("offset")Integer offset,@Param("size") Integer size);
 
     int updateByPrimaryKey(Question record);
 
-    Integer count(@Param("questionCreator") Long questionCreator,@Param("questionStatus") Integer questionStatus, @Param("questionTop") Integer questionTop);
+    Integer count(@Param("search") String search,@Param("questionCreator") Long questionCreator,@Param("questionStatus") Integer questionStatus, @Param("questionTop") Integer questionTop);
 
     Integer countByQuestionCreator(@Param("questionCreator")Long questionCreator);
 

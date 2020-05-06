@@ -39,30 +39,37 @@
     <div class="fly-panel fly-panel-user" pad20>
         <div class="layui-tab layui-tab-brief" lay-filter="user">
             <ul class="layui-tab-title" id="LAY_mine">
-                <li data-type="mine-jie" class="layui-this" lay-id="index">未审核举报(1)</li>
+                <li data-type="mine-jie" class="layui-this" lay-id="index">未审核举报</li>
                 <li data-type="collection" data-url="/collection/find/"
-                    lay-id="collection">已审核举报(1)
+                    lay-id="collection">已审核举报
                 </li>
             </ul>
             <div class="layui-tab-content" style="padding: 20px 0;">
                 <div class="layui-form layui-form-pane layui-tab-item  layui-show">
                     <ul class="mine-view jie-row">
-                        <li><a class="jie-title"
-                               href="reportDetail.html">
-                            举报这个帖子</a><i>2017-05-01</i><em>举报人:
-                            压缩
-                        </em></li>
-
+                        <li  th:each="handleReport:${reportDTOS}" th:if="${handleReport.getReportStatus() eq 0}">
+                            <a  class="jie-title"
+                                th:href="@{'/reportDetail/'+${handleReport.getReportId()}}"
+                                th:text="${handleReport.getReportTitle()}">
+                            </a>
+                            <i>[(${#dates.format(handleReport.getReportGmtcreatetime(),'yyyy-MM-dd')})]</i>
+                            <em>举报人：[(${handleReport.getReportUser().getUserName()})]</em>
+                        </li>
                     </ul>
                 </div>
+
+
                 <div class="layui-tab-item ">
                     <ul class="mine-view jie-row">
-                        <li><a class="jie-title"
-                               href="reportOver.html">
-                            举报这个帖子</a><i>2017-05-01</i><em>举报人:
-                            压缩
-                        </em></li>
-                        <!--  <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>没有已审核的举报</span></div>-->
+                        <li  th:each="handleReport:${reportDTOS}" th:if="${handleReport.getReportStatus() eq 1}">
+                            <a  class="jie-title"
+                                th:href="@{/(reportDetail=${handleReport.getReportId()})}"
+                                th:text="${handleReport.getReportTitle()}">
+                            </a>
+                            <i>[(${#dates.format(handleReport.getReportGmtcreatetime(),'yyyy-MM-dd')})]</i>
+                            <em>[(${handleReport.getReportUser().getUserName()})]</em>
+                        </li>
+
                     </ul>
 
                 </div>

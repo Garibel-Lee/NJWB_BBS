@@ -23,6 +23,9 @@ public interface CollectMapper {
 
     List<Collect> findAllByCollectUserid(@Param("collectUserid")Long collectUserid);
 
+    int deleteByCollectPostid(@Param("collectPostid")Long collectPostid);
+
+
 
 
 }

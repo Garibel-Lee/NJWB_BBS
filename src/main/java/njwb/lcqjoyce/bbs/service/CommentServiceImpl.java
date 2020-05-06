@@ -13,10 +13,7 @@ import njwb.lcqjoyce.bbs.enums.NotificationStatusEnum;
 import njwb.lcqjoyce.bbs.enums.NotificationTypeEnum;
 import njwb.lcqjoyce.bbs.exception.CustomizeErrorCode;
 import njwb.lcqjoyce.bbs.exception.CustomizeException;
-import njwb.lcqjoyce.bbs.mapper.CommentMapper;
-import njwb.lcqjoyce.bbs.mapper.NotificationMapper;
-import njwb.lcqjoyce.bbs.mapper.QuestionMapper;
-import njwb.lcqjoyce.bbs.mapper.UserMapper;
+import njwb.lcqjoyce.bbs.mapper.*;
 import njwb.lcqjoyce.bbs.service.impl.CommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -37,7 +34,10 @@ public class CommentServiceImpl implements CommentService {
     private UserMapper userMapper;
     @Resource
     private NotificationMapper notificationMapper;
-
+    @Resource
+    private LikeMapper likeMapper;
+    @Resource
+    private  CollectMapper collectMapper;
     @Override
     public int deleteByPrimaryKey(Long commentId) {
         return commentMapper.deleteByPrimaryKey(commentId);
@@ -227,6 +227,9 @@ public class CommentServiceImpl implements CommentService {
     public int deleteByPrimaryKeyAndComments(Long questionId) {
         List<Long> questionIds = new ArrayList<>();
         questionIds.add(questionId);
+        //删除所有收藏
+        collectMapper.deleteByCollectPostid(questionId);
+
         //查出该问题所有一级回复
         List<Comment> replyQustions = commentMapper.findAllByCommentParentidAndCommentType(questionIds, CommentTypeEnum.QUESTION.getType());
         //取出一级回复所有id集合 ，查询改集合每一条一级评论下的所有二级评论
@@ -245,10 +248,14 @@ public class CommentServiceImpl implements CommentService {
         }
 
         for (Long commentId : commentIds) {
+
+            //删除评论下的所有点赞数
+            likeMapper.deleteByPrimaryKey(commentId);
+
             commentMapper.deleteByPrimaryKey(commentId);
         }
         questionMapper.deleteByPrimaryKey(questionId);
-            return 0;
+        return 0;
     }
 
 

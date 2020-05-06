@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,7 +46,9 @@ public class PageFunctionController {
         if (!ObjectUtils.isEmpty(reportService.selectByQuestionId(questionId))) {
             return ResultDTO.okOf(200, "已经有人举报过了");
         }
-        ;
+        if (StringUtils.isEmpty(reportTile) || StringUtils.isEmpty(reportTile)) {
+            return ResultDTO.okOf(200, "举报失败，缺少举报信息");
+        }
         Report report = new Report();
         report.setReportPostid(questionId);
         report.setReportPostuserid(questionUserId);
@@ -110,7 +113,7 @@ public class PageFunctionController {
         if (collectService.insert(collect) == 0) {
             return ResultDTO.errorOf(500, "收藏失败");
         } else {
-            collectService.createNotify(collect,user.getUserName(),questionDTO.getQuestionTitle());
+            collectService.createNotify(collect, user.getUserName(), questionDTO.getQuestionTitle());
             return ResultDTO.errorOf(200, "收藏成功");
         }
     }
@@ -143,7 +146,7 @@ public class PageFunctionController {
     public Object deleteQustion(HttpServletRequest request, Long questionId) {
         User user = (User) request.getSession().getAttribute("user");
         QuestionDTO questionDTO = questionService.selectByPrimaryKey(questionId);
-        Dele dele=new Dele();
+        Dele dele = new Dele();
         dele.setDeletionGmtcreatetime(System.currentTimeMillis());
         dele.setDeletionPostuserid(questionDTO.getQuestionCreator());
         dele.setDeletionPosttitle(questionDTO.getQuestionTitle());
@@ -168,37 +171,32 @@ public class PageFunctionController {
         Question updateQuestion = new Question();
         updateQuestion.setQuestionId(questionDTO.getQuestionId());
         updateQuestion.setQuestionStatus(1);
-        Integer Aresult=  questionService.updateByPrimaryKeySelective(updateQuestion);
+        Integer Aresult = questionService.updateByPrimaryKeySelective(updateQuestion);
         Comment comment = commentService.selectByPrimaryKey(commentId);
 
-        User updateUser=new User();
+        User updateUser = new User();
         updateUser.setUserId(comment.getCommentCommentator());
-        updateUser.setUserBalances(questionDTO.getQuestionExpend()+user.getUserBalances());
-        Integer Cresult=userService.updateByPrimaryKeySelective(updateUser);
+        updateUser.setUserBalances(questionDTO.getQuestionExpend() + user.getUserBalances());
+        Integer Cresult = userService.updateByPrimaryKeySelective(updateUser);
 
         Comment updateComment = new Comment();
         updateComment.setCommentId(comment.getCommentId());
         updateComment.setCommentStatus(1);
-        Integer Bresult=commentService.updateByPrimaryKeySelective(updateComment);
+        Integer Bresult = commentService.updateByPrimaryKeySelective(updateComment);
 
-        if(Aresult!=0 && Bresult!=0 && Cresult!=0)
-        {
+        if (Aresult != 0 && Bresult != 0 && Cresult != 0) {
 
             /*commentService.createNotify(comment,);*/
 
 
             return ResultDTO.errorOf(200, "采纳成功");
 
-        }else {
+        } else {
             return ResultDTO.errorOf(200, "采纳失败");
         }
 
 
     }
-
-
-
-
 
 
     @RequestMapping("/bankCardCharge")
@@ -209,12 +207,12 @@ public class PageFunctionController {
 
         System.out.println((user.getCard().getCardId().toString().equals(cardNumber)));
 
-        if(!user.getCard().getCardPwd().equals(password)){
-            return ResultDTO.errorOf(222,"密码不对");
+        if (!user.getCard().getCardPwd().equals(password)) {
+            return ResultDTO.errorOf(222, "密码不对");
         }
 
-        if(user.getCard().getCardBalance().subtract(comount).compareTo(BigDecimal.ZERO)==0){
-            return ResultDTO.errorOf(222,"银行卡钱不够了");
+        if (user.getCard().getCardBalance().subtract(comount).compareTo(BigDecimal.ZERO) == 0) {
+            return ResultDTO.errorOf(222, "银行卡钱不够了");
         }
         User updateUser = new User();
         updateUser.setUserId(user.getUserId());
@@ -225,7 +223,7 @@ public class PageFunctionController {
         updateCard.setCardUserid(user.getCard().getCardUserid());
         updateCard.setCardBalance(user.getCard().getCardBalance().subtract(comount));
         cardService.updateByPrimaryKeySelective(updateCard);
-        return ResultDTO.errorOf(200,"银行卡充值成功");
+        return ResultDTO.errorOf(200, "银行卡充值成功");
 
     }
 
@@ -234,28 +232,27 @@ public class PageFunctionController {
     @ResponseBody
     public Object lovethisComment(HttpServletRequest request, Long commentId, Long replyId) {
         UserDTO user = (UserDTO) request.getSession().getAttribute("userDTO");
-        Like like=new Like();
-        if(commentId.equals(null)){
-            return ResultDTO.errorOf(200,"信号不好丢了点数据");
+        Like like = new Like();
+        if (commentId.equals(null)) {
+            return ResultDTO.errorOf(200, "信号不好丢了点数据");
         }
-        if(replyId.equals(null)){
-            return ResultDTO.errorOf(200,"信号不好丢了点数据");
+        if (replyId.equals(null)) {
+            return ResultDTO.errorOf(200, "信号不好丢了点数据");
         }
         like.setLikePostid(commentId);
         like.setLikeReplyid(replyId);
         Like selectLike = likeService.selectByPostIDandReplyId(commentId, replyId);
-        if(ObjectUtils.isEmpty(selectLike)){
+        if (ObjectUtils.isEmpty(selectLike)) {
             like.setLikeStatus(1);
             likeService.insert(like);
-            return ResultDTO.errorOf(200,"点赞");
-        }else{
-            if(selectLike.getLikeStatus()==1){
+            return ResultDTO.errorOf(200, "点赞");
+        } else {
+            if (selectLike.getLikeStatus() == 1) {
                 likeService.deleteByPrimaryKey(selectLike.getLikeId());
-                return ResultDTO.errorOf(200,"取消赞");
+                return ResultDTO.errorOf(200, "取消赞");
             }
-            return ResultDTO.errorOf(200,"点赞");
+            return ResultDTO.errorOf(200, "点赞");
         }
-
 
 
     }

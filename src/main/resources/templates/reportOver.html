@@ -37,46 +37,47 @@
     <div class="site-mobile-shade"></div>
 
     <div class="fly-panel fly-panel-user" pad20>
-        <div class="layui-tab layui-tab-brief" lay-filter="user">
-            <h2>审核举报</h2>
+        <div class="layui-form-item">
+            <label class="layui-form-label">帖子标题</label>
+            <div class="layui-input-inline">
+                <input style="border:none;" type="text" th:value="${reportDTO.getPostQuestion().getQuestionTitle()}"
+                       readonly="readonly"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">帖子内容</label>
+            <div class="layui-input-inline">
+                    <textarea rows="5" readonly="readonly"
+                              th:value="${reportDTO.getPostQuestion().getQuestionDescription()}"
+                              cols="50">帖子内容</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">举报标题</label>
+            <div class="layui-input-inline">
+                <input style="border:none;" type="text" readonly="readonly"
+                       th:value="${reportDTO.getReportTitle()}"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">举报理由</label>
+            <div class="layui-input-inline">
+                    <textarea rows="5" readonly="readonly" cols="50"
+                              th:text="${reportDTO.getReportAccount()}"></textarea>
+            </div>
+        </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">帖子标题</label>
-                <div class="layui-input-inline">
-                    <input type="text" readonly="readonly" value="帖子标题"/>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">帖子内容</label>
-                <div class="layui-input-inline">
-                    <textarea rows="5" readonly="readonly" cols="50">帖子内容</textarea>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">举报标题</label>
-                <div class="layui-input-inline">
-                    <input type="text" readonly="readonly" value="这个帖子可以"/>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">举报理由</label>
-                <div class="layui-input-inline">
-                    <textarea rows="5" readonly="readonly" cols="50">但是我要举报</textarea>
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <label>举报人:
-                    压缩
-                </label><br/>
-                <label>被举报人:劫</label>
-            </div>
+        <div class="layui-form-item">
+            <label th:text="'举报人          :'+${reportDTO.getReportUser().getUserName()}">
+            </label><br/><br/>
+            <label th:text="'被举报人 :'+${reportDTO.getPostUser().getUserName()}"></label>
+        </div>
             <div class="layui-form-item">
                 <label>审核结果</label>
-                <div>惩罚并删帖</div>
+                <div th:text="${reportResult}"></div>
             </div>
 
-            <a class="layui-btn">返回上一页</a>
+
 
 
             <!--  <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>该帖已被删除</span></div>

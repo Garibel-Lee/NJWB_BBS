@@ -23,7 +23,7 @@ public interface QuestionService {
 
     int updateByPrimaryKey(Question record);
 
-    PageinfoDTO<QuestionDTO> getAll(String section, Integer page, Integer size);
+    PageinfoDTO<QuestionDTO> getAll(String section, Integer page, Integer size,String search);
 
     PageinfoDTO listMyQuestion(Long userId, Integer page, Integer size);
 

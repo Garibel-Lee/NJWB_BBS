@@ -2,8 +2,10 @@ package njwb.lcqjoyce.bbs.service.impl;
 
 import njwb.lcqjoyce.bbs.dto.NotificationDTO;
 import njwb.lcqjoyce.bbs.dto.PageinfoDTO;
+import njwb.lcqjoyce.bbs.dto.ReportDTO;
 import njwb.lcqjoyce.bbs.entity.Notification;
 import njwb.lcqjoyce.bbs.entity.User;
+import njwb.lcqjoyce.bbs.enums.NotificationTypeEnum;
 
 public interface NotificationService {
 
@@ -25,4 +27,6 @@ public interface NotificationService {
     PageinfoDTO list(Long userId, Integer page, Integer size);
 
     Long unreadCount(Long userId);
+
+    void  ViocreateNotify(ReportDTO reportDTO, String outerTitle, NotificationTypeEnum notificationType);
 }

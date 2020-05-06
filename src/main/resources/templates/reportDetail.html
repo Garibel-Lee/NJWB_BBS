@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <script src="/js/jquery-3.4.1.min.js"></script>
+
     <title>举报审核</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="fly,layui,前端社区">
     <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+    <script src="/js/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/css/global.css">
     <script src="/layui/layui.js"></script>
@@ -27,7 +28,8 @@
                 class="layui-icon">&#xe611;</i> 我的消息 </a></li>
         <li class="layui-nav-item  "><a href="/profile/myRecharge"> <i
                 class="layui-icon">&#xe61a;</i> 账户充值/会员 </a></li>
-        <li class="layui-nav-item layui-this"th:if="${session.userDTO.getRole().getRoleId() eq 3}"><a href="/profile/report"> <i
+        <li class="layui-nav-item layui-this" th:if="${session.userDTO.getRole().getRoleId() eq 3}"><a
+                href="/profile/report"> <i
                 class="layui-icon">&#xe61a;</i> 审核举报 </a></li>
     </ul>
 
@@ -44,43 +46,49 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">帖子标题</label>
                 <div class="layui-input-inline">
-                    <input type="text" readonly="readonly" value="帖子标题"/>
+                    <input style="border:none;" type="text" th:value="${reportDTO.getPostQuestion().getQuestionTitle()}"
+                           readonly="readonly"/>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">帖子内容</label>
                 <div class="layui-input-inline">
-                    <textarea rows="5" readonly="readonly" cols="50">帖子内容</textarea>
+                    <textarea rows="5" readonly="readonly"
+                              th:value="${reportDTO.getPostQuestion().getQuestionDescription()}"
+                              cols="50">帖子内容</textarea>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">举报标题</label>
                 <div class="layui-input-inline">
-                    <input type="text" readonly="readonly" value="这个帖子可以"/>
+                    <input style="border:none;" type="text" readonly="readonly"
+                           th:value="${reportDTO.getReportTitle()}"/>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">举报理由</label>
                 <div class="layui-input-inline">
-                    <textarea rows="5" readonly="readonly" cols="50">但是我要举报</textarea>
+                    <textarea rows="5" readonly="readonly" cols="50"
+                              th:text="${reportDTO.getReportAccount()}"></textarea>
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label>举报人:
-                    压缩
-                </label><br/>
-                <label>被举报人:劫</label>
+                <label th:text="'举报人          :'+${reportDTO.getReportUser().getUserName()}">
+                </label><br/><br/>
+                <label th:text="'被举报人 :'+${reportDTO.getPostUser().getUserName()}"></label>
             </div>
-            <form action="">
-                <div class="layui-form layui-form-pane">
-                    <input type="radio" checked="checked" title="不惩罚被举报人">
-                    <input type="radio" title="惩罚被举报人不删除帖子">
-                    <input type="radio" title="惩罚被举报人并删除该异常帖">
+            <form action="/reportOver" method="post">
+                <input type="text" hidden="hidden" th:value="${reportDTO.getReportId()}" id="reportId" name="reportId">
+                <div class="layui-form-item">
+                    <select th:width="20px" required lay-verify="required" id="result" name="result">
+                        <option selected="selected" value="1">不惩罚被举报人</option>
+                        <option value="2">惩罚被举报人不删除帖子</option>
+                        <option value="3">惩罚被举报人并删除该异常帖</option>
+                    </select>
                 </div>
-                <div class="layui-form layui-form-pane">
+                <div class="layui-form-item">
                     <input class="layui-btn" type="submit" value="审核"/>
-                    <a class="layui-btn">返回上一页</a>
                 </div>
             </form>
             <!--
@@ -94,6 +102,11 @@
 <div th:insert="~{footer :: nav}"></div>
 
 <script>
+    layui.use(['jquery', 'form', 'layer'], function () {
+        var $ = layui.jquery;
+        var form = layui.form();//表单验证
+        var layer = layui.layer;
+    });
     layui.use('element', function () {
         var element = layui.element();
     });

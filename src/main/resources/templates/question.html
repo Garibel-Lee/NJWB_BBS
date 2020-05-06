@@ -32,7 +32,14 @@
 <body>
 <div th:insert="~{navigation :: nav}"></div>
 <script>
+
+
     function topQuestion(e) {
+        layui.use(['jquery', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var form = layui.form();//表单验证
+            var layer = layui.layer;
+        });
         var questionId = e.getAttribute("data-questionId");
         $.ajax({
             type: "POST",
@@ -43,10 +50,15 @@
             },
             success: function (response) {
                 if (response.code == 200) {
-                    alert(response.message);
-                    window.location.reload();
+                    layer.msg(response.message, {icon: 1, time: 1000, shade: 0.4});
+                    //如果输入成功，可以跳到另一个你需要的界面
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1200);
                 } else {
-                    alert(response.message);
+                    layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
+
                 }
             }
 
@@ -56,6 +68,11 @@
 
 
     function collectQuestion(e) {
+        layui.use(['jquery', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var form = layui.form();//表单验证
+            var layer = layui.layer;
+        });
         var questionId = e.getAttribute("data-questionId");
         $.ajax({
             type: "POST",
@@ -66,10 +83,15 @@
             },
             success: function (response) {
                 if (response.code == 200) {
-                    alert(response.message);
-                    window.location.reload();
+                    layer.msg(response.message, {icon: 1, time: 1000, shade: 0.4});
+                    //如果输入成功，可以跳到另一个你需要的界面
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1200);
                 } else {
-                    alert(response.message);
+                    layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
+
                 }
             }
 
@@ -78,6 +100,11 @@
     }
 
     function unCollectQuestion(e) {
+        layui.use(['jquery', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var form = layui.form();//表单验证
+            var layer = layui.layer;
+        });
         var questionId = e.getAttribute("data-questionId");
         $.ajax({
             type: "POST",
@@ -88,10 +115,15 @@
             },
             success: function (response) {
                 if (response.code == 200) {
-                    alert(response.message);
-                    window.location.reload();
+                    layer.msg(response.message, {icon: 1, time: 1000, shade: 0.4});
+                    //如果输入成功，可以跳到另一个你需要的界面
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1200);
                 } else {
-                    alert(response.message);
+                    layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
+
                 }
             }
 
@@ -100,6 +132,11 @@
     }
 
     function userThisComment(e) {
+        layui.use(['jquery', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var form = layui.form();//表单验证
+            var layer = layui.layer;
+        });
         var questionId = e.getAttribute("data-questionId");
         var commentId = e.getAttribute("data-commentId");
         $.ajax({
@@ -112,10 +149,14 @@
             },
             success: function (response) {
                 if (response.code == 200) {
-                    alert(response.message);
-                    window.location.reload();
+                    layer.msg(response.message, {icon: 1, time: 1000, shade: 0.4});
+                    //如果输入成功，可以跳到另一个你需要的界面
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1200);
                 } else {
-                    alert(response.message);
+                    layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
                 }
             }
 
@@ -124,6 +165,11 @@
     }
 
     function lovethisComment(e) {
+        layui.use(['jquery', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var form = layui.form();//表单验证
+            var layer = layui.layer;
+        });
         var commentId = e.getAttribute("data_commentId");
         var replyId = e.getAttribute("data_replyId");
         $.ajax({
@@ -136,10 +182,15 @@
             },
             success: function (response) {
                 if (response.code == 200) {
-                    alert(response.message);
-                    window.location.reload();
+                    layer.msg(response.message, {icon: 1, time: 1000, shade: 0.4});
+                    //如果输入成功，可以跳到另一个你需要的界面
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1200);
                 } else {
-                    alert(response.message);
+                    layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
+
                 }
             }
 
@@ -149,6 +200,11 @@
 
 
     function untopQuestion(e) {
+        layui.use(['jquery', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var form = layui.form();//表单验证
+            var layer = layui.layer;
+        });
         var questionId = e.getAttribute("data-questionId");
         $.ajax({
             type: "POST",
@@ -159,10 +215,15 @@
             },
             success: function (response) {
                 if (response.code == 200) {
-                    alert(response.message);
-                    window.location.reload();
+                    layer.msg(response.message, {icon: 1, time: 1000, shade: 0.4});
+                    //如果输入成功，可以跳到另一个你需要的界面
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1200);
                 } else {
-                    alert(response.message);
+                    layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
+
                 }
             }
 
@@ -170,6 +231,11 @@
     }
 
     function deleteQustion(e) {
+        layui.use(['jquery', 'form', 'layer'], function () {
+            var $ = layui.jquery;
+            var form = layui.form();//表单验证
+            var layer = layui.layer;
+        });
         var questionId = e.getAttribute("data-questionId");
         $.ajax({
             type: "POST",
@@ -180,13 +246,16 @@
             },
             success: function (response) {
                 if (response.code == 200) {
-                    alert(response.message);
-                    window.location.reload();
+                    layer.msg(response.message, {icon: 1, time: 1000, shade: 0.4});
+                    //如果输入成功，可以跳到另一个你需要的界面
+                    setTimeout(function () {
+                        //如果输入成功，可以跳到另一个你需要的界面
+                        location.reload();
+                    }, 1200);
                 } else {
-                    alert(response.message);
+                    layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
                 }
             }
-
         });
     }
 
@@ -234,29 +303,30 @@
                             var questionUserId = e.getAttribute("data-questionUserId");
 
                             layui.use(['jquery', 'form', 'layer'], function () {
+
                                 var $ = layui.jquery;
                                 var layer = layui.layer;
                                 layer.open({
                                     id: 1,
                                     type: 1,
                                     title: '举报帖子',
+                                    area: ['800px', '500px'],
                                     skin: 'layui-layer-rim',
-                                    area: ['450px', 'auto'],
-
-                                    content: ' <div class="row" style="width: 420px;  margin-left:7px; margin-top:10px;">'
-                                        + '<div class="col-sm-12">'
-                                        + '<div class="input-group">'
-                                        + '<span class="input-group-addon"> 举报标题   :</span>'
-                                        + '<input id="reportTile" name="reportTile" type="text" class="form-control" placeholder="请输入举报标题">'
-                                        + '</div>'
-                                        + '</div>'
-                                        + '<div class="col-sm-12" style="margin-top: 10px">'
-                                        + '<div class="input-group">'
-                                        + '<span class="input-group-addon">举报理由:</span>'
-                                        + '<input id="reportReason"  name="reportReason" type="text" class="form-control" placeholder="请再输入举报理由">'
-                                        + '</div>'
-                                        + '</div>'
-                                        + '</div>'
+                                    content:
+                                        ' <form class="layui-form" action="">'
+                                        + '  <div class="layui-form-item" style="margin-right: 50px">'
+                                        + '    <label class="layui-form-label">举报标题</label>'
+                                        + '    <div class="layui-input-block">'
+                                        + '      <input type="text" id="reportTile"  name="reportTile" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">'
+                                        + '    </div>'
+                                        + '  </div>'
+                                        + '  <div class="layui-form-item layui-form-text" style="margin-right: 40px">'
+                                        + '    <label class="layui-form-label">文本域</label>'
+                                        + '    <div class="layui-input-block">'
+                                        + '      <textarea name="reportReason" id="reportReason" placeholder="请输入内容" class="layui-textarea"></textarea>'
+                                        + '    </div>'
+                                        + '  </div>'
+                                        + '</form>'
                                     ,
                                     btn: ['提交', '取消'],
                                     btn1: function (index, layero) {
@@ -268,13 +338,16 @@
                                                 "questionId": questionId,
                                                 "questionUserId": questionUserId,
                                                 "reportTile": $("input[name='reportTile']").val(),
-                                                "reportReason": $("input[name='reportReason']").val()
+                                                "reportReason": $("textarea[name='reportReason']").val()
                                             },
                                             success: function (response) {
+
                                                 if (response.code == 200) {
-                                                    //如果输入成功，可以跳到另一个你需要的界面
-                                                    layer.close(index);
+                                                    location.reload();
+                                                } else {
+                                                    location.reload();
                                                 }
+
                                             }
 
                                         });
@@ -419,19 +492,19 @@
                         <div class="jieda-reply">
 
                             <div th:each="like,size:${comment.likes}">
-                                <span class="jieda-zan " type="zan"  th:if="${like.getLikeReplyid() eq session.user.getUserId()}" >
+                                <span class="jieda-zan " type="zan"
+                                      th:if="${like.getLikeReplyid() eq session.user.getUserId()}">
                                     已点赞
 								</span>
                             </div>
-                                <span class="jieda-zan zanok " type="zan"
-                                      onclick="lovethisComment(this)"
-                                      th:data_commentId="${comment.getCommentId()}"
-                                      th:data_replyId="${session.user.userId}"
-                                >
+                            <span class="jieda-zan zanok " type="zan"
+                                  onclick="lovethisComment(this)"
+                                  th:data_commentId="${comment.getCommentId()}"
+                                  th:data_replyId="${session.user.userId}"
+                            >
                                     <i class="iconfont icon-zan"></i>
                                     <em> [(${comment.likes.size()})]</em>
 								</span>
-
 
 
                             <span type="reply" th:data-commentId="${comment.getCommentId()}"
@@ -466,6 +539,7 @@
 
                         <div class="layui-form-item layui-form-text">
                             <div class="layui-input-block">
+
                                 <div id="editor">
 										<textarea id="comment_content" name="comment_content" required
                                                   lay-verify="required" placeholder="我要回答"
@@ -474,10 +548,9 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <input type="hidden" id="type_id" name="type_id">
-
-                            <input type="hidden" id="question_id" th:value="${question.getQuestionId()}">
-                            <input type="hidden" id="comment_id" name="comment_id">
+                            <input type="hidden" readonly="readonly" id="type_id" name="type_id">
+                            <input type="hidden" readonly="readonly" id="question_id" th:value="${question.getQuestionId()}">
+                            <input type="hidden" readonly="readonly" id="comment_id" name="comment_id">
                             <input class="layui-btn" onclick="post()" value="提交回答"/>
                         </div>
                     </form>

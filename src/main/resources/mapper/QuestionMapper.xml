@@ -208,6 +208,9 @@
         <include refid="Base_Column_List"/>
         from question
         where 1=1
+        <if test="search != null">
+            and question_title  like concat('%',#{search},'%')
+        </if>
         <if test="questionCreator != null">
             and question_creator=#{questionCreator}
         </if>
@@ -227,6 +230,9 @@
         select count(1)
         from question
         where 1=1
+        <if test="search != null">
+            and question_title  like concat('%',#{search},'%')
+        </if>
         <if test="questionCreator != null">
             and question_creator=#{questionCreator}
         </if>

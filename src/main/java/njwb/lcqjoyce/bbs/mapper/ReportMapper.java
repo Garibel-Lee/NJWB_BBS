@@ -21,5 +21,12 @@ public interface ReportMapper {
 
     List<Report> selectByReportPostid(@Param("reportPostid")Long reportPostid);
 
+    List<Report> selectAllByReportStatus(@Param("reportStatus")Integer reportStatus);
+
+    List<Report> selectAll();
+
+
+
+
 
 }
