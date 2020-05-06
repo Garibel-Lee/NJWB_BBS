@@ -47,8 +47,12 @@
 
                     <li  th:each="notification : ${notificationPages.data}">
                         <blockquote class="layui-elem-quote">
-                            <a th:href="@{'/user/'+${notification.notificationNotifier}}" target="_blank"><cite>Absolutely</cite></a> <span th:text="${notification.notificationTypeName}"></span>
-                            <a target="_blank"  th:href="@{'/notification/'+ ${notification.notificationId}}"  ><cite> [(${notification.notificationOutertitle})]</cite></a>
+                            <a th:href="@{'/user/'+${notification.notificationNotifier}}" target="_blank" >
+                                <cite>[(${notification.getNotificationNotifiername()})]</cite>
+                            </a> <span th:text="${notification.notificationTypeName}"></span>
+
+                            <a target="_blank"  th:href="@{'/notification/'+ ${notification.notificationId}}">
+                                <cite>[(${notification.notificationOutertitle})]</cite></a>
                         </blockquote>
                         <p><span> [(${#dates.format(notification.notificationGmtcreate,'yyyy-MM-dd HH:mm:ss')})]</span>
                             <a th:href="@{'/notification/delete/'+ ${notification.notificationId}}"   th:if="${notification.getNotificationStatus() eq 1}"    class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a>

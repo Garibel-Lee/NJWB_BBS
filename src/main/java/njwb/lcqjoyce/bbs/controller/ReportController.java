@@ -33,6 +33,8 @@ public class ReportController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private DeleService  deleService;
 
     @Autowired
     private AuditService auditService;
@@ -125,6 +127,7 @@ public class ReportController {
                 dele.setDeletionPosttitle(questionDTO.getQuestionTitle());
                 dele.setDeletionPostcontent(questionDTO.getQuestionDescription());
                 dele.setDeletionRemark("管理员日常查房删除违规帖");
+                deleService.insert(dele);
 
                 commentService.deleteByPrimaryKeyAndComments(questionDTO.getQuestionId());
 
