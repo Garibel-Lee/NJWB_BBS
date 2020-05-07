@@ -50,6 +50,8 @@ public class ReportController {
         model.addAttribute("reportDTO", reportDTO);
         return "reportDetail";
     }
+
+
     @GetMapping("/reportOver/{id}")
     public String reportOver(@PathVariable(name = "id") Long id,
                            Model model) {
@@ -136,10 +138,10 @@ public class ReportController {
                 dele.setDeletionPosttitle(questionDTO.getQuestionTitle());
                 dele.setDeletionPostcontent(questionDTO.getQuestionDescription());
                 dele.setDeletionRemark("管理员日常查房删除违规帖");
-                deleService.insert(dele);
+                deleService.insertSelective(dele);
 
                 commentService.deleteByPrimaryKeyAndComments(questionDTO.getQuestionId());
-
+         /*       questionService.deleteByPrimaryKey(questionDTO.getQuestionId());*/
                 //更更新举报处理表
                 updateAudit(reportSection,report);
             }

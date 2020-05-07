@@ -84,7 +84,7 @@ public class ReportServiceImpl implements ReportService{
             return null;
         }else {
 
-                User postUser= userMapper.selectByPrimaryKey(report.getReportPostid());
+                User postUser= userMapper.selectByPrimaryKey(report.getReportPostuserid());
                 User reportUser=userMapper.selectByPrimaryKey(report.getReportReportuserid());
                 Question question=questionMapper.selectByPrimaryKey(report.getReportPostid());
                 ReportDTO reportDTO=new ReportDTO();

@@ -233,27 +233,27 @@ public class CommentServiceImpl implements CommentService {
         //查出该问题所有一级回复
         List<Comment> replyQustions = commentMapper.findAllByCommentParentidAndCommentType(questionIds, CommentTypeEnum.QUESTION.getType());
         //取出一级回复所有id集合 ，查询改集合每一条一级评论下的所有二级评论
-        if (replyQustions.size() <= 0) {
-            return 0;
-        }
-        List<Long> commentIds = new ArrayList<>();
-        //取出一级回复所有id集合
-        for (Comment replyQustion : replyQustions) {
-            commentIds.add(replyQustion.getCommentId());
-        }
-        //查询改集合每一条一级评论下的所有二级评论
-        List<Comment> replyThisQuestionComments = commentMapper.findAllByCommentParentidAndCommentType(commentIds, CommentTypeEnum.COMMENT.getType());
-        for (Comment replyQustion : replyThisQuestionComments) {
-            commentIds.add(replyQustion.getCommentId());
+        if (replyQustions.size() > 0) {
+            List<Long> commentIds = new ArrayList<>();
+            //取出一级回复所有id集合
+            for (Comment replyQustion : replyQustions) {
+                commentIds.add(replyQustion.getCommentId());
+            }
+            //查询改集合每一条一级评论下的所有二级评论
+            List<Comment> replyThisQuestionComments = commentMapper.findAllByCommentParentidAndCommentType(commentIds, CommentTypeEnum.COMMENT.getType());
+            for (Comment replyQustion : replyThisQuestionComments) {
+                commentIds.add(replyQustion.getCommentId());
+            }
+
+            for (Long commentId : commentIds) {
+
+                //删除评论下的所有点赞数
+                likeMapper.deleteByPrimaryKey(commentId);
+
+                commentMapper.deleteByPrimaryKey(commentId);
+            }
         }
 
-        for (Long commentId : commentIds) {
-
-            //删除评论下的所有点赞数
-            likeMapper.deleteByPrimaryKey(commentId);
-
-            commentMapper.deleteByPrimaryKey(commentId);
-        }
         questionMapper.deleteByPrimaryKey(questionId);
         return 0;
     }
