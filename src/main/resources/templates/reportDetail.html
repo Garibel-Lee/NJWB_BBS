@@ -45,14 +45,11 @@
 
             <div class="layui-form-item">
                 <label class="layui-form-label">帖子标题</label>
-                <div class="layui-input-inline">
-                    <input style="border:none;" type="text" th:text="${reportDTO.getPostQuestion().getQuestionTitle()}"
-                           readonly="readonly"/>
-                </div>
+                <label class="layui-form-label" style="width: 200px;text-align: left;" th:text="${reportDTO.getPostQuestion().getQuestionTitle()}"></label>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">帖子内容</label>
-                <div class="layui-input-inline">
+                <div class="layui-form-text">
                     <textarea rows="5"
                               th:text="${reportDTO.getPostQuestion().getQuestionDescription()}"
                               cols="50"></textarea>
@@ -60,28 +57,25 @@
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">举报标题</label>
-                <div class="layui-input-inline">
-                    <input style="border:none;" type="text" readonly="readonly"
-                           th:text="${reportDTO.getReportTitle()}"/>
-                </div>
+                <label class="layui-form-label" style="width: 200px; text-align: left;"  th:text="${reportDTO.getReportTitle()}"></label>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">举报理由</label>
-                <div class="layui-input-inline">
+                <div class="layui-form-text">
                     <textarea rows="5" readonly="readonly" cols="50"
                               th:text="${reportDTO.getReportAccount()}"></textarea>
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label th:text="'举报人          :'+${reportDTO.getReportUser().getUserName()}">
-                </label><br/><br/>
-                <label th:text="'被举报人 :'+${reportDTO.getPostUser().getUserName()}"></label>
+                <label  th:text="'举报人          :'+${reportDTO.getReportUser().getUserName()}"/>
+                <br/><br/>
+                <label  th:text="'被举报人 :'+${reportDTO.getPostUser().getUserName()}"/>
             </div>
             <form action="/reportOver" method="post">
                 <input type="text" hidden="hidden" th:value="${reportDTO.getReportId()}" id="reportId" name="reportId">
                 <div class="layui-form-item">
-                    <select th:width="20px" required lay-verify="required" id="result" name="result">
+                    <select class="layui-form-select" th:width="20px" required lay-verify="required" id="result" name="result">
                         <option selected="selected" value="1">不惩罚被举报人</option>
                         <option value="2">惩罚被举报人不删除帖子</option>
                         <option value="3">惩罚被举报人并删除该异常帖</option>

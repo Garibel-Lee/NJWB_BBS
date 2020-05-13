@@ -71,10 +71,10 @@
                 <div class="layui-box layui-laypage layui-laypage-default"  th:if="${pagination.getData() ne null}">
                     <div>
                         <div style="float: left"><a th:href="@{/unsolve/(page=${pagination.page -1})}"
-                                                    th:hidden="${pagination.showPrevious}"
+                                                    th:if="${pagination.showPrevious}"
                                                     class="layui-laypage-prev">上一页</a>
                         </div>
-                        <div style="float: left"><a href="/unsolve/?page=1" th:hidden="${pagination.showFirstPage}"
+                        <div style="float: left"><a href="/unsolve/?page=1" th:if="${pagination.showFirstPage}"
                                                     class="laypage_first" title="首页">首页</a></div>
 
 
@@ -91,9 +91,9 @@
 
 
                         <div style="float: left"><a th:href="@{/unsolve/(page=${pagination.totalPage})}"
-                                                    th:hidden="${pagination.showEndPage}"
+                                                    th:if="${pagination.showEndPage}"
                                                     class="layui-laypage-last" title="尾页">末页</a></div>
-                        <div style="float: left"><a th:hidden="${pagination.showNext}"
+                        <div style="float: left"><a th:if="${pagination.showNext}"
                                                     th:href="@{/unsolve/(page=${pagination.page +1})}"
                                                     class="layui-laypage-next">下一页</a></div>
                     </div>

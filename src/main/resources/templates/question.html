@@ -266,7 +266,7 @@
     <div class="wrap">
         <div class="content detail">
             <div class="fly-panel detail-box">
-                <h1>帖子标题</h1>
+                <h1 th:text="${question.getQuestionTitle()}"></h1>
                 <div class="fly-tip fly-detail-hint" data-id="" style="height: 24px;">
                     <span class="fly-tip-stick" th:if="${statusList['topStatus'] eq 1}">置顶帖</span>
                     <span th:if="${statusList['questionStaus']    eq 0}">未结贴</span>

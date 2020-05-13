@@ -24,6 +24,10 @@ public interface UserService {
     List<User> selectByToken(String token);
 
     User findUserLogin(User user);
+
+    List<User> selectAllByUserEmailAndAccountid(String userEmail,String accountid);
+    List<User> selectAllByUserEmail(String userEmail);
+
 }
 
 

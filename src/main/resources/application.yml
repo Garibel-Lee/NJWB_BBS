@@ -59,7 +59,7 @@ spring:
     test-on-borrow: false
     test-while-idle: true
     time-between-eviction-runs-millis: 18800
-    url: jdbc:mysql://39.97.100.234:3306/bbs?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://39.97.100.234:3306/bbs?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=CST
     username: root
     validation-query: SELECT 1
   http:

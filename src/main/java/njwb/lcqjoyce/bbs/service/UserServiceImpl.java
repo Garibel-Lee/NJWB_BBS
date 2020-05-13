@@ -112,6 +112,15 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<User> selectAllByUserEmailAndAccountid(String userEmail,String accountid) {
+        return userMapper.selectAllByUserEmailAndAccountId(userEmail,accountid);
+    }
+    @Override
+    public List<User> selectAllByUserEmail(String userEmail) {
+        return userMapper.selectAllByUserEmail(userEmail);
+    }
+
 }
 
 

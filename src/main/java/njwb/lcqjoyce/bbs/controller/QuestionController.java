@@ -132,21 +132,23 @@ public class QuestionController {
                 } else {
                     statusList.put("editStatus", 1);  //已经结帖，编辑标记
                 }
-            }//不是自己帖子可以进行收藏
+            }
+            //不是自己帖子可以进行收藏
             else {
                Integer collectSign=collectService.selectByQuestionIdandUserId(questionDTO.getQuestionId(),userDTO.getUserId());
 
                if(collectSign>0){
                    statusList.put("collectStatus", 1);  //可以编辑标记
                }else {
-                   statusList.put("collectStatus", 0);  //可以编辑标记
+                   statusList.put("collectStatus", 0);  //可以不编辑标记
                }
             }
 
             //会员用户且是我的自己的帖子
             if (!ObjectUtils.isEmpty(userDTO.getVip()) && questionDTO.getQuestionCreator().equals(userDTO.getUserId())) {
                 if (questionDTO.getQuestionTop() == 0) {
-                    statusList.put("setTopStatus", 0);      //设置置顶标记
+                    //设置置顶标记
+                    statusList.put("setTopStatus", 0);
                 } else {
                     statusList.put("setTopStatus", 1);
                 }
@@ -162,12 +164,11 @@ public class QuestionController {
                 }
             }
 
-
+            //判断用户的权限如果是管理员 举报设置成-1，即管理员不能被举报
             Right selecRight = rightService.selectByUserId(questionDTO.getQuestionCreator());
             if(selecRight.getRightRoleid()==3){
                 statusList.put("reportStatus", -1);
             }
-
 
             System.out.println(questionDTO);
             System.out.println(userDTO);

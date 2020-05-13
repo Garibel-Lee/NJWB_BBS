@@ -19,13 +19,16 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    List<User> selectAllByUserEmail(@Param("userEmail")String userEmail);
+    List<User> selectAllByUserEmailAndAccountId(@Param("userEmail")String userEmail,@Param("accountId")String accountId);
 
     List<User> selectAllByUserToken(@Param("userToken")String userToken);
 
     List<User> selectAllByUserEmailAndUserPassword(@Param("userEmail")String userEmail,@Param("userPassword")String userPassword);
 
     List<User> findInId(@Param("userIds") List<Long> userIds);
+    List<User> selectAllByUserEmail(@Param("userEmail")String userEmail);
+
+
 
 
 }

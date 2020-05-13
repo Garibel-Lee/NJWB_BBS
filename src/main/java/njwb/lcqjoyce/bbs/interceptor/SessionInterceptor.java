@@ -74,8 +74,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                         request.getSession().setAttribute("userDTO", userDTO);
                         System.out.println("已有登录用户" + users.get(0).getUserName());
                         request.getSession().setAttribute("user", users.get(0));
-                        //    Long unreadCount = notificationService.unreadCount(users.get(0).getId());
-                     //   request.getSession().setAttribute("unreadCount", unreadCount);
+                        //Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                        //request.getSession().setAttribute("unreadCount", unreadCount);
                     }
                     break;
                 }

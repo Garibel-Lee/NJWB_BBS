@@ -183,9 +183,11 @@ public class PageFunctionController {
         Integer Aresult = questionService.updateByPrimaryKeySelective(updateQuestion);
         Comment comment = commentService.selectByPrimaryKey(commentId);
 
-        User updateUser = new User();
+
+        //修复了飞吻值
+        User updateUser = userService.selectByPrimaryKey(comment.getCommentCommentator());
         updateUser.setUserId(comment.getCommentCommentator());
-        updateUser.setUserBalances(questionDTO.getQuestionExpend() + user.getUserBalances());
+        updateUser.setUserBalances(questionDTO.getQuestionExpend() + updateUser.getUserBalances());
         Integer Cresult = userService.updateByPrimaryKeySelective(updateUser);
 
         Comment updateComment = new Comment();
@@ -220,12 +222,12 @@ public class PageFunctionController {
             return ResultDTO.errorOf(222, "密码不对");
         }
 
-        if (user.getCard().getCardBalance().subtract(comount).compareTo(BigDecimal.ZERO) == 0) {
+        if (user.getCard().getCardBalance().subtract(comount).compareTo(BigDecimal.ZERO) == -1) {
             return ResultDTO.errorOf(222, "银行卡钱不够了");
         }
         User updateUser = new User();
         updateUser.setUserId(user.getUserId());
-        updateUser.setUserBalances(comount.multiply(new BigDecimal(10)).intValue());
+        updateUser.setUserBalances(user.getUserBalances()+comount.multiply(new BigDecimal(10)).intValue());
         userService.updateByPrimaryKeySelective(updateUser);
         Card updateCard = new Card();
         updateCard.setCardId(user.getCard().getCardId());

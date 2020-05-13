@@ -119,7 +119,7 @@ public class VipController {
         String[] tags = StringUtils.split(data, ",");
         Long times = Long.valueOf(tags[0]);
         Integer cost = Integer.valueOf(tags[1]);
-        if (user.getUserBalances() <= cost) {
+        if (user.getUserBalances() < cost) {
             return ResultDTO.errorOf(CustomizeErrorCode.NOMONEY);
         } else {
             User update = new User();
@@ -127,7 +127,14 @@ public class VipController {
             update.setUserId(user.getUserId());
             userService.updateByPrimaryKeySelective(update);
             Vip vip = user.getVip();
-            vip.setVipEndtime(vip.getVipEndtime()+times * 86400000 + System.currentTimeMillis());
+            if (ObjectUtils.isEmpty(vip.getVipStarttime())) {
+                vip.setVipEndtime(times * 86400000 + System.currentTimeMillis());
+
+            } else {
+                vip.setVipEndtime(times * 86400000 + vip.getVipStarttime());
+            }
+
+
             if (vipService.updateByPrimaryKeySelective(vip) == 0) {
                 return ResultDTO.errorOf(CustomizeErrorCode.NOTIFICATION_NOT_FOUND);
             } else {
