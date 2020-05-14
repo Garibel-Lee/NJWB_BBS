@@ -24,6 +24,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     ERROR_PWD(2017,"密码错误"),
     NOMONEY(2019,"囊中羞涩"),
     NOVIP(2019,"还不是会员"),
+    REPORT_ACCOUNT(2019,"账号多次违规，现已封停"),
     RIGATER_BROKEN(2016,"注册存在问题的账号及时联系管理员"),
     GUANLIYUAN(2016,"管理员权限较大，不支持充值会员"),
     ISVIP(2016,"你要是会员才能续费哦"),

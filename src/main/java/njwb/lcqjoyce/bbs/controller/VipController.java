@@ -128,10 +128,11 @@ public class VipController {
             userService.updateByPrimaryKeySelective(update);
             Vip vip = user.getVip();
             if (ObjectUtils.isEmpty(vip.getVipStarttime())) {
+
                 vip.setVipEndtime(times * 86400000 + System.currentTimeMillis());
 
             } else {
-                vip.setVipEndtime(times * 86400000 + vip.getVipStarttime());
+                vip.setVipEndtime(times * 86400000 + vip.getVipEndtime());
             }
 
 

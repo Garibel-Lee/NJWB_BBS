@@ -15,7 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+/**
+ * @author: Garibel.Lee
+ * @ClassName: CustomizeExceptionHandler
+ * @Date: 2020/5/14 12:02
+ * @Description: TODO
+ */
 
 @ControllerAdvice
 @Slf4j

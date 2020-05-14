@@ -154,13 +154,19 @@ public class QuestionController {
                 }
             }
 
-            //管理员用户 能够置顶所有帖子  删除帖子
+            //管理员用户 能够置顶所有帖子  删除帖子   管理员不显示举报按钮可以直接删帖
             if (!ObjectUtils.isEmpty(userDTO.getRole()) && userDTO.getRole().getRoleId().equals(3L)) {
                 statusList.put("deleteQuestionStatus", 0);
                 if (questionDTO.getQuestionTop() == 0) {
                     statusList.put("setTopStatus", 0);      //设置置顶标记
                 } else {
                     statusList.put("setTopStatus", 1);
+                }
+                //reportStatus 0已举报  1为举报
+                if(statusList.get("reportStatus").equals(0)){
+                    statusList.put("reportStatus", 0);
+                }else{
+                    statusList.put("reportStatus", -1);
                 }
             }
 

@@ -77,7 +77,7 @@ public class IndexController {
                         @RequestParam(name ="size",defaultValue = "10") int size,
                         @RequestParam(name ="search",required =false) String  search,
                         Model model) {
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index", page, 10,search);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("index", page, size,search);
 /*        PaginationDTO pagination = questionService.list(search, page, size);
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
@@ -106,7 +106,7 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top", page, 10,search);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("top", page, size,search);
         if (pagination.getPages().size() == 0) {
             pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
@@ -132,7 +132,7 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved", page, 10,search);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("solved", page, size,search);
         if (pagination.getPages().size() == 0) {
             pagination.setPageinfo(-1, -1);
             pagination.setPage(0);
@@ -157,7 +157,7 @@ public class IndexController {
         model.addAttribute("pagination", pagination);
         model.addAttribute("search", search);*/
         /*问题主题*/
-        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve", page, 10,search);
+        PageinfoDTO<QuestionDTO> pagination = questionService.getAll("unsolve", page, size,search);
         /* if(pagination.getData())*/
         model.addAttribute("pagination", pagination);
         return "unsolve";
@@ -176,7 +176,7 @@ public class IndexController {
             return "redirect:/";
         }
 
-        PageinfoDTO<QuestionDTO> questionDTOS = questionService.listMyQuestion(id, 1, 10);
+        PageinfoDTO<QuestionDTO> questionDTOS = questionService.listMyQuestion(id, 1, 5);
         if (questionDTOS.getPages().size() == 0) {
             questionDTOS.setPageinfo(-1, -1);
             questionDTOS.setPage(0);

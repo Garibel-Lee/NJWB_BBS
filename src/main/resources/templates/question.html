@@ -54,7 +54,7 @@
                     //如果输入成功，可以跳到另一个你需要的界面
                     setTimeout(function () {
                         //如果输入成功，可以跳到另一个你需要的界面
-                        location.reload();
+                        location.reload.bind(this);
                     }, 1200);
                 } else {
                     layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
@@ -87,7 +87,7 @@
                     //如果输入成功，可以跳到另一个你需要的界面
                     setTimeout(function () {
                         //如果输入成功，可以跳到另一个你需要的界面
-                        location.reload();
+                        location.reload.bind(this);
                     }, 1200);
                 } else {
                     layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
@@ -219,7 +219,7 @@
                     //如果输入成功，可以跳到另一个你需要的界面
                     setTimeout(function () {
                         //如果输入成功，可以跳到另一个你需要的界面
-                        location.reload();
+                        location.reload.bind(this);
                     }, 1200);
                 } else {
                     layer.msg(response.message, {icon: 2, time: 1000, shade: 0.4});
@@ -507,7 +507,7 @@
 								</span>
 
 
-                            <span type="reply" th:data-commentId="${comment.getCommentId()}"
+                            <span type="reply" th:data-commentId="${comment.getCommentId()}"  th:if="${comment.getCommentType() ne 2}"
                                   th:data-commentUserName="${comment.getUser().getUserName()}" onclick="reply(this)">
                                 <i class="iconfont icon-svgmoban53"></i>
                                 回复

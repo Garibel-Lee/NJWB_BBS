@@ -8,7 +8,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * @author: Garibel.Lee
+ * @ClassName: TagCache  
+ * @Date: 2020/5/14 12:02 
+ * @Description: TODO
+ */
 public class TagCache {
     public static List<TagDTO> get() {
         List<TagDTO> tagDTOS = new ArrayList<>();

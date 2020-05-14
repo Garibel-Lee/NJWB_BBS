@@ -78,6 +78,9 @@ public class LoginController {
             user.setUserPassword(password);
             User userLogin = userService.findUserLogin(user);
             if (!ObjectUtils.isEmpty(userLogin)) {
+                if(userLogin.getUserStatus()==1){
+                    return ResultDTO.errorOf(CustomizeErrorCode.REPORT_ACCOUNT);
+                }
                 Cookie cookie = new Cookie("token", userLogin.getUserToken());
                 cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
                 response.addCookie(cookie);

@@ -12,10 +12,10 @@ file:
   uploadFolder: /upload/
 github:
   client:
-    id: 353705c353a909271afe
-    secret: 21de8259a71a4339dda48d680f4615f9fef4e755
+    id: 88048ff3801fcb6f267e
+    secret: 178f53462aa084feef28797bb40456d989e5f4a9
   redirect:
-    uri: http://127.0.0.1:8888/callback
+    uri: http://lcqjoyce.cn/callback
 logging:
   file:
     name: D:/log.log

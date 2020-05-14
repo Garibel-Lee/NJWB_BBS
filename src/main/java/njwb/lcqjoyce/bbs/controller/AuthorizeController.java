@@ -22,7 +22,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @author LCQJOYCE
+ * @author: Garibel.Lee
+ * @ClassName: AuthorizeController
+ * @Date:
+ * @Description: TODO
  */
 @Controller
 @PropertySource({"classpath:application.yml"})
@@ -64,7 +67,10 @@ public class AuthorizeController {
                 List<User> userList = userService.selectAllByUserEmail(githubUserDTO.getEmail());
                 if (!ObjectUtils.isEmpty(userList)) {
                     User userLogin = userService.findUserLogin(userList.get(0));
-
+                    if(userLogin.getUserStatus()==1){
+                        model.addAttribute("message", "关联账号，涉嫌违规发，多次被举报现已封停");
+                        return "error";
+                    }
                     Cookie cookie = new Cookie("token", userLogin.getUserToken());
                     cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
                     response.addCookie(cookie);
