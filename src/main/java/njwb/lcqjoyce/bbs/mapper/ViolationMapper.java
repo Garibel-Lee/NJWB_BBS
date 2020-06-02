@@ -1,8 +1,9 @@
 package njwb.lcqjoyce.bbs.mapper;
-import org.apache.ibatis.annotations.Param;
-
 import njwb.lcqjoyce.bbs.entity.Violation;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface ViolationMapper {
@@ -19,6 +20,9 @@ public interface ViolationMapper {
     int updateByPrimaryKey(Violation record);
 
     Violation selectOneByViolationUserid(@Param("violationUserid")Long violationUserid);
+
+    List<Violation> selectAllByViolationTime();
+
 
 
 }

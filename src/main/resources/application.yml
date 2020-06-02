@@ -18,7 +18,7 @@ github:
     uri: http://lcqjoyce.cn/callback
 logging:
   file:
-    name: D:/log.log
+    name: /root/bbs/log.log
   level:
     com:
       maven:
@@ -30,12 +30,8 @@ logging:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: njwb.lcqjoyce.bbs.entity
-pagehelper:
-  helper-dialect: mysql
-  params: count=countSql
-  reasonable: true
 server:
-  port: 8888
+  port: 7777
   tomcat:
     uri-encoding: UTF-8
 spring:
@@ -61,6 +57,7 @@ spring:
     time-between-eviction-runs-millis: 18800
     url: jdbc:mysql://39.97.100.234:3306/bbs?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=CST
     username: root
+    #查询验证
     validation-query: SELECT 1
   http:
     encoding:

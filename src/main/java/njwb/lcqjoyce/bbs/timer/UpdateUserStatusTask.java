@@ -3,6 +3,7 @@ package njwb.lcqjoyce.bbs.timer;
 
 import njwb.lcqjoyce.bbs.service.impl.AuditService;
 import njwb.lcqjoyce.bbs.service.impl.UserService;
+import njwb.lcqjoyce.bbs.service.impl.ViolationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +20,26 @@ public class UpdateUserStatusTask {
     private UserService userService;
     @Autowired
     private AuditService auditService;
-
+    @Autowired
+    private ViolationService violationService;
     /*****
      * 30秒执行一次
      * 0/30:表示从0秒开始执行，每过30秒再次执行
      */
-/*    @Scheduled(cron = "* 0/1  * * * ?")
+  /* @Scheduled(cron = "0/5 * * * * ?")
     public void UpdateUserStatus(){
-
-    }*/
+       System.out.println("执行定时任务");
+       List<Violation> violations = violationService.selectAllWithAudit();
+       if(ObjectUtils.isEmpty(violations)){
+           return;
+       }
+       for (Violation violation : violations) {
+           User user=new User();
+           user .setUserId(violation.getViolationUserid());
+           user.setUserStatus(1);
+           System.out.println(user);
+           userService.updateByPrimaryKeySelective(user);
+       }
+}
+   */
 }

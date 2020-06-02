@@ -2,6 +2,8 @@ package njwb.lcqjoyce.bbs.service.impl;
 
 import njwb.lcqjoyce.bbs.entity.Violation;
 
+import java.util.List;
+
 public interface ViolationService {
 
 
@@ -18,7 +20,10 @@ public interface ViolationService {
     int updateByPrimaryKey(Violation record);
 
 
+    List<Violation>  selectAllWithAudit();
+
     Violation selectOneByViolationUserid(Long violationUserid);
+
 
 
 }

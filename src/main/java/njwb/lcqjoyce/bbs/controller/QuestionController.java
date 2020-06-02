@@ -154,7 +154,7 @@ public class QuestionController {
                 }
             }
 
-            //管理员用户 能够置顶所有帖子  删除帖子   管理员不显示举报按钮可以直接删帖
+            //管理员用户 能够置顶所有帖子  删除帖子   管理员不显示举报按钮可以直接删帖 管理员ROLE_ID=3
             if (!ObjectUtils.isEmpty(userDTO.getRole()) && userDTO.getRole().getRoleId().equals(3L)) {
                 statusList.put("deleteQuestionStatus", 0);
                 if (questionDTO.getQuestionTop() == 0) {

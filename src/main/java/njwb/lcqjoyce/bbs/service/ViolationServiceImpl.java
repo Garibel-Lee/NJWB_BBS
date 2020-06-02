@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class ViolationServiceImpl implements ViolationService {
@@ -44,8 +45,14 @@ public class ViolationServiceImpl implements ViolationService {
         return violationMapper.updateByPrimaryKey(record);
     }
 
-
-
+    @Override
+    public List<Violation> selectAllWithAudit() {
+        if (ObjectUtils.isEmpty(violationMapper.selectAllByViolationTime())) {
+            return null;
+        } else {
+            return violationMapper.selectAllByViolationTime();
+        }
+    }
 
 
     @Override

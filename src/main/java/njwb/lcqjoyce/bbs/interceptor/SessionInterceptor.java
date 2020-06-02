@@ -39,6 +39,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
        //设置 context 级别的属性
@@ -48,6 +49,7 @@ public class SessionInterceptor implements HandlerInterceptor {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
+
                     List<User> users =userService.selectByToken(token);
                     if (users.size() != 0) {
                         User use=users.get(0);
@@ -83,6 +85,7 @@ public class SessionInterceptor implements HandlerInterceptor {
         }
         return true;
     }
+
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
